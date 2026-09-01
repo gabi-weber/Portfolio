@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resumé · Gabi Weber</title>
+  <meta name="description" content="Gabi Weber — Product Designer. 3+ years in B2B design systems, illustration, platform growth at scale, and AI-augmented workflows. Resumé and case studies." />
+  <meta property="og:title" content="Gabi Weber — Product Designer & Lead Illustrator" />
+  <meta property="og:description" content="Product Designer with 3+ years in B2B. Design systems, dark mode migration, illustration-driven campaigns, and at-scale platform growth.." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+
+    @font-face {
+      font-family: 'Bropella';
+      src: url('./fonts/Bropella.woff') format('woff');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* ═══════════════════════════════════════════
+       TOKENS
+    ═══════════════════════════════════════════ */
+    :root {
+      --color-bg:      #F7EAE7;
+      --color-primary: #09636C;
+      --color-text:    #1A1B1B;
+      --color-muted:   #585A5A;
+      --color-accent:  #E9BAAE;
+      --color-border:  #C4CBCB;
+      --color-white:   #FEFAF9;
+      --font: 'Poppins', sans-serif;
+      --nav-h: 64px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      font-weight: 400;
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, h5, h6 { font-family: var(--font); }
+
+    /* ═══════════════════════════════════════════
+       ACCESSIBILITY
+    ═══════════════════════════════════════════ */
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    /* ═══════════════════════════════════════════
+       GRAIN
+    ═══════════════════════════════════════════ */
+    .grain {
+      position: fixed; inset: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 9999; opacity: 0.04;
+    }
+
+    /* ═══════════════════════════════════════════
+       BUTTON SYSTEM
+    ═══════════════════════════════════════════ */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      font-family: var(--font); font-weight: 400; text-decoration: none;
+      cursor: pointer; border: none;
+      transition: background-color 200ms ease, box-shadow 200ms ease,
+                  border-color 200ms ease, color 200ms ease;
+      white-space: nowrap; user-select: none;
+    }
+    .btn-large  { font-size: 16px; line-height: 24px; border-radius: 8px; padding: 12px 16px; }
+    .btn-medium { font-size: 14px; line-height: 21px; border-radius: 8px; padding: 8px 12px; }
+
+    .btn-primary                 { background: #09636C; color: var(--color-white); }
+    .btn-primary:hover           { background: #085057; box-shadow: 2px 2px 10px rgba(26,27,27,.25); }
+    .btn-primary:active          { background: #085057; box-shadow: none; }
+    .btn-primary:focus-visible   { background: #09636C; border: 2px solid #043F45; outline: none; }
+
+    .btn-secondary               { background: rgba(9,99,108,.10); border: 2px solid #09636C; color: #1A1B1B; }
+    .btn-secondary:hover         { background: rgba(9,99,108,.25); box-shadow: 2px 2px 10px rgba(26,27,27,.25); }
+    .btn-secondary:active        { background: rgba(9,99,108,.25); box-shadow: none; }
+    .btn-secondary:focus-visible { background: rgba(9,99,108,.20); border: 2px solid rgba(9,99,108,.5); outline: none; }
+
+    /* ═══════════════════════════════════════════
+       NAV
+    ═══════════════════════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--nav-h); z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px;
+      background: rgba(247,234,231,0.62);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .nav-logo {
+      font-family: 'Bropella', cursive; font-weight: 700; font-size: 28px;
+      line-height: 1; color: var(--color-primary); text-decoration: none;
+      letter-spacing: -0.2px; display: flex; align-items: center;
+    }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 32px; list-style: none;
+    }
+
+    .nav-links li a:not(.btn) {
+      font-family: var(--font); font-weight: 400; font-size: 14px;
+      color: var(--color-muted); text-decoration: none;
+      position: relative; padding-bottom: 3px; transition: color 200ms ease;
+    }
+
+    .nav-links li a:not(.btn)::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 1px; background: var(--color-primary); transition: width 250ms ease;
+    }
+
+    .nav-links li a:not(.btn):hover { color: var(--color-primary); }
+    .nav-links li a:not(.btn):hover::after { width: 100%; }
+    .nav-links li a.nav-active:not(.btn) { color: var(--color-primary); }
+    .nav-links li a.nav-active:not(.btn)::after { width: 100%; }
+
+    .nav-hamburger {
+      display: none; flex-direction: column; justify-content: center; gap: 5px;
+      width: 40px; height: 40px; background: none; border: none; cursor: pointer;
+      padding: 8px; border-radius: 8px; transition: background 150ms ease;
+    }
+    .nav-hamburger:hover { background: rgba(9,99,108,.08); }
+    .nav-hamburger span {
+      display: block; height: 1.5px; background: var(--color-text); border-radius: 2px;
+      transition: transform 280ms cubic-bezier(0.22,1,0.36,1),
+                  opacity 200ms ease, width 200ms ease;
+      transform-origin: center;
+    }
+    .nav-hamburger span:nth-child(3) { width: 65%; align-self: flex-end; }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { width: 100%; transform: translateY(-6.5px) rotate(-45deg); }
+
+    .nav-mobile {
+      display: none; position: fixed; top: var(--nav-h); left: 0; right: 0;
+      background: rgba(247,234,231,0.96); backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--color-border);
+      z-index: 199; padding: 0 24px 28px; opacity: 0; transform: translateY(-6px);
+      transition: opacity 250ms cubic-bezier(0.22,1,0.36,1),
+                  transform 250ms cubic-bezier(0.22,1,0.36,1);
+      pointer-events: none;
+    }
+    .nav-mobile.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .nav-mobile ul { list-style: none; display: flex; flex-direction: column; padding-top: 8px; }
+    .nav-mobile ul li a:not(.btn) {
+      display: block; font-size: 18px; color: var(--color-muted); text-decoration: none;
+      padding: 14px 0; border-bottom: 1px solid var(--color-border); transition: color 150ms ease;
+    }
+    .nav-mobile ul li:last-of-type a:not(.btn) { border-bottom: none; }
+    .nav-mobile ul li a:not(.btn):hover,
+    .nav-mobile ul li a.nav-active:not(.btn) { color: var(--color-primary); }
+    .nav-mobile-cta { margin-top: 20px; }
+    .nav-mobile-cta .btn { width: 100%; justify-content: center; font-size: 15px; padding: 12px 16px; }
+
+    /* ═══════════════════════════════════════════
+       PAGE HERO
+    ═══════════════════════════════════════════ */
+    .page-hero {
+      padding-top: calc(var(--nav-h) + 80px);
+      padding-bottom: 64px;
+      padding-left: 48px;
+      padding-right: 48px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .page-hero-title {
+      font-weight: 300; font-size: clamp(28px, 3.2vw, 46px);
+      letter-spacing: -0.5px; line-height: 1.18; color: var(--color-muted);
+      max-width: 62ch;
+    }
+
+    .hero-actions {
+      display: flex; align-items: center; gap: 12px; margin-top: 36px; flex-wrap: wrap;
+    }
+
+    /* ═══════════════════════════════════════════
+       SECTION LABELS (unified across main + sidebar)
+    ═══════════════════════════════════════════ */
+    .section-label {
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      display: block;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    /* ═══════════════════════════════════════════
+       RESUME LAYOUT
+    ═══════════════════════════════════════════ */
+    .resume-body {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px 120px;
+    }
+
+    .resume-inner {
+      display: grid;
+      grid-template-columns: 1fr 292px;
+      gap: 80px;
+      align-items: start;
+    }
+
+    /* ═══════════════════════════════════════════
+       MAIN COLUMN
+    ═══════════════════════════════════════════ */
+    .resume-main {
+      display: flex;
+      flex-direction: column;
+      gap: 64px;
+    }
+
+    .resume-section {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ═══════════════════════════════════════════
+       EXPERIENCE
+    ═══════════════════════════════════════════ */
+    .job {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Jobs separated by a rule; padding-top + existing 24px gap = 48px total breathing room */
+    .job + .job {
+      padding-top: 24px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .job-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .job-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .job-role {
+      font-weight: 600; font-size: 17px;
+      color: var(--color-text); letter-spacing: -0.2px;
+    }
+
+    .job-company {
+      font-weight: 500; font-size: 14px; color: var(--color-primary);
+    }
+
+    .job-date {
+      font-size: 13px; color: var(--color-muted);
+      white-space: nowrap; padding-top: 2px;
+    }
+
+    .job-bullets {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+
+    .job-bullets li {
+      font-size: 14px; color: var(--color-muted);
+      line-height: 1.72; padding-left: 18px; position: relative;
+    }
+
+    .job-bullets li::before {
+      content: ''; position: absolute; left: 0; top: 10px;
+      width: 4px; height: 4px;
+      background: var(--color-accent); border-radius: 50%;
+    }
+
+    .job-bullets li strong {
+      color: var(--color-text); font-weight: 600;
+    }
+
+    /* ═══════════════════════════════════════════
+       CERTIFICATIONS
+    ═══════════════════════════════════════════ */
+    .cert-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cert-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .cert-item:first-child { padding-top: 0; }
+    .cert-item:last-child  { border-bottom: none; padding-bottom: 0; }
+
+    .cert-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .cert-name {
+      font-weight: 600; font-size: 14px; color: var(--color-text);
+    }
+
+    .cert-issuer {
+      font-size: 12px; color: var(--color-muted);
+    }
+
+    .cert-date {
+      font-size: 12px; color: var(--color-muted); white-space: nowrap; flex-shrink: 0;
+    }
+
+    /* ═══════════════════════════════════════════
+       SIDEBAR
+    ═══════════════════════════════════════════ */
+    .sidebar-col {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .resume-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .sidebar-block {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* Skills: reuses .job-role (name) + .job-bullets (list) from Experience */
+    .sidebar-skill-list {
+      display: flex; flex-direction: column; gap: 28px;
+    }
+
+    .sidebar-skill-item {
+      display: flex; flex-direction: column; gap: 12px;
+    }
+
+    /* Education in sidebar */
+    .edu-block {
+      display: flex; flex-direction: column; gap: 4px;
+    }
+
+    .edu-degree {
+      font-weight: 600; font-size: 14px; color: var(--color-text);
+    }
+
+    .edu-school {
+      font-size: 13px; color: var(--color-primary); font-weight: 500;
+    }
+
+    .edu-date {
+      font-size: 12px; color: var(--color-muted); margin-top: 2px;
+    }
+
+    /* Languages */
+    .lang-list {
+      display: flex; flex-direction: column; gap: 16px;
+    }
+
+    .lang-item {
+      display: flex; flex-direction: column; gap: 6px;
+    }
+
+    .lang-header {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .lang-name {
+      font-weight: 600; font-size: 14px; color: var(--color-text);
+    }
+
+    .lang-level {
+      font-size: 12px; color: var(--color-muted);
+    }
+
+    .lang-bar-track {
+      height: 7px; background: var(--color-border); border-radius: 4px; overflow: hidden;
+    }
+
+    .lang-bar-fill {
+      height: 100%; background: var(--color-primary); border-radius: 4px;
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* ═══════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════ */
+    footer {
+      border-top: 1px solid var(--color-border);
+      padding: 80px 48px 56px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .footer-cta-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-greeting {
+      font-weight: 400;
+      font-size: clamp(20px, 2vw, 26px);
+      color: var(--color-text);
+      line-height: 1.4;
+    }
+
+    .footer-greeting a { color: var(--color-primary); text-decoration: none; font-weight: 500; }
+    .footer-greeting a:hover { text-decoration: underline; }
+
+    /* Arrival animation: triggered by JS on hash navigation.
+       Opacity-only (no transform), so the email button stays in its
+       exact position and clicks register correctly during the animation. */
+    @keyframes footerArrive {
+      0%   { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    footer.contact-arrived .footer-cta-block {
+      animation: footerArrive 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    /* Sparkle dots that burst around the CTA on arrival */
+    .footer-cta-block { position: relative; }
+
+    .sparkle-dot {
+      position: absolute;
+      border-radius: 50%;
+      background: #E9BAAE;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    footer.contact-arrived .sparkle-dot {
+      animation: sparkle-rise 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes sparkle-rise {
+      0%   { opacity: 0; transform: scale(0) translateY(0); }
+      22%  { opacity: 0.85; transform: scale(1) translateY(-4px); }
+      100% { opacity: 0; transform: scale(0.4) translateY(-20px); }
+    }
+
+    .sparkle-dot:nth-child(1) { width: 5px; height: 5px; top: -18px; left: 10%;  animation-delay: 0.07s; }
+    .sparkle-dot:nth-child(2) { width: 7px; height: 7px; top: -30px; left: 32%;  animation-delay: 0.14s; background: rgba(9,99,108,0.3); }
+    .sparkle-dot:nth-child(3) { width: 4px; height: 4px; top: -22px; left: 53%;  animation-delay: 0.04s; }
+    .sparkle-dot:nth-child(4) { width: 6px; height: 6px; top: -26px; right: 26%; animation-delay: 0.19s; background: rgba(9,99,108,0.22); }
+    .sparkle-dot:nth-child(5) { width: 5px; height: 5px; top:   8px; left: 2%;   animation-delay: 0.11s; }
+    .sparkle-dot:nth-child(6) { width: 4px; height: 4px; top:   8px; right: 2%;  animation-delay: 0.16s; }
+
+    .footer-copy {
+      font-weight: 400;
+      font-size: 12px;
+      color: var(--color-muted);
+      margin-top: 40px;
+    }
+
+    .footer-email-wrap { position: relative; display: inline-block; }
+
+    .footer-email-btn {
+      background: none; border: none; padding: 0; font-family: var(--font);
+      font-weight: 500; font-size: clamp(20px, 2vw, 26px);
+      color: var(--color-primary); cursor: pointer; line-height: 1.4;
+    }
+    .footer-email-btn:hover { text-decoration: underline; }
+
+    .email-dropdown {
+      position: absolute; bottom: calc(100% + 4px); right: 0; left: auto; top: auto;
+      transform: translateY(8px);
+      background: var(--color-white); border: 1px solid var(--color-border);
+      border-radius: 12px; box-shadow: 0 8px 24px rgba(26,27,27,0.12);
+      min-width: 192px; overflow: hidden; visibility: hidden; opacity: 0;
+      pointer-events: none; z-index: 400;
+      transition: opacity 200ms cubic-bezier(0.22,1,0.36,1),
+                  transform 200ms cubic-bezier(0.22,1,0.36,1),
+                  visibility 200ms;
+    }
+    .email-dropdown.open {
+      visibility: visible; opacity: 1; pointer-events: auto;
+      transform: translateY(0);
+    }
+    .email-dropdown button {
+      display: block; width: 100%; padding: 10px 16px; background: none; border: none;
+      font-family: var(--font); font-weight: 400; font-size: 14px; color: var(--color-text);
+      text-align: left; cursor: pointer; transition: background 150ms ease;
+    }
+    .email-dropdown button:hover { background: var(--color-bg); }
+
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: var(--color-text); color: var(--color-white);
+      font-family: var(--font); font-weight: 400; font-size: 14px;
+      padding: 12px 20px; border-radius: 12px; pointer-events: none; opacity: 0;
+      transition: opacity 200ms ease; z-index: 9998; white-space: nowrap;
+    }
+    .toast.visible { opacity: 1; }
+
+    /* ═══════════════════════════════════════════
+       REVEAL
+    ═══════════════════════════════════════════ */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1),
+                  transform 0.6s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal.revealed { opacity: 1; transform: translateY(0); }
+
+    .reveal-stagger > * {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.5s cubic-bezier(0.22,1,0.36,1),
+                  transform 0.5s cubic-bezier(0.22,1,0.36,1);
+      transition-delay: var(--reveal-delay, 0ms);
+    }
+    .reveal-stagger.revealed > * { opacity: 1; transform: translateY(0); }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════ */
+    /* Below 1000px the grid collapses to one column. .resume-main and
+       .sidebar-col are plain (non-landmark) wrappers, so they can safely
+       stop generating boxes; their children (the real <aside> elements,
+       not the wrappers) become direct grid children and reorder to:
+       Skills+Languages, Experience, Certifications, Education. */
+    @media (max-width: 1000px) {
+      .resume-inner { grid-template-columns: 1fr; gap: 64px; }
+      .resume-main, .sidebar-col { display: contents; }
+
+      .resume-sidebar              { order: 1; }
+      .resume-section--experience  { order: 3; }
+      .resume-section--certifications { order: 4; }
+      .resume-sidebar-education    { order: 5; }
+
+      /* Full page width is available once the sidebar stops being a
+         292px column, so the 4 skill groups can sit two-by-two. */
+      .sidebar-skill-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 40px;
+        row-gap: 28px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .nav-mobile { display: block; }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 24px; }
+      .page-hero {
+        padding-left: 24px; padding-right: 24px;
+        padding-top: calc(var(--nav-h) + 48px);
+        padding-bottom: 48px;
+      }
+      .page-hero-title { font-size: clamp(24px, 6.5vw, 36px); }
+      .resume-body { padding-left: 24px; padding-right: 24px; padding-bottom: 88px; }
+      .job-header { flex-direction: column; gap: 4px; }
+      .sidebar-skill-list { grid-template-columns: 1fr; }
+      footer { padding: 56px 24px 40px; }
+      .footer-copy { margin-top: 32px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ░░ GRAIN TEXTURE ░░ -->
+  <svg class="grain" aria-hidden="true">
+    <filter id="grain-filter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
+      <feColorMatrix type="saturate" values="0" />
+    </filter>
+    <rect width="100%" height="100%" filter="url(#grain-filter)" />
+  </svg>
+
+  <!-- ░░ NAV ░░ -->
+  <nav>
+    <a href="index.html" class="nav-logo">Gabi Weber</a>
+    <ul class="nav-links">
+      <li><a href="index.html#works">Works</a></li>
+      <li><a href="about.html">About me</a></li>
+      <li><a href="resume.html" class="nav-active">Resumé</a></li>
+      <li>
+        <a href="#contact" class="btn btn-primary btn-medium contact-trigger">Contact</a>
+      </li>
+    </ul>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-mobile">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ░░ MOBILE NAV ░░ -->
+  <div class="nav-mobile" id="nav-mobile" aria-hidden="true">
+    <ul>
+      <li><a href="index.html#works">Works</a></li>
+      <li><a href="about.html">About me</a></li>
+      <li><a href="resume.html" class="nav-active">Resumé</a></li>
+    </ul>
+    <div class="nav-mobile-cta">
+      <a href="#contact" class="btn btn-primary btn-medium contact-trigger">Contact</a>
+    </div>
+  </div>
+
+  <!-- ░░ PAGE HERO ░░ -->
+  <div class="page-hero reveal">
+    <h1 class="page-hero-title">B2B product design with the range of an illustrator and the work flow of a systems thinker.</h1>
+    <div class="hero-actions">
+      <a href="./CV.pdf" download="Gabriela Weber - Resume.pdf" class="btn btn-primary btn-medium">Download PDF ↓</a>
+      <a href="#contact" class="btn btn-secondary btn-medium contact-trigger">Get in touch</a>
+    </div>
+  </div>
+
+  <!-- ░░ RESUME BODY ░░ -->
+  <main class="resume-body">
+    <div class="resume-inner">
+
+      <!-- ─── MAIN COLUMN ─── -->
+      <div class="resume-main">
+
+        <!-- Experience -->
+        <section class="resume-section resume-section--experience">
+          <h2 class="section-label reveal">Experience</h2>
+
+          <!-- Dentsu -->
+          <div class="job reveal">
+            <div class="job-header">
+              <div class="job-title-block">
+                <span class="job-role">Product Designer</span>
+                <span class="job-company">Dentsu</span>
+              </div>
+              <span class="job-date">Feb 2023 – Present</span>
+            </div>
+            <ul class="job-bullets">
+              <li>Led UX and UI for a B2B event management platform serving a global beverage client with <strong>100,000+ annual events</strong> across North America.</li>
+              <li>Designed and illustrated a gamification campaign that drove <strong>164% feature adoption</strong>, a <strong>550% peak</strong> in profile interactions, and a <strong>64% email interaction rate</strong>.</li>
+              <li>Architected a full Design Token system (~400 tokens, Primitive + Semantic) enabling a cross-platform Dark Mode launch with <strong>zero visual regression</strong>.</li>
+              <li>Redesigned the Reports Engine from a static download page into a multi-module dashboard, stakeholder-approved for 2026 dev with a projected <strong>80% reduction</strong> in spreadsheet dependency.</li>
+              <li>Led six seasonal illustration theme packs over one year: <strong>100% on-time</strong>, all approved on first stakeholder review, zero usability regressions.</li>
+              <li>Promoted from Jr. UX/UI Designer · January 2025</li>
+            </ul>
+          </div>
+
+          <!-- Chamber of Deputies -->
+          <div class="job reveal">
+            <div class="job-header">
+              <div class="job-title-block">
+                <span class="job-role">Designer Intern</span>
+                <span class="job-company">Brazilian Chamber of Deputies</span>
+              </div>
+              <span class="job-date">Aug 2022 – Jan 2023</span>
+            </div>
+            <ul class="job-bullets">
+              <li>Selected for one of Brasília's most competitive institutional design internships.</li>
+              <li>Applied design thinking, research, and visual communication to digital institutional projects.</li>
+            </ul>
+          </div>
+
+          <!-- SERPRO -->
+          <div class="job reveal">
+            <div class="job-header">
+              <div class="job-title-block">
+                <span class="job-role">Design Intern</span>
+                <span class="job-company">Federal Data Processing Service (SERPRO)</span>
+              </div>
+              <span class="job-date">Oct 2020 – Mar 2022</span>
+            </div>
+            <ul class="job-bullets">
+              <li>Produced visual assets for one of Brazil's largest federal IT organizations: presentations, e-books, banners, and social media content.</li>
+              <li>Created storyboards and assisted in production of internal communication videos.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Certifications -->
+        <section class="resume-section resume-section--certifications">
+          <h2 class="section-label reveal">Certifications</h2>
+          <div class="cert-list reveal-stagger">
+            <div class="cert-item">
+              <div class="cert-left">
+                <span class="cert-name">AI Creative</span>
+                <span class="cert-issuer">Design boost</span>
+              </div>
+              <span class="cert-date">Feb 2026</span>
+            </div>
+            <div class="cert-item">
+              <div class="cert-left">
+                <span class="cert-name">Product Psychology</span>
+                <span class="cert-issuer">growth.design</span>
+              </div>
+              <span class="cert-date">Nov 2025</span>
+            </div>
+            <div class="cert-item">
+              <div class="cert-left">
+                <span class="cert-name">UX Storytelling</span>
+                <span class="cert-issuer">Jeff White</span>
+              </div>
+              <span class="cert-date">Mar 2025</span>
+            </div>
+            <div class="cert-item">
+              <div class="cert-left">
+                <span class="cert-name">Figma Service Partner</span>
+                <span class="cert-issuer">Figma</span>
+              </div>
+              <span class="cert-date">Oct 2024</span>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- ─── SIDEBAR ─── -->
+      <div class="sidebar-col">
+       <aside class="resume-sidebar">
+
+        <!-- Skills + Tools -->
+        <div class="sidebar-block sidebar-block--skills">
+          <h2 class="section-label">Skills</h2>
+          <div class="sidebar-skill-list">
+            <div class="sidebar-skill-item">
+              <span class="job-role">UX &amp; UI</span>
+              <ul class="job-bullets">
+                <li>Research</li>
+                <li>Wireframing</li>
+                <li>Prototyping</li>
+                <li>UI Design</li>
+                <li>Information Architecture</li>
+              </ul>
+            </div>
+            <div class="sidebar-skill-item">
+              <span class="job-role">Design Systems</span>
+              <ul class="job-bullets">
+                <li>Token Architecture</li>
+                <li>Dark Mode</li>
+                <li>Component Libraries</li>
+                <li>Dev Handoff</li>
+                <li>Documentation</li>
+              </ul>
+            </div>
+            <div class="sidebar-skill-item">
+              <span class="job-role">Illustration</span>
+              <ul class="job-bullets">
+                <li>Character Design</li>
+                <li>Campaign Illustration</li>
+                <li>Visual Identity</li>
+              </ul>
+            </div>
+            <div class="sidebar-skill-item">
+              <span class="job-role">Tools</span>
+              <ul class="job-bullets">
+                <li>Figma</li>
+                <li>Figma Make</li>
+                <li>Figma Variables</li>
+                <li>Pendo</li>
+                <li>Claude</li>
+                <li>Adobe CC</li>
+                <li>Gemini</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Languages -->
+        <div class="sidebar-block sidebar-block--languages">
+          <h2 class="section-label">Languages</h2>
+          <div class="lang-list">
+            <div class="lang-item">
+              <div class="lang-header">
+                <span class="lang-name">Portuguese</span>
+                <span class="lang-level">Native</span>
+              </div>
+              <div class="lang-bar-track"
+                   role="meter" aria-label="Portuguese proficiency"
+                   aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                <div class="lang-bar-fill" data-fill="1"></div>
+              </div>
+              <span class="sr-only">Native (100%)</span>
+            </div>
+            <div class="lang-item">
+              <div class="lang-header">
+                <span class="lang-name">English</span>
+                <span class="lang-level">Fluent</span>
+              </div>
+              <div class="lang-bar-track"
+                   role="meter" aria-label="English proficiency"
+                   aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
+                <div class="lang-bar-fill" data-fill="0.9"></div>
+              </div>
+              <span class="sr-only">Fluent (90%)</span>
+            </div>
+            <div class="lang-item">
+              <div class="lang-header">
+                <span class="lang-name">Spanish</span>
+                <span class="lang-level">C1 Certified</span>
+              </div>
+              <div class="lang-bar-track"
+                   role="meter" aria-label="Spanish proficiency"
+                   aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                <div class="lang-bar-fill" data-fill="0.75"></div>
+              </div>
+              <span class="sr-only">C1 Certified (75%)</span>
+            </div>
+          </div>
+        </div>
+
+       </aside>
+
+       <!-- Education -->
+       <aside class="resume-sidebar-education">
+        <div class="sidebar-block sidebar-block--education">
+          <h2 class="section-label">Education</h2>
+          <div class="edu-block">
+            <span class="edu-degree">Bachelor's in Design</span>
+            <span class="edu-school">Universidade de Brasília (UnB)</span>
+            <span class="edu-date">Graduated September 2023</span>
+          </div>
+        </div>
+       </aside>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ░░ FOOTER ░░ -->
+  <footer id="contact">
+    <div class="footer-cta-block">
+      <span class="sparkle-dot" aria-hidden="true"></span>
+      <span class="sparkle-dot" aria-hidden="true"></span>
+      <span class="sparkle-dot" aria-hidden="true"></span>
+      <span class="sparkle-dot" aria-hidden="true"></span>
+      <span class="sparkle-dot" aria-hidden="true"></span>
+      <span class="sparkle-dot" aria-hidden="true"></span>
+      <p class="footer-greeting">
+        <a href="https://www.linkedin.com/in/gabriela-lissarassa-weber/" target="_blank" rel="noopener noreferrer">Say hi 👋</a>
+        &nbsp;·&nbsp;
+        <span class="footer-email-wrap">
+          <button class="footer-email-btn" id="email-trigger" aria-haspopup="true" aria-expanded="false">
+            Get in touch ✉️
+          </button>
+          <div class="email-dropdown" id="email-dropdown">
+            <button id="copy-email">Copy email</button>
+            <button id="send-email">Send email</button>
+          </div>
+        </span>
+      </p>
+    </div>
+    <p class="footer-copy">Created by Gabi and powered by iced coffee ☕</p>
+  </footer>
+
+  <div class="toast" id="toast" aria-live="polite">Email copied ✓</div>
+
+  <!-- ░░ JS ░░ -->
+  <script>
+
+    /* ── Mobile nav ── */
+    const hamburger = document.getElementById('nav-hamburger');
+    const mobileNav = document.getElementById('nav-mobile');
+
+    function openMenu() {
+      hamburger.classList.add('open'); mobileNav.classList.add('open');
+      hamburger.setAttribute('aria-expanded', 'true'); mobileNav.setAttribute('aria-hidden', 'false');
+      hamburger.setAttribute('aria-label', 'Close menu');
+    }
+    function closeMenu() {
+      hamburger.classList.remove('open'); mobileNav.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false'); mobileNav.setAttribute('aria-hidden', 'true');
+      hamburger.setAttribute('aria-label', 'Open menu');
+    }
+    hamburger.addEventListener('click', () => mobileNav.classList.contains('open') ? closeMenu() : openMenu());
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+    mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+    /* ── Scroll reveal (applies to both main and sidebar sections) ── */
+    document.querySelectorAll('.reveal-stagger').forEach(el => {
+      [...el.children].forEach((child, i) => {
+        child.style.setProperty('--reveal-delay', `${i * 80}ms`);
+      });
+    });
+
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('revealed');
+        io.unobserve(entry.target);
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => io.observe(el));
+
+    /* ── Language bars: animate on page load ── */
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        document.querySelectorAll('.lang-bar-fill').forEach(bar => {
+          bar.style.transform = `scaleX(${parseFloat(bar.dataset.fill || '1')})`;
+        });
+      });
+    });
+
+    /* ── Footer arrival animation on hash navigation ── */
+    const contactFooter = document.getElementById('contact');
+
+    function triggerFooterArrive() {
+      contactFooter.classList.remove('contact-arrived');
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => contactFooter.classList.add('contact-arrived'));
+      });
+    }
+
+    document.querySelectorAll('.contact-trigger').forEach(el => {
+      el.addEventListener('click', () => {
+        setTimeout(triggerFooterArrive, 50);
+      });
+    });
+
+    /* ── Email dropdown ── */
+    const EMAIL    = 'gabrielaweber008@gmail.com';
+    const trigger  = document.getElementById('email-trigger');
+    const dropdown = document.getElementById('email-dropdown');
+    const copyBtn  = document.getElementById('copy-email');
+    const sendBtn  = document.getElementById('send-email');
+    const toast    = document.getElementById('toast');
+    let toastTimer = null;
+
+    function openDropdown()  { dropdown.classList.add('open');    trigger.setAttribute('aria-expanded', 'true'); }
+    function closeDropdown() { dropdown.classList.remove('open'); trigger.setAttribute('aria-expanded', 'false'); }
+
+    function showToast(msg) {
+      toast.textContent = msg; clearTimeout(toastTimer); toast.classList.add('visible');
+      toastTimer = setTimeout(() => toast.classList.remove('visible'), 2000);
+    }
+
+    trigger.addEventListener('click', e => {
+      e.stopPropagation();
+      dropdown.classList.contains('open') ? closeDropdown() : openDropdown();
+    });
+
+    copyBtn.addEventListener('click', () => {
+      closeDropdown();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(EMAIL).then(() => showToast('Email copied ✓')).catch(() => legacyCopy());
+      } else { legacyCopy(); }
+    });
+
+    function legacyCopy() {
+      const ta = document.createElement('textarea');
+      ta.value = EMAIL; ta.style.cssText = 'position:fixed;opacity:0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); showToast('Email copied ✓'); }
+      catch { showToast('Copy failed, email: ' + EMAIL); }
+      document.body.removeChild(ta);
+    }
+
+    sendBtn.addEventListener('click', () => { closeDropdown(); window.location.href = 'mailto:' + EMAIL; });
+    document.addEventListener('mousedown', e => {
+      if (dropdown.classList.contains('open') &&
+          !trigger.contains(e.target) && !dropdown.contains(e.target)) closeDropdown();
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDropdown(); });
+
+  </script>
+</body>
+</html>

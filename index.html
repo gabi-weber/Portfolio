@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gabi Weber — Product Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+
+    /* ═══════════════════════════════════════════
+       1. BROPELLA — nav logo only
+       Path: ./fonts/Bropella.woff (relative to index.html)
+       Verify in DevTools → Network → Font — should return 200, not 404
+    ═══════════════════════════════════════════ */
+    @font-face {
+      font-family: 'Bropella';
+      src: url('./fonts/Bropella.woff') format('woff');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* ═══════════════════════════════════════════
+       TOKENS
+    ═══════════════════════════════════════════ */
+    :root {
+      --color-bg:      #F7EAE7;
+      --color-primary: #09636C;
+      --color-text:    #1A1B1B;
+      --color-muted:   #585A5A;
+      --color-accent:  #E9BAAE;
+      --color-border:  #C4CBCB;
+      --color-white:   #FEFAF9;
+
+      --font: 'Poppins', sans-serif;
+      --nav-h: 64px;
+    }
+
+    /* ═══════════════════════════════════════════
+       2. RESET + POPPINS EVERYWHERE
+    ═══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      font-weight: 400;
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Explicit Poppins on all heading levels — no relying on inheritance */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font);
+    }
+
+    /* ═══════════════════════════════════════════
+       GRAIN
+    ═══════════════════════════════════════════ */
+    .grain {
+      position: fixed;
+      inset: -50%;
+      width: 200%;
+      height: 200%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.04;
+    }
+
+    /* ═══════════════════════════════════════════
+       BUTTON SYSTEM — DS library
+       Figma ref: type / state / size
+
+       Types  : primary | secondary | reverse
+       Sizes  : huge | large | medium | small
+       States : default | :hover | :active | :focus-visible | :disabled
+    ═══════════════════════════════════════════ */
+
+    /* ── Base ── */
+    .btn {
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font);
+      font-weight: 400;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: background-color 200ms ease, box-shadow 200ms ease, border-color 200ms ease, color 200ms ease;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    /* ── Sizes ──────────────────────────────────────────────
+       huge   : 20px · border-radius 12px · padding 12px 16px
+       large  : 16px · border-radius  8px · padding 12px 16px
+       medium : 14px · border-radius  8px · padding  8px 12px
+       small  : 12px · border-radius  6px · padding  4px  8px
+    ──────────────────────────────────────────────────────── */
+    .btn-huge   { font-size: 20px; line-height: 30px; border-radius: 12px; padding: 12px 16px; }
+    .btn-large  { font-size: 16px; line-height: 24px; border-radius: 8px;  padding: 12px 16px; }
+    .btn-medium { font-size: 14px; line-height: 21px; border-radius: 8px;  padding: 8px  12px; }
+    .btn-small  { font-size: 12px; line-height: 18px; border-radius: 6px;  padding: 4px   8px; }
+
+    /* ── type=primary ── */
+    .btn-primary                         { background: #09636C; color: #EEF1F1; }
+    .btn-primary:hover                   { background: #085057; box-shadow: 2px 2px 10px rgba(26,27,27,.25); }
+    .btn-primary:active                  { background: #085057; box-shadow: none; }
+    .btn-primary:focus-visible           { background: #09636C; border: 2px solid #043F45; outline: none; }
+    .btn-primary:disabled,
+    .btn-primary.disabled                { background: #585A5A; cursor: not-allowed; }
+
+    /* ── type=secondary ── */
+    .btn-secondary                       { background: rgba(9,99,108,.10); border: 2px solid #09636C; color: #1A1B1B; }
+    .btn-secondary:hover                 { background: rgba(9,99,108,.25); box-shadow: 2px 2px 10px rgba(26,27,27,.25); }
+    .btn-secondary:active                { background: rgba(9,99,108,.25); box-shadow: none; }
+    .btn-secondary:focus-visible         { background: rgba(9,99,108,.20); border: 2px solid rgba(9,99,108,.5); outline: none; }
+    .btn-secondary:disabled,
+    .btn-secondary.disabled              { background: rgba(88,90,90,.25); border: 2px solid #585A5A; cursor: not-allowed; }
+
+    /* ── type=reverse (transparent bg, dark text) ── */
+    .btn-reverse                         { background: transparent; color: #373939; border: none; }
+    .btn-reverse:hover                   { background: #F7EAE7; box-shadow: 4px 4px 10px rgba(26,27,27,.05); }
+    .btn-reverse:active                  { background: transparent; box-shadow: none; }
+    .btn-reverse:focus-visible           { border: 2px solid rgba(233,186,174,.5); outline: none; }
+    .btn-reverse:disabled,
+    .btn-reverse.disabled                { color: #585A5A; cursor: not-allowed; }
+
+    /* ── Overlay button — white-on-teal, case image hover only ──
+       Not in DS; custom for dark overlay context.
+       Closest DS reference: reverse · medium · default on dark bg.
+    ──────────────────────────────────────────────────────────── */
+    .btn-overlay {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 21px;
+      color: #FFFFFF;
+      background: transparent;
+      border: 2px solid #FFFFFF;
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 200ms ease, box-shadow 200ms ease, border-color 200ms ease, color 200ms ease;
+    }
+    .btn-overlay:hover { background: rgba(255,255,255,.15); }
+
+    /* ═══════════════════════════════════════════
+       NAV
+    ═══════════════════════════════════════════ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      background: rgba(247, 234, 231, 0.62);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    /* 1. Bropella on nav logo, 28px — line-height:1 removes font whitespace so
+          it sits on the same optical baseline as the nav links */
+    .nav-logo {
+      font-family: 'Bropella', cursive;
+      font-weight: 700;
+      font-size: 28px;
+      line-height: 1;
+      color: var(--color-primary);
+      text-decoration: none;
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    /* 2. Poppins explicit on nav links */
+    .nav-links li a:not(.btn) {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--color-muted);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 3px;
+      transition: color 200ms ease;
+    }
+
+    .nav-links li a:not(.btn)::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: var(--color-primary);
+      transition: width 250ms ease;
+    }
+
+    .nav-links li a:not(.btn):hover { color: var(--color-primary); }
+    .nav-links li a:not(.btn):hover::after { width: 100%; }
+
+    /* Nav Contact — primary · medium from DS; no overrides needed */
+
+    /* ═══════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      padding-top: var(--nav-h);
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 26fr 74fr;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 48px;
+      min-height: calc(100vh - var(--nav-h));
+      align-items: center;
+    }
+
+    /* ── 5. Left: audience switcher — 15px labels ── */
+    .switcher {
+      display: flex;
+      flex-direction: column;
+      padding-right: 48px;
+    }
+
+    .switcher-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .switcher-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-border);
+      flex-shrink: 0;
+      transition: background 250ms ease, transform 250ms ease;
+    }
+
+    .switcher-item.active .switcher-dot {
+      background: var(--color-primary);
+      transform: scale(1.5);
+    }
+
+    .switcher-label {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 15px;                  /* was 13px */
+      color: var(--color-muted);        /* inactive */
+      transition: color 200ms ease;
+    }
+
+    .switcher-item.active .switcher-label {
+      color: var(--color-text);         /* active → text, not primary */
+    }
+
+    .switcher-item:hover .switcher-label {
+      color: var(--color-primary);      /* hover → primary */
+    }
+
+    /* ── Right: hero content — vertically centered ── */
+    .hero-content {
+      padding-left: 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+      gap: 0;   /* controlled per-child below */
+    }
+
+    /* Headline wrap — fixed height injected by JS; never changes during transitions */
+    .hero-headline-wrap {
+      position: relative;
+      margin-bottom: 32px;
+      /* height: set by JS */
+    }
+
+    /* Every headline is ALWAYS absolute — no layout-shift possible */
+    .hero-headline {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: clamp(28px, 3.2vw, 46px);
+      line-height: 1.18;
+      letter-spacing: -0.5px;
+      color: var(--color-text);
+
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      opacity: 0;
+      /* No CSS transition — typewriter JS controls visibility directly */
+      pointer-events: none;
+    }
+
+    /* Typewriter cursor blink */
+    @keyframes blink { 0%,100% { opacity: 1 } 50% { opacity: 0 } }
+    .hl-cursor {
+      display: inline-block;
+      animation: blink 530ms step-end infinite;
+      margin-left: 2px;
+      font-weight: 300;
+      color: var(--color-primary);
+    }
+
+    /* Active: visible only — still absolutely positioned */
+    .hero-headline.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Tags — above headline, gap below before headline */
+    .hero-tags {
+      position: relative;
+      margin-top: 0;
+      margin-bottom: 20px;
+      /* height: set by JS */
+    }
+
+    /* Every tag-set is ALWAYS absolute */
+    .tag-set {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      position: absolute;
+      top: 0; left: 0;
+      opacity: 0;
+      transition: opacity 300ms ease;
+      pointer-events: none;
+    }
+
+    /* Active tag-set: visible only — still absolutely positioned */
+    .tag-set.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* 2. Tags — DS pill / size=small / style=subtle */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 21px;
+      color: #373939;
+      background: rgba(233, 186, 174, 0.3);
+      border-radius: 24px;
+      padding: 4px 12px;
+      white-space: nowrap;
+    }
+
+    /* CTAs — rendered third in DOM, shown third */
+    .hero-ctas {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Hero CTAs use .btn-large from the DS — no override needed */
+
+    /* ═══════════════════════════════════════════
+       CASES SECTION
+       6. No section header — top padding trimmed
+    ═══════════════════════════════════════════ */
+    .cases-section {
+      padding: 0;                     /* no extra top/bottom padding */
+    }
+
+    /* Each row — no separator lines */
+    .case-row {
+      padding: 64px 48px;
+      max-width: 100%;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1), transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .case-row.revealed { opacity: 1; transform: translateY(0); }
+
+    .case-row-inner {
+      display: grid;
+      gap: 56px;
+      max-width: 1400px;
+      margin: 0 auto;
+      align-items: center;
+    }
+
+    /* Odd: image left 55%, text right 45% */
+    .case-row:nth-child(odd)  .case-row-inner { grid-template-columns: 55fr 45fr; }
+    .case-row:nth-child(odd)  .case-image     { order: 1; }
+    .case-row:nth-child(odd)  .case-text      { order: 2; }
+
+    /* Even: text left 45%, image right 55% */
+    .case-row:nth-child(even) .case-row-inner { grid-template-columns: 45fr 55fr; }
+    .case-row:nth-child(even) .case-image     { order: 2; }
+    .case-row:nth-child(even) .case-text      { order: 1; }
+
+    /* Image placeholder — also works as <a> link */
+    .case-image {
+      display: block;          /* needed when element is <a> */
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: var(--color-accent);
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    /* Hover overlay */
+    .case-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(9, 99, 108, 0.80);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 32px;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 250ms ease;
+    }
+
+    .case-image:hover .case-overlay { opacity: 1; }
+
+    /* 2. Overlay desc — Poppins 400 */
+    .case-overlay-desc {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 15px;
+      color: var(--color-white);
+      line-height: 1.6;
+      max-width: 380px;
+    }
+
+    /* Text column */
+    .case-text {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      justify-content: center;
+    }
+
+    /* 2. Case number — Poppins 500 (was 400) */
+    .case-number {
+      font-family: var(--font);
+      font-weight: 500;
+      font-size: 12px;
+      color: var(--color-muted);
+      letter-spacing: 0.1em;
+    }
+
+    /* 2. Case title — Poppins 600 */
+    .case-title {
+      font-family: var(--font);
+      font-weight: 600;
+      font-size: 28px;
+      color: var(--color-text);
+      letter-spacing: -0.3px;
+      line-height: 1.25;
+    }
+
+    .case-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* 2. Case tags — Poppins 400 */
+    .case-tag {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 12px;
+      color: var(--color-muted);
+      border: 1px solid var(--color-border);
+      border-radius: 999px;
+      padding: 4px 12px;
+    }
+
+    /* 2. Case desc — Poppins 400 */
+    .case-desc {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--color-muted);
+      line-height: 1.65;
+      max-width: 400px;
+    }
+
+    /* ═══════════════════════════════════════════
+       ABOUT SECTION
+       7. Top padding reduced to match case-row rhythm
+    ═══════════════════════════════════════════ */
+    .about-section {
+      padding: 64px 48px 120px;       /* top: 64px (= case-row padding), bottom: 120px */
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-inner {
+      max-width: 700px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 48px;
+      align-items: stretch;    /* both columns same height */
+      margin-top: 48px;
+    }
+
+    .about-photo {
+      width: 100%;
+      min-height: 200px;
+      height: 100%;            /* fills the bio column height */
+      background: var(--color-accent);
+      border-radius: 12px;
+    }
+
+    .about-bio {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* About greeting heading */
+    .about-greeting {
+      font-family: var(--font);
+      font-weight: 600;
+      font-size: 22px;
+      color: var(--color-text);
+      margin-bottom: 12px;
+    }
+
+    /* 2. About bio — Poppins 400 */
+    .about-bio p {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 15px;
+      color: var(--color-muted);
+      line-height: 1.75;
+    }
+
+    /* About action buttons */
+    .about-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    /* 2. Section labels — Poppins 500 */
+    .section-eyebrow {
+      font-family: var(--font);
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 10px;
+    }
+
+    /* 2. Section title — Poppins 600 */
+    .section-title {
+      font-family: var(--font);
+      font-weight: 600;
+      font-size: clamp(32px, 4vw, 52px);
+      letter-spacing: -0.5px;
+      color: var(--color-text);
+    }
+
+    /* ═══════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════ */
+    footer {
+      padding: 56px 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+    }
+
+    /* 2. Footer greeting — Poppins 400 */
+    .footer-greeting {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 20px;
+      color: var(--color-text);
+    }
+
+    /* 8. All links in greeting share the same style */
+    .footer-greeting a {
+      color: var(--color-primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer-greeting a:hover { text-decoration: underline; }
+
+    /* 2. Footer copy — Poppins 400 */
+    .footer-copy {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 12px;
+      color: var(--color-muted);
+    }
+
+    /* ═══════════════════════════════════════════
+       4. RESPONSIVE — case overlay
+    ═══════════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .btn-overlay {
+        padding: 6px 10px;
+        font-size: 13px;
+        line-height: 18px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      /* Touch devices: hide overlay, image itself is the tap target */
+      .case-overlay { display: none; }
+    }
+
+    /* ═══════════════════════════════════════════
+       5. EMAIL DROPDOWN
+    ═══════════════════════════════════════════ */
+    .footer-email-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    .footer-email-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: var(--font);
+      font-weight: 500;
+      font-size: 20px;
+      color: var(--color-primary);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .footer-email-btn:hover { text-decoration: underline; }
+
+    .email-dropdown {
+      position: absolute;
+      bottom: calc(100% + 4px);
+      right: 0; left: auto; top: auto;
+      transform: translateY(8px);
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(26,27,27,0.12);
+      min-width: 192px;
+      overflow: hidden;
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 400;
+      transition: opacity 200ms cubic-bezier(0.22,1,0.36,1),
+                  transform 200ms cubic-bezier(0.22,1,0.36,1),
+                  visibility 200ms;
+    }
+
+    .email-dropdown.open {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .email-dropdown button {
+      display: block;
+      width: 100%;
+      padding: 10px 16px;
+      background: none;
+      border: none;
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--color-text);
+      text-align: left;
+      cursor: pointer;
+      transition: background 150ms ease;
+    }
+
+    .email-dropdown button:hover { background: var(--color-bg); }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-text);
+      color: var(--color-white);
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 14px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 200ms ease;
+      z-index: 9998;
+      white-space: nowrap;
+    }
+
+    .toast.visible { opacity: 1; }
+
+    /* ═══════════════════════════════════════════
+       REVEAL UTILITY
+    ═══════════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.revealed { opacity: 1; transform: translateY(0); }
+
+  </style>
+</head>
+<body>
+
+  <!-- ░░ GRAIN TEXTURE ░░ -->
+  <svg class="grain" aria-hidden="true">
+    <filter id="grain-filter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
+      <feColorMatrix type="saturate" values="0" />
+    </filter>
+    <rect width="100%" height="100%" filter="url(#grain-filter)" />
+  </svg>
+
+  <!-- ░░ NAV ░░ -->
+  <nav>
+    <!-- 1. Bropella, 28px, fallback cursive -->
+    <a href="index.html" class="nav-logo">Gabi Weber</a>
+    <ul class="nav-links">
+      <li><a href="#works">Works</a></li>
+      <li><a href="about.html">About me</a></li>
+      <li><a href="resume.html">Resumé</a></li>
+      <li>
+        <!-- primary · medium · default -->
+        <a href="#contact" class="btn btn-primary btn-medium">Contact</a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- ░░ HERO ░░ -->
+  <section class="hero">
+    <div class="hero-inner">
+
+      <!-- Left: audience switcher -->
+      <aside class="switcher" aria-label="View portfolio for…">
+        <div class="switcher-item active" data-idx="0" role="button" tabindex="0" aria-pressed="true">
+          <span class="switcher-dot"></span>
+          <span class="switcher-label">For everyone</span>
+        </div>
+        <div class="switcher-item" data-idx="1" role="button" tabindex="0" aria-pressed="false">
+          <span class="switcher-dot"></span>
+          <span class="switcher-label">Recruiters</span>
+        </div>
+        <div class="switcher-item" data-idx="2" role="button" tabindex="0" aria-pressed="false">
+          <span class="switcher-dot"></span>
+          <span class="switcher-label">Product designers</span>
+        </div>
+        <div class="switcher-item" data-idx="3" role="button" tabindex="0" aria-pressed="false">
+          <span class="switcher-dot"></span>
+          <span class="switcher-label">Product managers</span>
+        </div>
+        <div class="switcher-item" data-idx="4" role="button" tabindex="0" aria-pressed="false">
+          <span class="switcher-dot"></span>
+          <span class="switcher-label">Developers</span>
+        </div>
+      </aside>
+
+      <!-- Right: dynamic content — ORDER: tags → headline → CTAs -->
+      <div class="hero-content">
+
+        <!-- 1. Swappable tags (above headline) -->
+        <div class="hero-tags" id="tag-wrap">
+          <div class="tag-set active" data-tags="0">
+            <span class="tag">👩‍💻 Product designer</span>
+            <span class="tag">✨ AI-Augmented Workflow</span>
+            <span class="tag">🖼️ Illustrator</span>
+            <span class="tag">🇧🇷 Brazil</span>
+          </div>
+          <div class="tag-set" data-tags="1">
+            <span class="tag">💼 Open to work</span>
+            <span class="tag">🖥️ Remote-first</span>
+            <span class="tag">🏢 Big company experience</span>
+            <span class="tag">🏆 Team player</span>
+          </div>
+          <div class="tag-set" data-tags="2">
+            <span class="tag">🧮 Design systems</span>
+            <span class="tag">📄 UX driven</span>
+            <span class="tag">🎀 Detailed UI</span>
+            <span class="tag">😎 Vibe coding</span>
+          </div>
+          <div class="tag-set" data-tags="3">
+            <span class="tag">📊 Metrics-driven</span>
+            <span class="tag">🚢 Shipped products</span>
+            <span class="tag">🕵️ Edge-case hunter</span>
+            <span class="tag">💬 Multitrack teams</span>
+          </div>
+          <div class="tag-set" data-tags="4">
+            <span class="tag">🧬 Token architecture</span>
+            <span class="tag">🫴 Clean handoff</span>
+            <span class="tag">📣 Open communication</span>
+            <span class="tag">🛠️ AI tooling</span>
+          </div>
+        </div>
+
+        <!-- 2. Headlines — height locked by JS; letter-spacing normalized so all take same lines -->
+        <div class="hero-headline-wrap" id="hl-wrap">
+          <h1 class="hero-headline active" data-hl="0"
+              data-full="I design with intention, so that real people's lives are a little better. That's the whole point.">
+            I design with intention, so that real people's lives are a little better. That's the whole point.
+          </h1>
+          <h1 class="hero-headline" data-hl="1" aria-hidden="true"
+              data-full="3+ years in B2B. I bridge design and dev, communicate clearly, and make collaboration feel easy.">
+            3+ years in B2B. I bridge design and dev, communicate clearly, and make collaboration feel easy.
+          </h1>
+          <h1 class="hero-headline" data-hl="2" aria-hidden="true"
+              data-full="Every designer has a love-hate relationship with Figma. I just made sure the love always wins.">
+            Every designer has a love-hate relationship with Figma. I just made sure the love always wins.
+          </h1>
+          <h1 class="hero-headline" data-hl="3" aria-hidden="true"
+              data-full="I design to get it right the first time: clean handoff, clear rationale, no surprises in QA.">
+            I design to get it right the first time: clean handoff, clear rationale, no surprises in QA.
+          </h1>
+          <h1 class="hero-headline" data-hl="4" aria-hidden="true"
+              data-full="I give you tokens, documentation, and a handoff that makes your life easier: not harder.">
+            I give you tokens, documentation, and a handoff that makes your life easier: not harder.
+          </h1>
+        </div>
+
+        <!-- 3. CTAs (below headline only) -->
+        <div class="hero-ctas">
+          <a href="#contact" class="btn btn-primary btn-large">Get in Touch</a>
+          <a href="#works"   class="btn btn-secondary btn-large">See My Cases</a>
+        </div>
+
+      </div><!-- /hero-content -->
+    </div><!-- /hero-inner -->
+  </section>
+
+  <!-- ░░ CASES — 6. No section header ░░ -->
+  <section class="cases-section" id="works">
+
+    <!-- Case 01 — odd: image left -->
+    <div class="case-row">
+      <div class="case-row-inner">
+        <a href="ghost-hunt.html" class="case-image" aria-label="View case study: Gamifying Growth through Seasonal Delight">
+          <div class="case-overlay">
+            <p class="case-overlay-desc">A ghost hunt that drove 164% feature adoption and a 550% boost in profile interactions.</p>
+            <span class="btn-overlay">View Case Study</span>
+          </div>
+        </a>
+        <div class="case-text">
+          <p class="case-number">01</p>
+          <h3 class="case-title">Gamifying Growth through Seasonal Delight</h3>
+          <div class="case-tags">
+            <span class="case-tag">💡 Engagement</span>
+            <span class="case-tag">📣 Campaign</span>
+            <span class="case-tag">✏️ Illustration</span>
+            <span class="case-tag">🎨 Creative</span>
+          </div>
+          <p class="case-desc">164% feature adoption. 550% boost in profile interactions.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Case 02 — even: image right -->
+    <div class="case-row">
+      <div class="case-row-inner">
+        <a href="reports.html" class="case-image" aria-label="View case study: Redesigning the Reports Engine">
+          <div class="case-overlay">
+            <p class="case-overlay-desc">Transformed a download-only page into a full dashboard for 100,000+ annual events.</p>
+            <span class="btn-overlay">View Case Study</span>
+          </div>
+        </a>
+        <div class="case-text">
+          <p class="case-number">02</p>
+          <h3 class="case-title">Redesigning the Reports Engine</h3>
+          <div class="case-tags">
+            <span class="case-tag">🔍 Discovery</span>
+            <span class="case-tag">📊 Dashboard</span>
+            <span class="case-tag">🤝 B2B</span>
+            <span class="case-tag">📈 Scalability</span>
+          </div>
+          <p class="case-desc">Download-only page to full dashboard. 100,000+ annual events served.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Case 03 — odd: image left -->
+    <div class="case-row">
+      <div class="case-row-inner">
+        <a href="tokens.html" class="case-image" aria-label="View case study: Scaling Design Infrastructure">
+          <div class="case-overlay">
+            <p class="case-overlay-desc">100% migration to semantic tokens and a successful dark mode launch.</p>
+            <span class="btn-overlay">View Case Study</span>
+          </div>
+        </a>
+        <div class="case-text">
+          <p class="case-number">03</p>
+          <h3 class="case-title">Scaling Design Infrastructure</h3>
+          <div class="case-tags">
+            <span class="case-tag">🧩 Design System</span>
+            <span class="case-tag">🌙 Dark Mode</span>
+            <span class="case-tag">🏷️ Tokens</span>
+            <span class="case-tag">📄 Documentation</span>
+          </div>
+          <p class="case-desc">100% migration to semantic tokens. Dark mode shipped with zero regressions.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Case 04 — even: image right -->
+    <div class="case-row">
+      <div class="case-row-inner">
+        <a href="themes.html" class="case-image" aria-label="View case study: Thematic Expression at Scale">
+          <div class="case-overlay">
+            <p class="case-overlay-desc">Six illustrated theme packs, all on time with zero usability regression.</p>
+            <span class="btn-overlay">View Case Study</span>
+          </div>
+        </a>
+        <div class="case-text">
+          <p class="case-number">04</p>
+          <h3 class="case-title">Thematic Expression at Scale</h3>
+          <div class="case-tags">
+            <span class="case-tag">🌿 Seasonal</span>
+            <span class="case-tag">✏️ Illustration</span>
+            <span class="case-tag">🎭 Identity</span>
+            <span class="case-tag">✨ Delight</span>
+          </div>
+          <p class="case-desc">Six illustrated theme packs. On time, zero usability regression.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Case 05 — odd: image left -->
+    <div class="case-row">
+      <div class="case-row-inner">
+        <a href="portfolio.html" class="case-image" aria-label="View case study: This Portfolio">
+          <div class="case-overlay">
+            <p class="case-overlay-desc">Designed, written, and built by me using an AI-augmented workflow.</p>
+            <span class="btn-overlay">View Case Study</span>
+          </div>
+        </a>
+        <div class="case-text">
+          <p class="case-number">05</p>
+          <h3 class="case-title">This Portfolio</h3>
+          <div class="case-tags">
+            <span class="case-tag">🎨 Branding</span>
+            <span class="case-tag">💻 Coding</span>
+            <span class="case-tag">📱 Responsive</span>
+            <span class="case-tag">✍️ Copywriter</span>
+          </div>
+          <p class="case-desc">Designed, written, and built end-to-end with an AI-augmented workflow.</p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ░░ ABOUT ░░ -->
+  <section class="about-section" id="about">
+    <div class="about-inner">
+
+      <div class="reveal">
+        <p class="section-eyebrow">Who I am</p>
+        <h2 class="section-title" style="margin-top:10px;">About me</h2>
+      </div>
+
+      <div class="about-grid reveal">
+        <div class="about-photo"></div>
+        <div class="about-bio">
+          <h3 class="about-greeting">Hi, I'm Gabi!</h3>
+          <p>I'm a product designer based in Brazil who makes things — digital and otherwise. I care about craft, communication, and the people on the other side of the screen.</p>
+          <!-- primary · medium · default  /  secondary · medium · default -->
+          <div class="about-actions">
+            <a href="about.html" class="btn btn-primary btn-medium">Wanna know more?</a>
+            <a href="#works" class="btn btn-secondary btn-medium">See my work</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ░░ FOOTER ░░ -->
+  <footer id="contact">
+    <p class="footer-greeting">
+      <!-- Say hi 👋 → LinkedIn, new tab -->
+      <a href="https://www.linkedin.com/in/gabriela-lissarassa-weber/" target="_blank" rel="noopener noreferrer">Say hi 👋</a>
+      &nbsp;·&nbsp;
+      <!-- Get in touch ✉️ → email dropdown -->
+      <span class="footer-email-wrap">
+        <button class="footer-email-btn" id="email-trigger" aria-haspopup="true" aria-expanded="false">
+          Get in touch ✉️
+        </button>
+        <div class="email-dropdown" id="email-dropdown" role="menu">
+          <button id="copy-email" role="menuitem">Copy email</button>
+          <button id="send-email" role="menuitem">Send email</button>
+        </div>
+      </span>
+    </p>
+    <p class="footer-copy">Created by Gabi and powered by iced coffee ☕</p>
+  </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" aria-live="polite">Email copied ✓</div>
+
+  <!-- ░░ JS ░░ -->
+  <script>
+
+    /* ════════════════════════════════════════════════════════
+       HERO — zero-jump audience switcher
+       All headlines + tag-sets are ALWAYS position:absolute.
+       Wrappers get a fixed pixel height so nothing ever
+       re-flows during a transition.
+    ════════════════════════════════════════════════════════ */
+    const hlWrap        = document.getElementById('hl-wrap');
+    const tagWrap       = document.getElementById('tag-wrap');
+    const allHls        = hlWrap.querySelectorAll('.hero-headline');
+    const allTagSets    = tagWrap.querySelectorAll('.tag-set');
+
+    function measureMaxHeight(container, items) {
+      /* Render every item at full width, invisible, measure, restore */
+      items.forEach(el => {
+        el.style.cssText =
+          'position:absolute;top:0;left:0;right:0;opacity:0;visibility:hidden;transition:none';
+      });
+      let maxH = 0;
+      items.forEach(el => { maxH = Math.max(maxH, el.offsetHeight); });
+      items.forEach(el => { el.style.cssText = ''; });
+      return maxH;
+    }
+
+    function normalizeAndLock() {
+      /* 1. Reset letter-spacing on all headlines, measure raw heights */
+      allHls.forEach(el => { el.style.letterSpacing = ''; });
+      let maxH = 0;
+      allHls.forEach(el => { maxH = Math.max(maxH, el.offsetHeight); });
+
+      /* 2. Expand letter-spacing on shorter headlines until they match maxH */
+      allHls.forEach(el => {
+        if (el.offsetHeight >= maxH) return;
+        let lo = 0, hi = 0.5; /* em units */
+        for (let i = 0; i < 20; i++) {
+          const mid = (lo + hi) / 2;
+          el.style.letterSpacing = mid + 'em';
+          if (el.offsetHeight < maxH) lo = mid;
+          else hi = mid;
+        }
+        if (el.offsetHeight < maxH) el.style.letterSpacing = hi + 'em';
+      });
+
+      /* 3. Lock headline wrapper to the normalized height */
+      let finalH = 0;
+      allHls.forEach(el => { finalH = Math.max(finalH, el.offsetHeight); });
+      hlWrap.style.height = finalH + 'px';
+
+      /* 4. Lock tag-wrap height (pills) */
+      tagWrap.style.height = measureMaxHeight(tagWrap, allTagSets) + 'px';
+    }
+
+    normalizeAndLock();
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(normalizeAndLock, 120);
+    });
+
+    /* ── Typewriter helper ───────────────────────────────── */
+    function typeHeadline(el, text) {
+      el.innerHTML = '';
+      const cursor = document.createElement('span');
+      cursor.className = 'hl-cursor';
+      cursor.textContent = '|';
+      el.appendChild(cursor);
+      let i = 0;
+      const iv = setInterval(() => {
+        cursor.insertAdjacentText('beforebegin', text[i++]);
+        if (i >= text.length) { clearInterval(iv); cursor.remove(); }
+      }, 12);
+    }
+
+    /* ── Audience switcher ────────────────────────────────── */
+    const switcherItems = document.querySelectorAll('.switcher-item');
+    let   current       = 0;
+
+    function switchTo(idx) {
+      if (idx === current) return;
+
+      /* Switcher dot + aria-pressed */
+      switcherItems[current].classList.remove('active');
+      switcherItems[current].setAttribute('aria-pressed', 'false');
+      switcherItems[idx].classList.add('active');
+      switcherItems[idx].setAttribute('aria-pressed', 'true');
+
+      /* Hide outgoing headline instantly; restore full text for future measurements */
+      const out = hlWrap.querySelector('.hero-headline.active');
+      out.style.opacity = '0';
+      out.classList.remove('active');
+      out.setAttribute('aria-hidden', 'true');
+      out.textContent = out.dataset.full;
+
+      /* Tags swap */
+      tagWrap.querySelector('.tag-set.active').classList.remove('active');
+      tagWrap.querySelector(`.tag-set[data-tags="${idx}"]`).classList.add('active');
+
+      /* Type in the new headline */
+      const inc = hlWrap.querySelector(`.hero-headline[data-hl="${idx}"]`);
+      inc.style.opacity = '1';
+      inc.classList.add('active');
+      inc.removeAttribute('aria-hidden');
+      typeHeadline(inc, inc.dataset.full);
+
+      current = idx;
+    }
+
+    switcherItems.forEach(item => {
+      item.addEventListener('click', () => switchTo(+item.dataset.idx));
+      item.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          switchTo(+item.dataset.idx);
+        }
+      });
+    });
+
+    /* ── Scroll reveal ────────────────────────────────────── */
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('revealed');
+        io.unobserve(entry.target);
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal, .case-row').forEach(el => io.observe(el));
+
+    /* ════════════════════════════════════════════════════════
+       EMAIL DROPDOWN
+    ════════════════════════════════════════════════════════ */
+    const EMAIL      = 'gabrielaweber008@gmail.com';
+    const trigger    = document.getElementById('email-trigger');
+    const dropdown   = document.getElementById('email-dropdown');
+    const copyBtn    = document.getElementById('copy-email');
+    const sendBtn    = document.getElementById('send-email');
+    const toast      = document.getElementById('toast');
+    let   toastTimer = null;
+
+    function openDropdown()  {
+      dropdown.classList.add('open');
+      trigger.setAttribute('aria-expanded', 'true');
+    }
+    function closeDropdown() {
+      dropdown.classList.remove('open');
+      trigger.setAttribute('aria-expanded', 'false');
+    }
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      clearTimeout(toastTimer);
+      toast.classList.add('visible');
+      toastTimer = setTimeout(() => toast.classList.remove('visible'), 2200);
+    }
+
+    trigger.addEventListener('click', e => {
+      e.stopPropagation();
+      dropdown.classList.contains('open') ? closeDropdown() : openDropdown();
+    });
+
+    copyBtn.addEventListener('click', () => {
+      closeDropdown();
+      /* Clipboard API works on HTTPS and localhost.
+         For file:// protocol, fall back to execCommand. */
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(EMAIL)
+          .then(() => showToast('Email copied ✓'))
+          .catch(() => legacyCopy());
+      } else {
+        legacyCopy();
+      }
+    });
+
+    function legacyCopy() {
+      const ta = document.createElement('textarea');
+      ta.value = EMAIL;
+      ta.style.cssText = 'position:fixed;opacity:0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showToast('Email copied ✓');
+      } catch {
+        showToast('Copy failed — email: ' + EMAIL);
+      }
+      document.body.removeChild(ta);
+    }
+
+    sendBtn.addEventListener('click', () => {
+      closeDropdown();
+      window.location.href = 'mailto:' + EMAIL;
+    });
+
+    document.addEventListener('click', e => {
+      if (!trigger.contains(e.target) && !dropdown.contains(e.target)) closeDropdown();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeDropdown();
+    });
+
+  </script>
+</body>
+</html>

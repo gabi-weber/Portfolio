@@ -1,0 +1,1377 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ghost Hunt — Gabi Weber</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+
+    /* ═══════════════════════════════════════════
+       BROPELLA — nav logo only
+    ═══════════════════════════════════════════ */
+    @font-face {
+      font-family: 'Bropella';
+      src: url('./fonts/Bropella.woff') format('woff');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* ═══════════════════════════════════════════
+       TOKENS
+    ═══════════════════════════════════════════ */
+    :root {
+      --color-bg:      #F7EAE7;
+      --color-primary: #09636C;
+      --color-text:    #1A1B1B;
+      --color-muted:   #585A5A;
+      --color-accent:  #E9BAAE;
+      --color-border:  #C4CBCB;
+      --color-white:   #FEFAF9;
+
+      --font: 'Poppins', sans-serif;
+      --nav-h: 64px;
+    }
+
+    /* ═══════════════════════════════════════════
+       RESET
+    ═══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      font-weight: 400;
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, h5, h6 { font-family: var(--font); }
+
+    /* Scroll offset for fixed nav */
+    [id] { scroll-margin-top: calc(var(--nav-h) + 32px); }
+
+    /* ═══════════════════════════════════════════
+       GRAIN
+    ═══════════════════════════════════════════ */
+    .grain {
+      position: fixed;
+      inset: -50%;
+      width: 200%;
+      height: 200%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.04;
+    }
+
+    /* ═══════════════════════════════════════════
+       BUTTON SYSTEM — DS library (copied from index.html)
+    ═══════════════════════════════════════════ */
+    .btn {
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font);
+      font-weight: 400;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: background-color 200ms ease, box-shadow 200ms ease, border-color 200ms ease, color 200ms ease;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .btn-huge   { font-size: 20px; line-height: 30px; border-radius: 12px; padding: 12px 16px; }
+    .btn-large  { font-size: 16px; line-height: 24px; border-radius: 8px;  padding: 12px 16px; }
+    .btn-medium { font-size: 14px; line-height: 21px; border-radius: 8px;  padding: 8px  12px; }
+    .btn-small  { font-size: 12px; line-height: 18px; border-radius: 6px;  padding: 4px   8px; }
+
+    .btn-primary                       { background: #09636C; color: #EEF1F1; }
+    .btn-primary:hover                 { background: #085057; box-shadow: 2px 2px 10px rgba(26,27,27,.25); }
+    .btn-primary:active                { background: #085057; box-shadow: none; }
+    .btn-primary:focus-visible         { background: #09636C; border: 2px solid #043F45; outline: none; }
+    .btn-primary:disabled,
+    .btn-primary.disabled              { background: #585A5A; cursor: not-allowed; }
+
+    .btn-secondary                     { background: rgba(9,99,108,.10); border: 2px solid #09636C; color: #1A1B1B; }
+    .btn-secondary:hover               { background: rgba(9,99,108,.25); box-shadow: 2px 2px 10px rgba(26,27,27,.25); }
+    .btn-secondary:active              { background: rgba(9,99,108,.25); box-shadow: none; }
+    .btn-secondary:focus-visible       { background: rgba(9,99,108,.20); border: 2px solid rgba(9,99,108,.5); outline: none; }
+    .btn-secondary:disabled,
+    .btn-secondary.disabled            { background: rgba(88,90,90,.25); border: 2px solid #585A5A; cursor: not-allowed; }
+
+    .btn-reverse                       { background: transparent; color: #373939; border: none; }
+    .btn-reverse:hover                 { background: #F7EAE7; box-shadow: 4px 4px 10px rgba(26,27,27,.05); }
+    .btn-reverse:active                { background: transparent; box-shadow: none; }
+    .btn-reverse:focus-visible         { border: 2px solid rgba(233,186,174,.5); outline: none; }
+    .btn-reverse:disabled,
+    .btn-reverse.disabled              { color: #585A5A; cursor: not-allowed; }
+
+    /* ═══════════════════════════════════════════
+       NAV — identical to index.html
+    ═══════════════════════════════════════════ */
+    nav:not(.cs-side-nav) {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      background: rgba(247, 234, 231, 0.62);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .nav-logo {
+      font-family: 'Bropella', cursive;
+      font-weight: 700;
+      font-size: 28px;
+      line-height: 1;
+      color: var(--color-primary);
+      text-decoration: none;
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links li a:not(.btn) {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--color-muted);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 3px;
+      transition: color 200ms ease;
+    }
+
+    .nav-links li a:not(.btn)::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: var(--color-primary);
+      transition: width 250ms ease;
+    }
+
+    .nav-links li a:not(.btn):hover { color: var(--color-primary); }
+    .nav-links li a:not(.btn):hover::after { width: 100%; }
+
+    /* ═══════════════════════════════════════════
+       IMAGE UTILITY
+    ═══════════════════════════════════════════ */
+    .cs-img {
+      width: 100%;
+      border-radius: 12px;
+      display: block;
+      max-width: 100%;
+    }
+
+    .cs-img-placeholder {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: var(--color-accent);
+      border-radius: 12px;
+      display: block;
+    }
+
+    /* ═══════════════════════════════════════════
+       CASE HERO
+    ═══════════════════════════════════════════ */
+    .cs-hero {
+      padding: calc(var(--nav-h) + 80px) 48px 64px;
+    }
+
+    .cs-hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .cs-eyebrow {
+      font-family: var(--font);
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 20px;
+    }
+
+    .cs-title {
+      font-family: var(--font);
+      font-weight: 600;
+      font-size: clamp(28px, 4vw, 52px);
+      letter-spacing: -0.5px;
+      color: var(--color-text);
+      line-height: 1.12;
+      margin-bottom: 16px;
+    }
+
+    .cs-subtitle {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 18px;
+      color: var(--color-muted);
+      line-height: 1.6;
+      margin-bottom: 40px;
+    }
+
+    .cs-meta {
+      display: flex;
+      gap: 48px;
+      flex-wrap: wrap;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: 40px;
+    }
+
+    .cs-meta-label {
+      font-family: var(--font);
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 6px;
+    }
+
+    .cs-meta-value {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 15px;
+      color: var(--color-text);
+      line-height: 1.5;
+    }
+
+    .cs-intro {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 16px;
+      color: var(--color-muted);
+      line-height: 1.7;
+      max-width: 720px;
+      margin-bottom: 48px;
+    }
+
+    /* ═══════════════════════════════════════════
+       METRIC CARDS
+    ═══════════════════════════════════════════ */
+    .cs-metrics {
+      padding: 0 48px 80px;
+    }
+
+    .cs-metrics-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .cs-metric-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 32px;
+    }
+
+    .cs-metric-number {
+      font-family: var(--font);
+      font-weight: 600;
+      font-size: 48px;
+      line-height: 1;
+      color: var(--color-primary);
+      margin-bottom: 12px;
+      letter-spacing: -1px;
+    }
+
+    .cs-metric-label {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--color-muted);
+      line-height: 1.5;
+    }
+
+    /* ═══════════════════════════════════════════
+       TEXT SECTIONS (Problem / Solution / Conclusion)
+    ═══════════════════════════════════════════ */
+    .cs-text-section {
+      padding: 72px 48px;
+    }
+
+    .cs-text-inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .cs-section-title {
+      font-family: var(--font);
+      font-weight: 600;
+      font-size: 28px;
+      color: var(--color-text);
+      letter-spacing: -0.2px;
+      margin-bottom: 24px;
+    }
+
+    .cs-body {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 16px;
+      color: var(--color-muted);
+      line-height: 1.7;
+    }
+
+    .cs-body + .cs-body { margin-top: 16px; }
+
+    /* ═══════════════════════════════════════════
+       DEVELOPMENT & IMPLEMENTATION
+    ═══════════════════════════════════════════ */
+    .cs-dev-section {
+      padding: 72px 48px 0;
+    }
+
+    .cs-dev-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .cs-dev-header {
+      margin-bottom: 64px;
+    }
+
+    .cs-dev-eyebrow {
+      font-family: var(--font);
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 8px;
+    }
+
+    .cs-dev-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      padding-bottom: 80px;
+    }
+
+    /* img-right: text order 1, image order 2 */
+    .cs-dev-row.img-right .cs-dev-text  { order: 1; }
+    .cs-dev-row.img-right .cs-dev-image { order: 2; }
+
+    /* img-left: image order 1, text order 2 */
+    .cs-dev-row.img-left .cs-dev-image { order: 1; }
+    .cs-dev-row.img-left .cs-dev-text  { order: 2; }
+
+    .cs-subsection-title {
+      font-family: var(--font);
+      font-weight: 600;
+      font-size: 22px;
+      color: var(--color-text);
+      letter-spacing: -0.2px;
+      margin-bottom: 16px;
+    }
+
+    /* Implementation feature bullet list */
+    .cs-feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .cs-feature-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .cs-feature-bullet {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      flex-shrink: 0;
+      margin-top: 8px;
+    }
+
+    .cs-feature-name {
+      font-family: var(--font);
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--color-text);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .cs-feature-desc {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--color-muted);
+      line-height: 1.6;
+    }
+
+    /* 2x2 feature screenshot grid */
+    .cs-feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .cs-feature-grid img {
+      width: 100%;
+      max-width: 280px;
+      height: auto;
+      border-radius: 12px;
+      display: block;
+      margin: 0 auto;
+      box-shadow: 0 8px 24px rgba(26,27,27,.15);
+    }
+
+    .cs-feature-grid .cs-img-placeholder {
+      aspect-ratio: 16 / 9;
+    }
+
+    /* ═══════════════════════════════════════════
+       MEET THE GHOSTS
+    ═══════════════════════════════════════════ */
+    .cs-ghosts {
+      padding: 96px 48px;
+      background: var(--color-text);
+    }
+
+    .cs-ghosts .cs-section-title { color: var(--color-white); }
+    .cs-ghosts-intro { color: rgba(254, 250, 249, 0.65); }
+    .cs-ghost-name { color: var(--color-white); font-weight: 600; font-size: 15px; }
+    .cs-ghost-backstory { color: rgba(254, 250, 249, 0.55); }
+
+    .cs-ghosts-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .cs-ghosts-header {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .cs-ghosts-intro {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 16px;
+      color: var(--color-muted);
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto 64px;
+      line-height: 1.7;
+    }
+
+    .cs-ghost-row {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .cs-ghost-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      flex: 1;
+      min-width: 150px;
+      max-width: 200px;
+    }
+
+    .cs-ghost-img {
+      width: 100%;
+      max-width: 180px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .cs-ghost-name {
+      font-family: var(--font);
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--color-text);
+      margin-bottom: 6px;
+    }
+
+    .cs-ghost-backstory {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 13px;
+      color: var(--color-muted);
+      line-height: 1.5;
+    }
+
+    /* ═══════════════════════════════════════════
+       METRIC TRACKING
+    ═══════════════════════════════════════════ */
+    .cs-tracking {
+      padding: 80px 48px;
+    }
+
+    .cs-tracking-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .cs-tracking-intro {
+      max-width: 720px;
+      margin: 0 auto 48px;
+    }
+
+    .cs-tracking-cols {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+
+    .cs-tracking-col-title {
+      font-family: var(--font);
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--color-text);
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .cs-tracking-col-body {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--color-muted);
+      line-height: 1.65;
+    }
+
+    /* ═══════════════════════════════════════════
+       NEXT-CASE BANNER
+    ═══════════════════════════════════════════ */
+    .cs-next-banner {
+      background: var(--color-primary);
+      padding: 56px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .cs-next-label {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 24px;
+      color: #FEFAF9;
+      line-height: 1.3;
+    }
+
+    .btn-banner {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      color: var(--color-primary);
+      background: #FEFAF9;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 20px;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background-color 200ms ease, box-shadow 200ms ease;
+    }
+
+    .btn-banner:hover {
+      background: #EDE5E2;
+      box-shadow: 2px 2px 12px rgba(0,0,0,.18);
+    }
+
+    /* ═══════════════════════════════════════════
+       FOOTER — identical to index.html
+    ═══════════════════════════════════════════ */
+    footer {
+      padding: 56px 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+    }
+
+    .footer-greeting {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 20px;
+      color: var(--color-text);
+    }
+
+    .footer-greeting a {
+      color: var(--color-primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer-greeting a:hover { text-decoration: underline; }
+
+    .footer-copy {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 12px;
+      color: var(--color-muted);
+    }
+
+    .footer-email-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    .footer-email-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: var(--font);
+      font-weight: 500;
+      font-size: 20px;
+      color: var(--color-primary);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .footer-email-btn:hover { text-decoration: underline; }
+
+    .email-dropdown {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(26, 27, 27, 0.1);
+      min-width: 180px;
+      overflow: hidden;
+      display: none;
+      z-index: 300;
+    }
+
+    .email-dropdown.open { display: block; }
+
+    .email-dropdown button {
+      display: block;
+      width: 100%;
+      padding: 10px 16px;
+      background: none;
+      border: none;
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 14px;
+      color: var(--color-text);
+      text-align: left;
+      cursor: pointer;
+      transition: background 150ms ease;
+    }
+
+    .email-dropdown button:hover { background: var(--color-bg); }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-text);
+      color: var(--color-white);
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 14px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 200ms ease;
+      z-index: 9998;
+      white-space: nowrap;
+    }
+
+    .toast.visible { opacity: 1; }
+
+    /* ═══════════════════════════════════════════
+       BODY LAYOUT + VERTICAL SIDE NAV
+    ═══════════════════════════════════════════ */
+
+    /* Two-column grid: nav col (fixed width) + content col */
+    .cs-body-layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+    }
+
+    .cs-nav-col {
+      padding-left: 48px;
+      padding-top: 72px;
+    }
+
+    /* Sticky: stays in view as user scrolls through the content column */
+    .cs-side-nav {
+      position: sticky;
+      top: calc(var(--nav-h) + 32px);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .cs-side-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* Connector between consecutive dots — margin-left centers the 1px bar
+       under the 8px dot (dot center = 4px; seg center = 3.5px + 0.5px = 4px) */
+    .cs-side-seg {
+      display: block;
+      width: 1px;
+      height: 28px;
+      background: var(--color-border);
+      margin-left: 3.5px;
+    }
+
+    .cs-side-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: transparent;
+      border: 1.5px solid var(--color-border);
+      transition: background-color 200ms ease, border-color 200ms ease;
+    }
+
+    .cs-side-label {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 11px;
+      line-height: 1;
+      color: var(--color-muted);
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+      transition: color 200ms ease;
+    }
+
+    .cs-side-link:hover .cs-side-dot {
+      border-color: var(--color-primary);
+    }
+
+    .cs-side-link:hover .cs-side-label {
+      color: var(--color-primary);
+    }
+
+    /* Active (current section) and past (already scrolled through) share filled dot */
+    .cs-side-link.is-active .cs-side-dot,
+    .cs-side-link.is-past   .cs-side-dot {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+
+    .cs-side-link.is-active .cs-side-label {
+      color: var(--color-text);
+      font-weight: 500;
+    }
+
+    /* ═══════════════════════════════════════════
+       REVEAL UTILITY
+    ═══════════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.revealed { opacity: 1; transform: translateY(0); }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE — single breakpoint 768px
+    ═══════════════════════════════════════════ */
+    @media (max-width: 768px) {
+      .cs-body-layout { grid-template-columns: 1fr; }
+      .cs-nav-col     { display: none; }
+
+      nav { padding: 0 24px; }
+
+      .cs-hero      { padding: calc(var(--nav-h) + 48px) 24px 48px; }
+      .cs-metrics   { padding: 0 24px 56px; }
+      .cs-text-section { padding: 56px 24px; }
+      .cs-dev-section  { padding: 56px 24px 0; }
+      .cs-ghosts    { padding: 72px 24px; }
+      .cs-tracking  { padding: 64px 24px; }
+      .cs-next-banner {
+        padding: 48px 24px;
+        flex-direction: column;
+        text-align: center;
+      }
+      footer { padding: 48px 24px; }
+
+      .cs-meta { gap: 24px; }
+
+      .cs-metrics-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .cs-metric-number { font-size: 40px; }
+
+      .cs-dev-row {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding-bottom: 56px;
+      }
+
+      /* Text always stacks above image on mobile */
+      .cs-dev-row.img-right .cs-dev-text,
+      .cs-dev-row.img-left  .cs-dev-text  { order: 1; }
+      .cs-dev-row.img-right .cs-dev-image,
+      .cs-dev-row.img-left  .cs-dev-image { order: 2; }
+
+      .cs-ghost-item { min-width: 130px; max-width: 160px; }
+
+      .cs-tracking-cols { grid-template-columns: 1fr; gap: 32px; }
+
+      .cs-next-label { font-size: 20px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ░░ GRAIN TEXTURE ░░ -->
+  <svg class="grain" aria-hidden="true">
+    <filter id="grain-filter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
+      <feColorMatrix type="saturate" values="0" />
+    </filter>
+    <rect width="100%" height="100%" filter="url(#grain-filter)" />
+  </svg>
+
+  <!-- ░░ NAV ░░ -->
+  <nav>
+    <a href="index.html" class="nav-logo">Gabi Weber</a>
+    <ul class="nav-links">
+      <li><a href="index.html#works">Works</a></li>
+      <li><a href="about.html">About me</a></li>
+      <li><a href="resume.html">Resumé</a></li>
+      <li>
+        <a href="index.html#contact" class="btn btn-primary btn-medium">Contact</a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- ░░ HERO ░░ -->
+  <section class="cs-hero">
+    <div class="cs-hero-inner reveal">
+
+      <p class="cs-eyebrow">Case Study · 01</p>
+
+      <h1 class="cs-title">Gamifying Growth through Seasonal Delight</h1>
+      <p class="cs-subtitle">Boosting feature engagement through whimsical UX interventions</p>
+
+      <div class="cs-meta">
+        <div class="cs-meta-item">
+          <p class="cs-meta-label">Role</p>
+          <p class="cs-meta-value">Product Designer &amp; Lead Illustrator</p>
+        </div>
+        <div class="cs-meta-item">
+          <p class="cs-meta-label">Timeline</p>
+          <p class="cs-meta-value">2 months</p>
+        </div>
+        <div class="cs-meta-item">
+          <p class="cs-meta-label">Deliverables</p>
+          <p class="cs-meta-value">In-app ghost hunt, omni-channel email campaign &amp; performance report</p>
+        </div>
+      </div>
+
+      <p class="cs-intro">Throughout the year, a company managing over 1,500 employees across North America released seasonal themes to drive platform affinity. This project introduced a "ghost hunt" gamification layer to significantly increase the adoption of both new and legacy features within the mobile app.</p>
+
+      <img
+        src="assets/ghost-hunt/ghost_card5_horizontal.png"
+        alt="Ghost Hunt campaign hero — five illustrated cocktail ghosts arranged in a horizontal card"
+        class="cs-img"
+        onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\'></div>')"
+      />
+
+    </div>
+  </section>
+
+  <!-- ░░ METRIC CARDS ░░ -->
+  <section class="cs-metrics" aria-label="Campaign results">
+    <div class="cs-metrics-inner">
+
+      <div class="cs-metric-card reveal">
+        <p class="cs-metric-number">164%</p>
+        <p class="cs-metric-label">average increase in feature adoption</p>
+      </div>
+
+      <div class="cs-metric-card reveal">
+        <p class="cs-metric-number">550%</p>
+        <p class="cs-metric-label">peak boost in specific profile interactions</p>
+      </div>
+
+      <div class="cs-metric-card reveal">
+        <p class="cs-metric-number">64%</p>
+        <p class="cs-metric-label">average email interaction rate</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ░░ TWO-COLUMN BODY LAYOUT ░░ -->
+  <div class="cs-body-layout">
+
+    <div class="cs-nav-col">
+      <nav class="cs-side-nav" id="cs-side-nav" aria-label="Page sections">
+        <a href="#problem-solution" class="cs-side-link">
+          <span class="cs-side-dot" aria-hidden="true"></span>
+          <span class="cs-side-label">Problem &amp; Solution</span>
+        </a>
+        <span class="cs-side-seg" aria-hidden="true"></span>
+        <a href="#development" class="cs-side-link">
+          <span class="cs-side-dot" aria-hidden="true"></span>
+          <span class="cs-side-label">Development &amp; Implementation</span>
+        </a>
+        <span class="cs-side-seg" aria-hidden="true"></span>
+        <a href="#results" class="cs-side-link">
+          <span class="cs-side-dot" aria-hidden="true"></span>
+          <span class="cs-side-label">Results</span>
+        </a>
+        <span class="cs-side-seg" aria-hidden="true"></span>
+        <a href="#conclusion" class="cs-side-link">
+          <span class="cs-side-dot" aria-hidden="true"></span>
+          <span class="cs-side-label">Conclusion</span>
+        </a>
+      </nav>
+    </div><!-- /.cs-nav-col -->
+
+    <div class="cs-content-col">
+
+  <div id="problem-solution">
+
+  <!-- ░░ PROBLEM ░░ -->
+  <section class="cs-text-section" id="problem">
+    <div class="cs-text-inner reveal">
+      <h2 class="cs-section-title">Problem</h2>
+      <p class="cs-body">After eighteen months in production, data showed that several key features on the platform remained underutilized. These touchpoints were critical for operational efficiency, and the product team aimed to increase adoption to improve the overall staff experience. However, internal business rules prohibited mandating usage (the "stick" approach), so we had to find an organic, incentive-based ("carrot") way to drive interactions.</p>
+    </div>
+  </section>
+
+  <!-- ░░ SOLUTION ░░ -->
+  <section class="cs-text-section" id="solution" style="padding-top:0;">
+    <div class="cs-text-inner reveal">
+      <h2 class="cs-section-title">Solution</h2>
+      <p class="cs-body">With Halloween approaching, the design team proposed a seasonal campaign to guide users toward these features — including the upcoming "Dark Mode" release. We launched an omni-channel campaign consisting of a series of timed emails and five hidden "ghosts" placed strategically near high-value, low-usage components. Each ghost was introduced via email with a unique backstory, transforming a standard UI task into a narrative-driven "hunt."</p>
+    </div>
+  </section>
+
+  </div><!-- /#problem-solution -->
+
+  <div id="development">
+
+  <!-- ░░ DEVELOPMENT & IMPLEMENTATION ░░ -->
+  <section class="cs-dev-section">
+    <div class="cs-dev-inner">
+
+      <div class="cs-dev-header reveal">
+        <p class="cs-dev-eyebrow">Process</p>
+        <h2 class="cs-section-title">Development &amp; Implementation</h2>
+      </div>
+
+      <!-- Thematic Foundation — text left, image right -->
+      <div class="cs-dev-row img-right reveal">
+        <div class="cs-dev-text">
+          <h3 class="cs-subsection-title">Thematic Foundation</h3>
+          <p class="cs-body">Throughout 2026 our platform had seasonal theme releases, and Halloween would be combined with Día de los Muertos, with the campaign expanding from October 20th to November 3rd. I finished illustrating all elements by mid-September and the placements were decided not long after that.</p>
+        </div>
+        <div class="cs-dev-image">
+          <img
+            src="assets/ghost-hunt/Footer%20light.png"
+            alt="Light-mode footer with ghost hunt campaign branding applied"
+            class="cs-img"
+            onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\'></div>')"
+          />
+        </div>
+      </div>
+
+      <!-- Ideation & Strategy — image left, text right -->
+      <div class="cs-dev-row img-left reveal">
+        <div class="cs-dev-image">
+          <img
+            src="assets/ghost-hunt/Task.png"
+            alt="Task planning board showing the campaign strategy and feature breakdown"
+            class="cs-img"
+            onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\'></div>')"
+          />
+        </div>
+        <div class="cs-dev-text">
+          <h3 class="cs-subsection-title">Ideation &amp; Strategy</h3>
+          <p class="cs-body">During a stakeholder meeting, a concern was raised regarding the underutilization of features like "Event Check-in" and "Task Management." Since adherence relied heavily on manager encouragement rather than system requirements, the design team suggested using the seasonal theme as an awareness vehicle. As the lead illustrator and designer for the ghosts, I was responsible for the visual identity of the campaign, while collaborating with the team to architect the campaign flow, define the UX copy for the ghost backstories, and create the technical documentation for precise asset placement. The team also pitched to stakeholders together, securing full creative autonomy for the campaign.</p>
+        </div>
+      </div>
+
+      <!-- Scaling — text left, image right -->
+      <div class="cs-dev-row img-right reveal">
+        <div class="cs-dev-text">
+          <h3 class="cs-subsection-title">Scaling</h3>
+          <p class="cs-body">Initially, we planned for a cross-platform campaign, since the theme would be launched for both app and desktop. However, after consulting with the engineering team, we opted to focus only on mobile, given the strict two-week production window. This allowed us to maximize impact within a smaller, more controlled user pool while ensuring high-quality execution.</p>
+        </div>
+        <div class="cs-dev-image">
+          <img
+            src="assets/ghost-hunt/One%20pager.png"
+            alt="One-pager document used to align stakeholders on campaign scope and timeline"
+            class="cs-img"
+            onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\'></div>')"
+          />
+        </div>
+      </div>
+
+      <!-- Implementation — image left (2x2 grid), text right -->
+      <div class="cs-dev-row img-left reveal">
+        <div class="cs-dev-image">
+          <div class="cs-feature-grid">
+            <img
+              src="assets/ghost-hunt/Add%20photo.png"
+              alt="Add Photo feature — ghost clue hidden in the profile photo upload flow"
+              onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\'></div>')"
+            />
+            <img
+              src="assets/ghost-hunt/Check%20in.png"
+              alt="Check In feature — ghost clue surfaced through the check-in interaction"
+              onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\'></div>')"
+            />
+            <img
+              src="assets/ghost-hunt/Change%20profile.png"
+              alt="Change Profile feature — ghost clue tied to the profile customization flow"
+              onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\'></div>')"
+            />
+            <img
+              src="assets/ghost-hunt/Dark%20mode.png"
+              alt="Dark Mode feature — ghost clue rewarding users who discovered dark mode"
+              onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\'></div>')"
+            />
+          </div>
+        </div>
+        <div class="cs-dev-text">
+          <h3 class="cs-subsection-title">Implementation</h3>
+          <p class="cs-body">By analyzing our product analytics, we identified four high-impact features with the lowest engagement. To maintain the "hunt" integrity, we established a specific feedback loop: when a user discovered a ghost, a modal appeared revealing its unique backstory. Once closed, the ghost would disappear, ensuring a one-time interaction that felt like a genuine "find." We also decided to leverage this high-traffic moment to launch Dark Mode, making the Dark Mode Toggle the final destination of the campaign.</p>
+          <ul class="cs-feature-list">
+            <li class="cs-feature-item">
+              <span class="cs-feature-bullet" aria-hidden="true"></span>
+              <div>
+                <span class="cs-feature-name">Add Photo</span>
+                <span class="cs-feature-desc">Direct media uploads from the field — a key operational touchpoint that had seen minimal voluntary use.</span>
+              </div>
+            </li>
+            <li class="cs-feature-item">
+              <span class="cs-feature-bullet" aria-hidden="true"></span>
+              <div>
+                <span class="cs-feature-name">Check In</span>
+                <span class="cs-feature-desc">Real-time tracking of arrival at events — critical for operational efficiency but consistently skipped by staff.</span>
+              </div>
+            </li>
+            <li class="cs-feature-item">
+              <span class="cs-feature-bullet" aria-hidden="true"></span>
+              <div>
+                <span class="cs-feature-name">Change Profile</span>
+                <span class="cs-feature-desc">Account personalization via profile photo — a low-friction action that drives platform identity and belonging.</span>
+              </div>
+            </li>
+            <li class="cs-feature-item">
+              <span class="cs-feature-bullet" aria-hidden="true"></span>
+              <div>
+                <span class="cs-feature-name">Dark Mode</span>
+                <span class="cs-feature-desc">The final destination of the campaign — pulled forward from the release schedule to coincide with the ghost hunt and reward the most engaged users.</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ░░ MEET THE GHOSTS ░░ -->
+  <section class="cs-ghosts">
+    <div class="cs-ghosts-inner">
+
+      <div class="cs-ghosts-header reveal">
+        <h2 class="cs-section-title">Meet the Ghosts</h2>
+      </div>
+      <p class="cs-ghosts-intro reveal">Each ghost had its own unique personality, matched to where they would be hiding. Their names are a spookification of drink-related words.</p>
+
+      <div class="cs-ghost-row reveal">
+
+        <div class="cs-ghost-item">
+          <img
+            src="assets/ghost-hunt/Apparition%20spiritz.png"
+            alt="Apparition Spiritz ghost character illustration"
+            class="cs-ghost-img"
+            onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\' style=\'aspect-ratio:1/1;max-width:180px;\'></div>')"
+          />
+          <p class="cs-ghost-name">Apparition Spiritz</p>
+          <p class="cs-ghost-backstory">A nurturing ghost who encourages the newest team members, leaving them encouraging little messages.</p>
+        </div>
+
+        <div class="cs-ghost-item">
+          <img
+            src="assets/ghost-hunt/Boourbon.png"
+            alt="Boourbon ghost character illustration"
+            class="cs-ghost-img"
+            onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\' style=\'aspect-ratio:1/1;max-width:180px;\'></div>')"
+          />
+          <p class="cs-ghost-name">Boourbon</p>
+          <p class="cs-ghost-backstory">A sweet-natured ghost who makes sure all the bottles are filled and neatly arranged before the party starts.</p>
+        </div>
+
+        <div class="cs-ghost-item">
+          <img
+            src="assets/ghost-hunt/Ghoulfashioned.png"
+            alt="Ghoul-fashioned ghost character illustration"
+            class="cs-ghost-img"
+            onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\' style=\'aspect-ratio:1/1;max-width:180px;\'></div>')"
+          />
+          <p class="cs-ghost-name">Ghoul-fashioned</p>
+          <p class="cs-ghost-backstory">An energetic ghost who floats between guests, ensuring their glass is always full.</p>
+        </div>
+
+        <div class="cs-ghost-item">
+          <img
+            src="assets/ghost-hunt/Phantom%20fizz.png"
+            alt="Phantom Fizz ghost character illustration"
+            class="cs-ghost-img"
+            onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\' style=\'aspect-ratio:1/1;max-width:180px;\'></div>')"
+          />
+          <p class="cs-ghost-name">Phantom Fizz</p>
+          <p class="cs-ghost-backstory">An elegant ghostly mixologist who leaves behind recipes for forgotten classic cocktails.</p>
+        </div>
+
+        <div class="cs-ghost-item">
+          <img
+            src="assets/ghost-hunt/Pina%20ghoulada.png"
+            alt="Piña Ghoulada ghost character illustration"
+            class="cs-ghost-img"
+            onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\' style=\'aspect-ratio:1/1;max-width:180px;\'></div>')"
+          />
+          <p class="cs-ghost-name">Piña Ghoulada</p>
+          <p class="cs-ghost-backstory">A friendly and whimsical ghost who oversees gift bags and takeaways, making sure every guest leaves with a little something special.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  </div><!-- /#development -->
+
+  <div id="results">
+
+  <!-- ░░ METRIC TRACKING ░░ -->
+  <section class="cs-tracking">
+    <div class="cs-tracking-inner">
+
+      <div class="cs-tracking-intro reveal">
+        <h2 class="cs-section-title">Metric Tracking</h2>
+        <p class="cs-body" style="margin-top:16px;">Having tracked the app for six months prior, we had a robust baseline for user behavior. We used Pendo to track the new flows, and after the campaign was over, we presented a comprehensive performance report to the company's stakeholders.</p>
+      </div>
+
+      <div class="cs-tracking-cols">
+        <div class="reveal">
+          <p class="cs-tracking-col-title">Adoption Spike</p>
+          <p class="cs-tracking-col-body">All five targeted features saw increased engagement, with "Edit Profile" seeing a 550% boost.</p>
+        </div>
+        <div class="reveal">
+          <p class="cs-tracking-col-title">Behavioral Attribution</p>
+          <p class="cs-tracking-col-body">66% of the initial Dark Mode adoption was directly attributed to users who engaged with the ghost hunt.</p>
+        </div>
+        <div class="reveal">
+          <p class="cs-tracking-col-title">Email-to-App Conversion</p>
+          <p class="cs-tracking-col-body">Data confirmed that ghosts with higher email open rates saw proportionally stronger component performance, validating our omni-channel strategy.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  </div><!-- /#results -->
+
+  <div id="conclusion">
+
+  <!-- ░░ CONCLUSION ░░ -->
+  <section class="cs-text-section">
+    <div class="cs-text-inner reveal">
+      <h2 class="cs-section-title">Conclusion</h2>
+      <p class="cs-body">I recognize that the meticulous care put into a product is not always visible to the end-user, who is there to do their job and get on with their lives. However, this didn't stop me from pouring my best into every seasonal theme. For the Halloween campaign, with our five friendly ghosts that I so enjoyed doing, the effort was even higher. While my mind was focused on meeting hard engagement KPIs, my goal was to provide a moment of genuine delight — turning a routine work tool into something that could make a user's day a little brighter.</p>
+    </div>
+  </section>
+
+  </div><!-- /#conclusion -->
+
+    </div><!-- /.cs-content-col -->
+  </div><!-- /.cs-body-layout -->
+
+  <!-- ░░ NEXT-CASE BANNER ░░ -->
+  <div class="cs-next-banner">
+    <p class="cs-next-label">Wanna see more of my work?</p>
+    <a href="index.html#works" class="btn-banner">See all cases</a>
+  </div>
+
+  <!-- ░░ FOOTER — identical to index.html ░░ -->
+  <footer id="contact">
+    <p class="footer-greeting">
+      <a href="https://www.linkedin.com/in/gabriela-lissarassa-weber/" target="_blank" rel="noopener noreferrer">Say hi 👋</a>
+      &nbsp;·&nbsp;
+      <span class="footer-email-wrap">
+        <button class="footer-email-btn" id="email-trigger" aria-haspopup="true" aria-expanded="false">
+          Get in touch ✉️
+        </button>
+        <div class="email-dropdown" id="email-dropdown" role="menu">
+          <button id="copy-email" role="menuitem">Copy email</button>
+          <button id="send-email" role="menuitem">Send email</button>
+        </div>
+      </span>
+    </p>
+    <p class="footer-copy">Created by Gabi and powered by iced coffee ☕</p>
+  </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" aria-live="polite">Email copied ✓</div>
+
+  <!-- ░░ JS ░░ -->
+  <script>
+
+    /* ── Scroll reveal ── */
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('revealed');
+        io.unobserve(entry.target);
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    /* ── Email dropdown ── */
+    const EMAIL      = 'gabrielaweber008@gmail.com';
+    const trigger    = document.getElementById('email-trigger');
+    const dropdown   = document.getElementById('email-dropdown');
+    const copyBtn    = document.getElementById('copy-email');
+    const sendBtn    = document.getElementById('send-email');
+    const toast      = document.getElementById('toast');
+    let   toastTimer = null;
+
+    function openDropdown()  { dropdown.classList.add('open');    trigger.setAttribute('aria-expanded', 'true');  }
+    function closeDropdown() { dropdown.classList.remove('open'); trigger.setAttribute('aria-expanded', 'false'); }
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      clearTimeout(toastTimer);
+      toast.classList.add('visible');
+      toastTimer = setTimeout(() => toast.classList.remove('visible'), 2200);
+    }
+
+    trigger.addEventListener('click', e => {
+      e.stopPropagation();
+      dropdown.classList.contains('open') ? closeDropdown() : openDropdown();
+    });
+
+    copyBtn.addEventListener('click', () => {
+      closeDropdown();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(EMAIL)
+          .then(() => showToast('Email copied ✓'))
+          .catch(() => legacyCopy());
+      } else {
+        legacyCopy();
+      }
+    });
+
+    function legacyCopy() {
+      const ta = document.createElement('textarea');
+      ta.value = EMAIL;
+      ta.style.cssText = 'position:fixed;opacity:0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showToast('Email copied ✓');
+      } catch {
+        showToast('Copy failed — email: ' + EMAIL);
+      }
+      document.body.removeChild(ta);
+    }
+
+    sendBtn.addEventListener('click', () => {
+      closeDropdown();
+      window.location.href = 'mailto:' + EMAIL;
+    });
+
+    document.addEventListener('click', e => {
+      if (!trigger.contains(e.target) && !dropdown.contains(e.target)) closeDropdown();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeDropdown();
+    });
+
+    /* ── Vertical side nav stepper ── */
+    (function () {
+      const sideLinks = Array.from(document.querySelectorAll('.cs-side-link'));
+      const sections  = ['problem-solution', 'development', 'results', 'conclusion']
+        .map(id => document.getElementById(id))
+        .filter(Boolean);
+
+      function updateStepper() {
+        const activeIdx = sideLinks.findIndex(l => l.classList.contains('in-view'));
+        sideLinks.forEach((l, i) => {
+          l.classList.remove('is-active', 'is-past');
+          if (i === activeIdx)    l.classList.add('is-active');
+          else if (i < activeIdx) l.classList.add('is-past');
+        });
+      }
+
+      const sectionObs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          const link = document.querySelector(`.cs-side-link[href="#${entry.target.id}"]`);
+          if (link) link.classList.toggle('in-view', entry.isIntersecting);
+        });
+        updateStepper();
+      }, { threshold: 0 });
+
+      sections.forEach(s => sectionObs.observe(s));
+    }());
+
+  </script>
+</body>
+</html>
