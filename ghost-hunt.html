@@ -120,7 +120,7 @@
     /* ═══════════════════════════════════════════
        NAV — identical to index.html
     ═══════════════════════════════════════════ */
-    nav:not(.cs-side-nav) {
+    nav {
       position: fixed;
       top: 0; left: 0; right: 0;
       height: var(--nav-h);
@@ -220,27 +220,38 @@
     /* ═══════════════════════════════════════════
        CASE HERO
     ═══════════════════════════════════════════ */
+    /* Positioned frame: every child is placed by coordinate, Figma-style.
+       Anchors to the viewport edges (60px), it does not centre on a max-width. */
     .cs-hero {
       position: relative;
       background: var(--case-dark);
       color: var(--color-white);
-      padding: calc(var(--nav-h) + 80px) 48px 64px;
+      height: 520px;
+      padding: 0;
     }
 
-    .cs-hero-inner {
-      position: relative;
+    /* Figma — Frame 1000002499 */
+    .cs-hero-copy {
+      position: absolute;
+      left: 60px;
+      top: 161px;
+      width: 662px;
       z-index: 1;
-      max-width: 1200px;
-      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0;
+      gap: 20px;
     }
 
-    .cs-hero-grid {
-      position: relative;
-      display: grid;
-      grid-template-columns: 1.15fr 1fr;
-      gap: 56px;
-      align-items: center;
+    .cs-hero-media {
+      position: absolute;
+      right: 60px;
+      top: 104px;
+      width: 600px;
     }
+
+    .cs-hero-media img { width: 100%; display: block; }
 
     .cs-eyebrow {
       font-family: var(--font);
@@ -249,17 +260,17 @@
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: rgba(254, 250, 249, 0.55);
-      margin-bottom: 20px;
+      margin-bottom: 0;
     }
 
     .cs-title {
       font-family: var(--font);
       font-weight: 600;
-      font-size: clamp(28px, 4vw, 52px);
+      font-size: 44px;       /* largest size that keeps the title to 2 lines at 662px */
       letter-spacing: -0.5px;
       color: var(--color-white);
-      line-height: 1.12;
-      margin-bottom: 16px;
+      line-height: 1.2;
+      margin-bottom: 0;
     }
 
     .cs-hero-tags {
@@ -279,15 +290,15 @@
     }
 
     .cs-hero-ghost-sm {
-      top: calc(var(--nav-h) + 16px);
-      left: 24px;
+      top: 70px;
+      left: 30px;
       width: 110px;
     }
 
     .cs-hero-ghost-lg {
       z-index: 2;            /* sits over the laptop, still under the metric cards */
-      bottom: 8px;
-      left: 50%;
+      bottom: 4px;
+      right: 600px;
       width: 160px;
     }
 
@@ -796,89 +807,6 @@
     .toast.visible { opacity: 1; }
 
     /* ═══════════════════════════════════════════
-       BODY LAYOUT + VERTICAL SIDE NAV
-    ═══════════════════════════════════════════ */
-
-    /* Two-column grid: nav col (fixed width) + content col */
-    .cs-body-layout {
-      display: grid;
-      grid-template-columns: 200px 1fr;
-    }
-
-    .cs-nav-col {
-      padding-left: 48px;
-      padding-top: 72px;
-    }
-
-    /* Sticky: stays in view as user scrolls through the content column */
-    .cs-side-nav {
-      position: sticky;
-      top: calc(var(--nav-h) + 32px);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .cs-side-link {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    /* Connector between consecutive dots — margin-left centers the 1px bar
-       under the 8px dot (dot center = 4px; seg center = 3.5px + 0.5px = 4px) */
-    .cs-side-seg {
-      display: block;
-      width: 1px;
-      height: 28px;
-      background: var(--color-border);
-      margin-left: 3.5px;
-    }
-
-    .cs-side-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      background: transparent;
-      border: 1.5px solid var(--color-border);
-      transition: background-color 200ms ease, border-color 200ms ease;
-    }
-
-    .cs-side-label {
-      font-family: var(--font);
-      font-weight: 400;
-      font-size: 11px;
-      line-height: 1;
-      color: var(--color-muted);
-      white-space: nowrap;
-      letter-spacing: 0.02em;
-      transition: color 200ms ease;
-    }
-
-    .cs-side-link:hover .cs-side-dot {
-      border-color: var(--color-primary);
-    }
-
-    .cs-side-link:hover .cs-side-label {
-      color: var(--color-primary);
-    }
-
-    /* Active (current section) and past (already scrolled through) share filled dot */
-    .cs-side-link.is-active .cs-side-dot,
-    .cs-side-link.is-past   .cs-side-dot {
-      background: var(--color-primary);
-      border-color: var(--color-primary);
-    }
-
-    .cs-side-link.is-active .cs-side-label {
-      color: var(--color-text);
-      font-weight: 500;
-    }
-
-    /* ═══════════════════════════════════════════
        REVEAL UTILITY
     ═══════════════════════════════════════════ */
     .reveal {
@@ -893,12 +821,22 @@
        RESPONSIVE — single breakpoint 768px
     ═══════════════════════════════════════════ */
     @media (max-width: 768px) {
-      .cs-body-layout { grid-template-columns: 1fr; }
-      .cs-nav-col     { display: none; }
-
       nav { padding: 0 24px; }
 
-      .cs-hero      { padding: calc(var(--nav-h) + 48px) 24px 48px; }
+      .cs-hero {
+        height: auto;
+        padding: calc(var(--nav-h) + 48px) 24px 48px;
+      }
+
+      .cs-hero-copy,
+      .cs-hero-media {
+        position: static;
+        width: auto;
+        margin-top: 32px;
+      }
+
+      .cs-hero-copy { margin-top: 0; }
+      .cs-title     { font-size: 32px; }
       .cs-metrics   { padding: 0 24px 56px; }
       .cs-overview  { padding: 0 24px 56px; }
       .cs-text-section { padding: 56px 24px; }
@@ -912,7 +850,6 @@
       }
       footer { padding: 48px 24px; }
 
-      .cs-hero-grid { grid-template-columns: 1fr; gap: 32px; }
       .cs-hero-ghost { display: none; }
 
       .cs-metrics-inner {
@@ -988,24 +925,17 @@
       class="cs-hero-ghost cs-hero-ghost-lg"
     />
 
-    <div class="cs-hero-inner reveal">
-      <div class="cs-hero-grid">
+    <div class="cs-hero-media">
+      <img
+        src="assets/ghost-hunt/desktop%20theme.png"
+        alt="Ghost Hunt campaign dashboard — 'Trick or treat, Margo?' desktop view with hidden ghost illustrations"
+      />
+    </div>
 
-        <div class="cs-hero-copy">
-          <p class="cs-eyebrow">Case Study · 01</p>
-          <h1 class="cs-title">Boosting feature engagement through whimsical interventions</h1>
-          <p class="cs-hero-tags">Illustration&nbsp; ·&nbsp; Metrics analysis&nbsp; ·&nbsp; UX/UI&nbsp; ·&nbsp; User delight</p>
-        </div>
-
-        <div class="cs-hero-media">
-          <img
-            src="assets/ghost-hunt/desktop%20theme.png"
-            alt="Ghost Hunt campaign dashboard — 'Trick or treat, Margo?' desktop view with hidden ghost illustrations"
-            style="width:100%; display:block;"
-          />
-        </div>
-
-      </div>
+    <div class="cs-hero-copy reveal">
+      <p class="cs-eyebrow">Case Study · 01</p>
+      <h1 class="cs-title">Boosting feature engagement through whimsical interventions</h1>
+      <p class="cs-hero-tags">Illustration&nbsp; ·&nbsp; Metrics analysis&nbsp; ·&nbsp; UX/UI&nbsp; ·&nbsp; User delight</p>
     </div>
   </section>
 
@@ -1056,33 +986,6 @@
   </section>
 
   <!-- ░░ TWO-COLUMN BODY LAYOUT ░░ -->
-  <div class="cs-body-layout">
-
-    <div class="cs-nav-col">
-      <nav class="cs-side-nav" id="cs-side-nav" aria-label="Page sections">
-        <a href="#problem-solution" class="cs-side-link">
-          <span class="cs-side-dot" aria-hidden="true"></span>
-          <span class="cs-side-label">Problem &amp; Solution</span>
-        </a>
-        <span class="cs-side-seg" aria-hidden="true"></span>
-        <a href="#development" class="cs-side-link">
-          <span class="cs-side-dot" aria-hidden="true"></span>
-          <span class="cs-side-label">Development &amp; Implementation</span>
-        </a>
-        <span class="cs-side-seg" aria-hidden="true"></span>
-        <a href="#results" class="cs-side-link">
-          <span class="cs-side-dot" aria-hidden="true"></span>
-          <span class="cs-side-label">Results</span>
-        </a>
-        <span class="cs-side-seg" aria-hidden="true"></span>
-        <a href="#conclusion" class="cs-side-link">
-          <span class="cs-side-dot" aria-hidden="true"></span>
-          <span class="cs-side-label">Conclusion</span>
-        </a>
-      </nav>
-    </div><!-- /.cs-nav-col -->
-
-    <div class="cs-content-col">
 
   <div id="problem-solution">
 
@@ -1355,9 +1258,6 @@
 
   </div><!-- /#conclusion -->
 
-    </div><!-- /.cs-content-col -->
-  </div><!-- /.cs-body-layout -->
-
   <!-- ░░ NEXT-CASE BANNER ░░ -->
   <div class="cs-next-banner">
     <p class="cs-next-label">Wanna see more of my work?</p>
@@ -1460,33 +1360,6 @@
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') closeDropdown();
     });
-
-    /* ── Vertical side nav stepper ── */
-    (function () {
-      const sideLinks = Array.from(document.querySelectorAll('.cs-side-link'));
-      const sections  = ['problem-solution', 'development', 'results', 'conclusion']
-        .map(id => document.getElementById(id))
-        .filter(Boolean);
-
-      function updateStepper() {
-        const activeIdx = sideLinks.findIndex(l => l.classList.contains('in-view'));
-        sideLinks.forEach((l, i) => {
-          l.classList.remove('is-active', 'is-past');
-          if (i === activeIdx)    l.classList.add('is-active');
-          else if (i < activeIdx) l.classList.add('is-past');
-        });
-      }
-
-      const sectionObs = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          const link = document.querySelector(`.cs-side-link[href="#${entry.target.id}"]`);
-          if (link) link.classList.toggle('in-view', entry.isIntersecting);
-        });
-        updateStepper();
-      }, { threshold: 0 });
-
-      sections.forEach(s => sectionObs.observe(s));
-    }());
 
   </script>
 </body>
