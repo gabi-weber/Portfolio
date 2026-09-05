@@ -225,7 +225,8 @@
       position: relative;
       background: var(--case-dark);
       color: var(--color-white);
-      height: 600px;
+      /* 600px of banner BELOW the fixed nav, which floats over the dark. */
+      height: calc(var(--nav-h) + 600px);
       padding: 0;
       overflow: hidden;      /* clips the laptop's intentional right-edge bleed */
     }
@@ -237,7 +238,7 @@
     .cs-hero-group {
       position: absolute;
       left: 60px;
-      top: 52px;
+      top: calc(var(--nav-h) + 52px);   /* 52px below the nav, not below y=0 */
       width: 1405px;
       height: 419.06px;
     }
