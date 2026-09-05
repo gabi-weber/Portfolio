@@ -325,7 +325,7 @@ Two-column grid: `26fr 74fr`. Left: audience switcher (dot indicator, 5 options,
 
 | # | Title | Tags | Link |
 |---|---|---|---|
-| 01 | Gamifying Growth through Seasonal Delight | 💡 Engagement · 📣 Campaign · ✏️ Illustration · 🎨 Creative | ghost-hunt.html |
+| 01 | Boosting feature engagement through whimsical interventions | 💡 Engagement · 📣 Campaign · ✏️ Illustration · 🎨 Creative | ghost-hunt.html |
 | 02 | Redesigning the Reports Engine | 🔍 Discovery · 📊 Dashboard · 🤝 B2B · 📈 Scalability | reports.html |
 | 03 | Scaling Design Infrastructure | 🧩 Design System · 🌙 Dark Mode · 🏷️ Tokens · 📄 Documentation | tokens.html |
 | 04 | Thematic Expression at Scale | 🌿 Seasonal · ✏️ Illustration · 🎭 Identity · ✨ Delight | themes.html |
