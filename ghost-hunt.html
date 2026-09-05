@@ -6,7 +6,7 @@
   <title>Ghost Hunt — Gabi Weber</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=ABeeZee&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
 
     /* ═══════════════════════════════════════════
@@ -36,6 +36,7 @@
       --case-dark:     #250035;
 
       --font: 'Poppins', sans-serif;
+      --font-display: 'ABeeZee', sans-serif;   /* Header/1 */
       --nav-h: 64px;
     }
 
@@ -220,68 +221,89 @@
     /* ═══════════════════════════════════════════
        CASE HERO
     ═══════════════════════════════════════════ */
-    /* Positioned frame: every child is placed by coordinate, Figma-style.
-       Anchors to the viewport edges (60px), it does not centre on a max-width. */
     .cs-hero {
       position: relative;
       background: var(--case-dark);
       color: var(--color-white);
-      height: 520px;
+      height: 600px;
       padding: 0;
+      overflow: hidden;      /* clips the laptop's intentional right-edge bleed */
     }
 
-    /* Figma — Frame 1000002499 */
-    .cs-hero-copy {
+    /* Hero content group. Every child below is placed relative to THIS box,
+       so rescaling the whole composition later is one change here.
+       1405 wide from x=60 runs to x=1465, past a 1440 frame: the laptop
+       bleeding off the right edge is intentional. */
+    .cs-hero-group {
       position: absolute;
       left: 60px;
-      top: 161px;
+      top: 52px;
+      width: 1405px;
+      height: 419.06px;
+    }
+
+    /* Figma — Frame 1000002499. Vertically centred in the group. */
+    .cs-hero-copy {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
       width: 662px;
       z-index: 1;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      justify-content: center;
       padding: 0;
       gap: 20px;
     }
 
+    /* Copy ends at x=722, so the laptop starts 40px later at x=762 and runs
+       to the group's right edge (1465): 703 wide. Vertically centred. */
     .cs-hero-media {
       position: absolute;
-      right: 60px;
-      top: 104px;
-      width: 600px;
+      left: 702px;
+      top: 50%;
+      width: 703px;
+      transform: translateY(-50%);
     }
 
     .cs-hero-media img { width: 100%; display: block; }
 
+    /* body/2/regular */
     .cs-eyebrow {
       font-family: var(--font);
-      font-weight: 500;
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
+      font-weight: 400;
+      font-size: 16px;
       color: rgba(254, 250, 249, 0.55);
       margin-bottom: 0;
     }
 
+    /* Header/1 */
     .cs-title {
-      font-family: var(--font);
-      font-weight: 600;
-      font-size: 44px;       /* largest size that keeps the title to 2 lines at 662px */
-      letter-spacing: -0.5px;
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 40px;
       color: var(--color-white);
       line-height: 1.2;
       margin-bottom: 0;
     }
 
+    /* body/1/regular */
     .cs-hero-tags {
       font-family: var(--font);
       font-weight: 400;
-      font-size: 15px;
+      font-size: 20px;
       color: rgba(254, 250, 249, 0.65);
       line-height: 1.6;
     }
 
-    /* Decorative ghosts — hero only */
+    /* Decorative ghosts — hero only.
+       Figma gives X/Y as the ROTATED bounding box's top-left; CSS rotates about
+       the centre, so left/top below are back-solved as
+         left = X - groupX + (bboxW - w) / 2   (same for top)
+       Figma rotation is counter-clockwise-positive, CSS is clockwise-positive,
+       so the angle is negated. */
     .cs-hero-ghost {
       position: absolute;
       z-index: 0;
@@ -289,17 +311,23 @@
       user-select: none;
     }
 
+    /* Figma: X 226, Y 52, W 110.35, H 70.63, rotation -30.26° */
     .cs-hero-ghost-sm {
-      top: 70px;
-      left: 30px;
-      width: 110px;
+      left: 176.28px;
+      top: 22.99px;
+      width: 110.35px;
+      height: 70.63px;
+      transform: rotate(30.26deg);
     }
 
+    /* Figma: X 596, Y 335, W 82.49, H 109.39, rotation 30.28° */
     .cs-hero-ghost-lg {
-      z-index: 2;            /* sits over the laptop, still under the metric cards */
-      bottom: 4px;
-      right: 600px;
-      width: 160px;
+      z-index: 2;            /* over the laptop, still under the metric cards */
+      left: 557.95px;
+      top: 296.33px;
+      width: 82.49px;
+      height: 109.39px;
+      transform: rotate(-30.28deg);
     }
 
     .cs-meta-label {
@@ -828,12 +856,17 @@
         padding: calc(var(--nav-h) + 48px) 24px 48px;
       }
 
+      .cs-hero-group,
       .cs-hero-copy,
       .cs-hero-media {
         position: static;
         width: auto;
+        height: auto;
+        transform: none;
         margin-top: 32px;
       }
+
+      .cs-hero-group { margin-top: 0; }
 
       .cs-hero-copy { margin-top: 0; }
       .cs-title     { font-size: 32px; }
@@ -911,31 +944,34 @@
 
   <!-- ░░ HERO ░░ -->
   <section class="cs-hero">
+    <div class="cs-hero-group">
 
-    <img
-      src="assets/ghost-hunt/Ghoulfashioned.png"
-      alt=""
-      aria-hidden="true"
-      class="cs-hero-ghost cs-hero-ghost-sm"
-    />
-    <img
-      src="assets/ghost-hunt/Phantom%20fizz.png"
-      alt=""
-      aria-hidden="true"
-      class="cs-hero-ghost cs-hero-ghost-lg"
-    />
-
-    <div class="cs-hero-media">
       <img
-        src="assets/ghost-hunt/desktop%20theme.png"
-        alt="Ghost Hunt campaign dashboard — 'Trick or treat, Margo?' desktop view with hidden ghost illustrations"
+        src="assets/ghost-hunt/Ghoulfashioned.png"
+        alt=""
+        aria-hidden="true"
+        class="cs-hero-ghost cs-hero-ghost-sm"
       />
-    </div>
+      <img
+        src="assets/ghost-hunt/Pina%20ghoulada.png"
+        alt=""
+        aria-hidden="true"
+        class="cs-hero-ghost cs-hero-ghost-lg"
+      />
 
-    <div class="cs-hero-copy reveal">
-      <p class="cs-eyebrow">Case Study · 01</p>
-      <h1 class="cs-title">Boosting feature engagement through whimsical interventions</h1>
-      <p class="cs-hero-tags">Illustration&nbsp; ·&nbsp; Metrics analysis&nbsp; ·&nbsp; UX/UI&nbsp; ·&nbsp; User delight</p>
+      <div class="cs-hero-media">
+        <img
+          src="assets/ghost-hunt/desktop%20theme.png"
+          alt="Ghost Hunt campaign dashboard — 'Trick or treat, Margo?' desktop view with hidden ghost illustrations"
+        />
+      </div>
+
+      <div class="cs-hero-copy reveal">
+        <p class="cs-eyebrow">Case study · 01</p>
+        <h1 class="cs-title">Boosting feature engagement through whimsical interventions</h1>
+        <p class="cs-hero-tags">Illustration&nbsp; ·&nbsp; Metrics analysis&nbsp; ·&nbsp; UX/UI&nbsp; ·&nbsp; User delight</p>
+      </div>
+
     </div>
   </section>
 
