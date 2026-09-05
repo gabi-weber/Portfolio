@@ -194,6 +194,9 @@
       display: block;
     }
 
+    /* Looping mockup video — keep the intrinsic ratio, never a fixed height */
+    video.cs-img { height: auto; }
+
     /* Infinite light/dark crossfade — two stacked stills, no JS */
     .cs-crossfade { position: relative; }
     .cs-crossfade .cs-img { display: block; width: 100%; }
@@ -447,6 +450,8 @@
     /* img-left: image order 1, text order 2 */
     .cs-dev-row.img-left .cs-dev-image { order: 1; }
     .cs-dev-row.img-left .cs-dev-text  { order: 2; }
+
+    .cs-section-title-follow { margin-top: 40px; }
 
     .cs-subsection-title {
       font-family: var(--font);
@@ -1081,19 +1086,25 @@
 
   <div id="problem-solution">
 
-  <!-- ░░ PROBLEM ░░ -->
-  <section class="cs-text-section" id="problem">
-    <div class="cs-text-inner reveal">
-      <h2 class="cs-section-title">Problem</h2>
-      <p class="cs-body">After eighteen months in production, data showed that several key features on the platform remained underutilized. These touchpoints were critical for operational efficiency, and the product team aimed to increase adoption to improve the overall staff experience. However, internal business rules prohibited mandating usage (the "stick" approach), so we had to find an organic, incentive-based ("carrot") way to drive interactions.</p>
-    </div>
-  </section>
+  <!-- ░░ PROBLEM & SOLUTION ░░ -->
+  <section class="cs-dev-section">
+    <div class="cs-dev-inner">
 
-  <!-- ░░ SOLUTION ░░ -->
-  <section class="cs-text-section" id="solution" style="padding-top:0;">
-    <div class="cs-text-inner reveal">
-      <h2 class="cs-section-title">Solution</h2>
-      <p class="cs-body">With Halloween approaching, the design team proposed a seasonal campaign to guide users toward these features — including the upcoming "Dark Mode" release. We launched an omni-channel campaign consisting of a series of timed emails and five hidden "ghosts" placed strategically near high-value, low-usage components. Each ghost was introduced via email with a unique backstory, transforming a standard UI task into a narrative-driven "hunt."</p>
+      <div class="cs-dev-row img-left reveal">
+        <div class="cs-dev-image">
+          <video class="cs-img" width="456" height="908" autoplay muted loop playsinline preload="auto">
+            <source src="assets/ghost-hunt/Animation/Modal%20with%20clicker.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="cs-dev-text">
+          <h2 class="cs-section-title" id="problem">Problem</h2>
+          <p class="cs-body">After eighteen months in production, data showed that several key features on the platform remained underutilized. These touchpoints were critical for operational efficiency, and the product team aimed to increase adoption to improve the overall staff experience. However, internal business rules prohibited mandating usage (the "stick" approach), so we had to find an organic, incentive-based ("carrot") way to drive interactions.</p>
+
+          <h2 class="cs-section-title cs-section-title-follow" id="solution">Solution</h2>
+          <p class="cs-body">With Halloween approaching, the design team proposed a seasonal campaign to guide users toward these features — including the upcoming "Dark Mode" release. We launched an omni-channel campaign consisting of a series of timed emails and five hidden "ghosts" placed strategically near high-value, low-usage components. Each ghost was introduced via email with a unique backstory, transforming a standard UI task into a narrative-driven "hunt."</p>
+        </div>
+      </div>
+
     </div>
   </section>
 
