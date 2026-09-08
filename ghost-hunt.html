@@ -34,6 +34,8 @@
 
       /* page-scoped: case hero dark surface */
       --case-dark:     #250035;
+      /* gray/200 from Mode 1.tokens.json — hero secondary copy on the dark banner */
+      --gray-200:      #DFE2E2;
 
       --font: 'Poppins', sans-serif;
       --font-display: 'ABeeZee', sans-serif;   /* Header/1 */
@@ -231,6 +233,18 @@
       overflow: hidden;      /* clips the laptop's intentional right-edge bleed */
     }
 
+    /* Page-bg band exactly as tall as the nav. The nav is translucent, so at
+       scroll-top this is what shows through it: the blush strip from the
+       Figma frame, with the dark banner starting right below it. */
+    .cs-hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: var(--color-bg);
+      z-index: 0;
+    }
+
     /* Hero content group. Every child below is placed relative to THIS box,
        so rescaling the whole composition later is one change here.
        1405 wide from x=60 runs to x=1465, past a 1440 frame: the laptop
@@ -276,7 +290,7 @@
       font-family: var(--font);
       font-weight: 400;
       font-size: 16px;
-      color: rgba(254, 250, 249, 0.55);
+      color: var(--gray-200);
       margin-bottom: 0;
     }
 
@@ -295,7 +309,7 @@
       font-family: var(--font);
       font-weight: 400;
       font-size: 20px;
-      color: rgba(254, 250, 249, 0.65);
+      color: var(--gray-200);
       line-height: 1.6;
     }
 
