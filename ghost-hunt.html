@@ -34,8 +34,10 @@
 
       /* page-scoped: case hero dark surface */
       --case-dark:     #250035;
-      /* gray/200 from Mode 1.tokens.json — hero secondary copy on the dark banner */
-      --gray-200:      #DFE2E2;
+      /* gray ramp from Mode 1.tokens.json */
+      --gray-200:      #DFE2E2;   /* hero secondary copy on the dark banner */
+      --gray-500:      #717272;   /* overview meta labels */
+      --gray-700:      #2D2D2D;   /* overview body + meta values */
 
       --font: 'Poppins', sans-serif;
       --font-display: 'ABeeZee', sans-serif;   /* Header/1 */
@@ -345,22 +347,23 @@
       transform: rotate(-30.28deg);
     }
 
+    /* body/3/bold */
     .cs-meta-label {
       font-family: var(--font);
-      font-weight: 500;
-      font-size: 11px;
-      letter-spacing: 0.12em;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 21px;
       text-transform: uppercase;
-      color: var(--color-muted);
-      margin-bottom: 6px;
+      color: var(--gray-500);
     }
 
+    /* body/2/regular */
     .cs-meta-value {
       font-family: var(--font);
       font-weight: 400;
-      font-size: 15px;
-      color: var(--color-text);
-      line-height: 1.5;
+      font-size: 16px;
+      line-height: 24px;
+      color: var(--gray-700);
     }
 
     /* ═══════════════════════════════════════════
@@ -391,28 +394,60 @@
     /* ═══════════════════════════════════════════
        OVERVIEW — intro paragraph + project meta
     ═══════════════════════════════════════════ */
+    /* 60px page margin on a 1440 frame → 1320px content row. */
     .cs-overview {
-      padding: 0 48px 72px;
+      padding: 0 60px 72px;
     }
 
     .cs-overview-inner {
-      max-width: 1200px;
+      max-width: 1320px;
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 64px;
-      align-items: start;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 71px;
     }
 
-    .cs-overview-text { max-width: 560px; }
+    /* body/1/regular */
+    .cs-overview-text {
+      flex: 0 1 668px;
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 30px;
+      color: var(--gray-700);
+    }
 
+    /* Frame 1000002506 — the meta stack. Figma says 541, but its Deliverables
+       child is 544 and overflows the frame; 544 here keeps that line unwrapped. */
     .cs-meta-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 32px 40px;
+      flex: 0 1 544px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
     }
 
-    .cs-meta-grid .cs-meta-item:nth-child(3) { grid-column: 1 / -1; }
+    /* Frame 1000002507 — Role + Timeline side by side */
+    .cs-meta-row {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 40px;
+      width: 100%;
+    }
+
+    .cs-meta-item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+
+    .cs-meta-row .cs-meta-item:first-child { flex: 1 1 275px; }
+    .cs-meta-row .cs-meta-item:last-child  { flex: none; width: 75px; }
+    .cs-meta-grid > .cs-meta-item          { width: 100%; }
 
     .cs-metric-number {
       font-family: var(--font);
@@ -906,9 +941,21 @@
       }
 
       .cs-overview-inner {
-        grid-template-columns: 1fr;
+        flex-direction: column;
+        align-items: flex-start;
         gap: 32px;
       }
+
+      .cs-overview-text { flex: none; width: 100%; font-size: 18px; line-height: 28px; }
+      .cs-meta-grid     { flex: none; width: 100%; }
+
+      .cs-meta-row {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .cs-meta-row .cs-meta-item:first-child,
+      .cs-meta-row .cs-meta-item:last-child { flex: none; width: 100%; }
 
       .cs-metric-number { font-size: 40px; }
 
@@ -1016,16 +1063,18 @@
   <section class="cs-overview">
     <div class="cs-overview-inner reveal">
 
-      <p class="cs-body cs-overview-text">Throughout the year, a company managing 1,500+ employees across North America released seasonal themes to drive platform affinity. This project introduced a "ghost hunt" gamification layer to boost adoption of underused mobile features.</p>
+      <p class="cs-overview-text">Throughout the year, a company managing 1,500+ employees across North America released seasonal themes to drive platform affinity. This project introduced a "ghost hunt" gamification layer to boost adoption of underused mobile features.</p>
 
       <div class="cs-meta-grid">
-        <div class="cs-meta-item">
-          <p class="cs-meta-label">Role</p>
-          <p class="cs-meta-value">Product Designer &amp; Lead Illustrator</p>
-        </div>
-        <div class="cs-meta-item">
-          <p class="cs-meta-label">Timeline</p>
-          <p class="cs-meta-value">2 months</p>
+        <div class="cs-meta-row">
+          <div class="cs-meta-item">
+            <p class="cs-meta-label">Role</p>
+            <p class="cs-meta-value">Product Designer &amp; Lead Illustrator</p>
+          </div>
+          <div class="cs-meta-item">
+            <p class="cs-meta-label">Timeline</p>
+            <p class="cs-meta-value">2 months</p>
+          </div>
         </div>
         <div class="cs-meta-item">
           <p class="cs-meta-label">Deliverables</p>
