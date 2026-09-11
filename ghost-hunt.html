@@ -370,7 +370,7 @@
        METRIC CARDS
     ═══════════════════════════════════════════ */
     .cs-metrics {
-      padding: 0 48px 80px;
+      padding: 0 48px 120px;
     }
 
     .cs-metrics-inner {
@@ -396,7 +396,7 @@
     ═══════════════════════════════════════════ */
     /* 60px page margin on a 1440 frame → 1320px content row. */
     .cs-overview {
-      padding: 0 60px 72px;
+      padding: 0 60px 120px;
     }
 
     .cs-overview-inner {
@@ -499,6 +499,370 @@
     .cs-body + .cs-body { margin-top: 16px; }
 
     /* ═══════════════════════════════════════════
+       PROBLEM & SOLUTION — Frame 1000002511
+       874px row: 318px phone mock + 127px gap + 429px copy column.
+    ═══════════════════════════════════════════ */
+    .cs-ps {
+      padding: 0 60px 120px;
+    }
+
+    .cs-ps-inner {
+      max-width: 874px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 127px;
+    }
+
+    /* "Check in" phone mock — Figma's 318px scaled to 90% so the full mock
+       fits an average viewport height. Ratio is intrinsic to the video. */
+    .cs-ps-media {
+      flex: 0 0 287px;
+      width: 287px;
+    }
+
+    /* Frame 1000002510 — the copy column */
+    .cs-ps-text {
+      flex: 1 1 429px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 52px;
+    }
+
+    /* Frame 1000002500 / 1000002505 — title + body pair */
+    .cs-ps-block {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+
+    /* body/1/bold */
+    .cs-ps-title {
+      align-self: stretch;
+      font-family: var(--font);
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 30px;
+      color: var(--gray-500);
+    }
+
+    /* body/2/regular */
+    .cs-ps-body {
+      align-self: stretch;
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      letter-spacing: 0.04em;
+      color: var(--gray-700);
+    }
+
+    /* 874px frame + 2x60px page margin = 994px. Below that the 127px gap and the
+       318px mock leave the copy column too narrow, so stack instead of squeeze. */
+    @media (max-width: 994px) {
+      .cs-ps-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 52px;
+      }
+      .cs-ps-media { flex: none; width: 100%; max-width: 287px; }
+      /* stacked, the column would otherwise run to 840px — keep the measure readable */
+      .cs-ps-text  { flex: none; width: 100%; max-width: 65ch; }
+    }
+
+    /* ═══════════════════════════════════════════
+       SCREENS CAROUSEL
+       Self-contained: every rule below is scoped to .cs-screens*,
+       so the block can move or be removed as one unit.
+       No heading — the screens carry the section on their own.
+    ═══════════════════════════════════════════ */
+    .cs-screens {
+      padding: 0 60px 120px;
+
+      /* 287px is the phone-mock width the Problem/Solution and Process
+         sections already use, so all three read at one scale. */
+      --screen-w:     272.65px;  /* 5% under the 287px phone mock */
+      --screen-h:     calc(var(--screen-w) * 1561 / 761);
+      --screen-shift: 223.25px;  /* how far the flanking screens sit out */
+      --screen-scale: 0.82;
+      --screen-dim:   0.42;
+    }
+
+    .cs-screens-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* The whole carousel is one tab stop driven by the arrow keys;
+       the dots below it stay individually reachable. */
+    .cs-screens-carousel:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 12px;
+      border-radius: 12px;
+    }
+
+    .cs-screens-stage {
+      position: relative;
+      height: var(--screen-h);
+      overflow: hidden;     /* lets the flanking screens bleed off narrow viewports */
+      touch-action: pan-y;  /* horizontal swipes are ours, vertical scroll is the page's */
+    }
+
+    .cs-screens-slide {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: var(--screen-w);
+      height: 100%;
+      margin-left: calc(var(--screen-w) / -2);
+      transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity   520ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .cs-screens-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      border-radius: 12px;
+    }
+
+    /* Position is a function of distance from the active slide, so the
+       transition between any two states falls out of the same four rules. */
+    .cs-screens-slide[data-offset="0"] {
+      transform: translateX(0) scale(1);
+      opacity: 1;
+      z-index: 3;
+    }
+
+    .cs-screens-slide[data-offset="-1"],
+    .cs-screens-slide[data-offset="1"] {
+      opacity: var(--screen-dim);
+      z-index: 2;
+      cursor: pointer;
+    }
+
+    .cs-screens-slide[data-offset="-1"]:hover,
+    .cs-screens-slide[data-offset="1"]:hover {
+      opacity: 0.68;
+    }
+
+    .cs-screens-slide[data-offset="-1"] {
+      transform: translateX(calc(var(--screen-shift) * -1)) scale(var(--screen-scale));
+    }
+
+    .cs-screens-slide[data-offset="1"] {
+      transform: translateX(var(--screen-shift)) scale(var(--screen-scale));
+    }
+
+    /* Everything further out waits off-stage so it can travel in. */
+    .cs-screens-slide[data-offset="-2"],
+    .cs-screens-slide[data-offset="2"] {
+      opacity: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .cs-screens-slide[data-offset="-2"] {
+      transform: translateX(calc(var(--screen-shift) * -1.6)) scale(0.68);
+    }
+
+    .cs-screens-slide[data-offset="2"] {
+      transform: translateX(calc(var(--screen-shift) * 1.6)) scale(0.68);
+    }
+
+    .cs-screens-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 32px;
+    }
+
+    /* 24px hit target around a 10px dot — real button, not a styled span. */
+    .cs-screens-dot {
+      width: 24px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+      background: none;
+      cursor: pointer;
+    }
+
+    .cs-screens-dot::after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--color-border);
+      transition: background-color 200ms ease;
+    }
+
+    .cs-screens-dot[aria-current="true"]::after { background: var(--color-primary); }
+    .cs-screens-dot:hover::after               { background: var(--color-primary); }
+
+    .cs-screens-dot:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 0;
+    }
+
+    /* Live region: announced, never seen. */
+    .cs-screens-status {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cs-screens-slide { transition: none; }
+    }
+
+    @media (max-width: 768px) {
+      .cs-screens {
+        padding: 0 24px 80px;
+        --screen-w:     199.5px;
+        --screen-shift: 133px;
+      }
+      .cs-screens-dots { margin-top: 24px; }
+    }
+
+    /* ═══════════════════════════════════════════
+       KPI TRIO — Frame 1000002520
+       1098px row: 729px email column + 32px gap + 337px copy column,
+       both stretched to the 514px the email column stands up.
+    ═══════════════════════════════════════════ */
+    .cs-kpi {
+      padding: 0 60px 120px;
+    }
+
+    .cs-kpi-inner {
+      max-width: 1098px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 32px;
+    }
+
+    /* Frame 1000002521 — email over its caption */
+    .cs-kpi-figure {
+      /* Figma pins this at 729px; allowing shrink keeps the 729/337
+         proportion below the 1218px viewport the frame assumes. */
+      flex: 0 1 729px;
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin: 0;
+    }
+
+    /* 729x478 at the design width, which is the file's own 2520x1652
+       ratio, so no crop and no fixed height. */
+    .cs-kpi-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 20px;
+    }
+
+    /* body/2/regular, centred */
+    .cs-kpi-caption {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      letter-spacing: 0.04em;
+      color: var(--gray-700);
+      text-align: center;
+      margin: 0;
+    }
+
+    /* Frame 1000002519 — the three results, spread over the full height */
+    .cs-kpi-list {
+      flex: 1 1 337px;
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 0 0 36px;
+      gap: 28px;   /* the floor; space-between opens it up to ~77px */
+    }
+
+    /* Frames 1000002516 / 17 / 18 — title + body pair */
+    .cs-kpi-block {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    /* body/1/bold */
+    .cs-kpi-title {
+      align-self: stretch;
+      font-family: var(--font);
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 30px;
+      color: var(--gray-700);
+    }
+
+    /* body/2/regular */
+    .cs-kpi-body {
+      align-self: stretch;
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      letter-spacing: 0.04em;
+      color: var(--gray-700);
+    }
+
+    /* The frame wants 1098px + the 60px page margins. Below that the copy
+       column shrinks with the row, and past ~1100px it is too narrow to
+       read, so stack rather than squeeze. */
+    @media (max-width: 1100px) {
+      .cs-kpi-inner {
+        flex-direction: column;
+        gap: 56px;
+      }
+      .cs-kpi-figure {
+        flex: none;
+        width: 100%;
+        max-width: 729px;
+        align-self: center;
+      }
+      .cs-kpi-list {
+        flex: none;
+        width: 100%;
+        align-self: stretch;
+        justify-content: flex-start;
+        padding-bottom: 0;
+        gap: 44px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .cs-kpi { padding: 0 24px 80px; }
+    }
+
+    /* ═══════════════════════════════════════════
        DEVELOPMENT & IMPLEMENTATION
     ═══════════════════════════════════════════ */
     .cs-dev-section {
@@ -540,7 +904,6 @@
     .cs-dev-row.img-left .cs-dev-image { order: 1; }
     .cs-dev-row.img-left .cs-dev-text  { order: 2; }
 
-    .cs-section-title-follow { margin-top: 40px; }
 
     .cs-subsection-title {
       font-family: var(--font);
@@ -920,8 +1283,9 @@
 
       .cs-hero-copy { margin-top: 0; }
       .cs-title     { font-size: 32px; }
-      .cs-metrics   { padding: 0 24px 56px; }
-      .cs-overview  { padding: 0 24px 56px; }
+      .cs-metrics   { padding: 0 24px 80px; }
+      .cs-overview  { padding: 0 24px 80px; }
+      .cs-ps        { padding: 0 24px 80px; }
       .cs-text-section { padding: 56px 24px; }
       .cs-dev-section  { padding: 56px 24px 0; }
       .cs-ghosts    { padding: 72px 24px; }
@@ -1090,21 +1454,24 @@
   <div id="problem-solution">
 
   <!-- ░░ PROBLEM & SOLUTION ░░ -->
-  <section class="cs-dev-section">
-    <div class="cs-dev-inner">
+  <section class="cs-ps">
+    <div class="cs-ps-inner reveal">
 
-      <div class="cs-dev-row img-left reveal">
-        <div class="cs-dev-image">
-          <video class="cs-img" width="456" height="908" autoplay muted loop playsinline preload="auto">
-            <source src="assets/ghost-hunt/Animation/Modal%20with%20clicker.mp4" type="video/mp4">
-          </video>
+      <div class="cs-ps-media">
+        <video class="cs-img" width="456" height="908" autoplay muted loop playsinline preload="auto">
+          <source src="assets/ghost-hunt/Animation/Modal%20with%20clicker.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <div class="cs-ps-text">
+        <div class="cs-ps-block">
+          <h2 class="cs-ps-title" id="problem">Problem</h2>
+          <p class="cs-ps-body">Data showed that several key features sat underused after 18 months live. These touchpoints were critical for operational efficiency, but business rules forbid mandating usage, so we needed an incentive-based way to drive interactions.</p>
         </div>
-        <div class="cs-dev-text">
-          <h2 class="cs-section-title" id="problem">Problem</h2>
-          <p class="cs-body">After eighteen months in production, data showed that several key features on the platform remained underutilized. These touchpoints were critical for operational efficiency, and the product team aimed to increase adoption to improve the overall staff experience. However, internal business rules prohibited mandating usage (the "stick" approach), so we had to find an organic, incentive-based ("carrot") way to drive interactions.</p>
 
-          <h2 class="cs-section-title cs-section-title-follow" id="solution">Solution</h2>
-          <p class="cs-body">With Halloween approaching, the design team proposed a seasonal campaign to guide users toward these features — including the upcoming "Dark Mode" release. We launched an omni-channel campaign consisting of a series of timed emails and five hidden "ghosts" placed strategically near high-value, low-usage components. Each ghost was introduced via email with a unique backstory, transforming a standard UI task into a narrative-driven "hunt."</p>
+        <div class="cs-ps-block">
+          <h2 class="cs-ps-title" id="solution">Solution</h2>
+          <p class="cs-ps-body">With Halloween approaching, the design team proposed a seasonal campaign to guide users toward these features, including the upcoming "Dark Mode" release. We launched an omni-channel campaign consisting of a series of timed emails and five hidden "ghosts" placed strategically near high-value, low-usage components. Each ghost was introduced via email with a unique backstory, transforming a standard UI task into a narrative-driven "hunt."</p>
         </div>
       </div>
 
@@ -1113,250 +1480,115 @@
 
   </div><!-- /#problem-solution -->
 
-  <div id="development">
+  <div id="process">
 
-  <!-- ░░ DEVELOPMENT & IMPLEMENTATION ░░ -->
-  <section class="cs-dev-section">
-    <div class="cs-dev-inner">
+  <!-- ░░ PROCESS — same frame as Problem & Solution, copy left / asset right ░░ -->
+  <section class="cs-ps">
+    <div class="cs-ps-inner reveal">
 
-      <div class="cs-dev-header reveal">
-        <p class="cs-dev-eyebrow">Process</p>
-        <h2 class="cs-section-title">Development &amp; Implementation</h2>
+      <div class="cs-ps-text">
+        <div class="cs-ps-block">
+          <h2 class="cs-ps-title">Process</h2>
+          <p class="cs-ps-body">Illustrations were locked by mid-September, and, as lead illustrator, I owned the ghosts' visual identity and backstory copy while shaping the campaign flow with the team. The seasonal theme itself launched across both desktop and mobile, but the hunt was mobile-only, since a strict two-week build window meant trading cross-platform reach for execution quality on a single, high-traffic surface. We also used the campaign's traffic spike to pull forward the Dark Mode release, making the "Dark Mode Toggle" the hunt's final destination.</p>
+        </div>
       </div>
 
-      <!-- Thematic Foundation — text left, image right -->
-      <div class="cs-dev-row img-right reveal">
-        <div class="cs-dev-text">
-          <h3 class="cs-subsection-title">Thematic Foundation</h3>
-          <p class="cs-body">Throughout 2026 our platform had seasonal theme releases, and Halloween would be combined with Día de los Muertos, with the campaign expanding from October 20th to November 3rd. I finished illustrating all elements by mid-September and the placements were decided not long after that.</p>
+      <div class="cs-ps-media">
+        <div class="cs-crossfade">
+          <img
+            src="assets/ghost-hunt/Footer%20dark.png"
+            alt="Ghost Hunt dark mode toggle screen"
+            class="cs-img"
+          />
+          <img
+            src="assets/ghost-hunt/Footer%20light.png"
+            alt="Ghost Hunt light mode toggle screen"
+            class="cs-img cs-crossfade-top"
+          />
         </div>
-        <div class="cs-dev-image">
-          <div class="cs-crossfade">
-            <img
-              src="assets/ghost-hunt/Footer%20dark.png"
-              alt="Ghost Hunt dark mode toggle screen"
-              class="cs-img"
-            />
-            <img
-              src="assets/ghost-hunt/Footer%20light.png"
-              alt="Ghost Hunt light mode toggle screen"
-              class="cs-img cs-crossfade-top"
-            />
+      </div>
+
+    </div>
+  </section>
+
+  </div><!-- /#process -->
+
+  <!-- ░░ SCREENS CAROUSEL ░░ -->
+  <section class="cs-screens" id="screens">
+    <div class="cs-screens-inner reveal">
+
+      <div
+        class="cs-screens-carousel"
+        id="screens-carousel"
+        role="group"
+        aria-roledescription="carousel"
+        aria-label="Ghost Hunt screens"
+        tabindex="0"
+        aria-keyshortcuts="ArrowLeft ArrowRight"
+      >
+
+        <div class="cs-screens-stage" data-screens-stage>
+          <div class="cs-screens-slide">
+            <img src="assets/ghost-hunt/Screens/Add%20photo.png" alt="Ghost Hunt screen 1" />
+          </div>
+          <div class="cs-screens-slide">
+            <img src="assets/ghost-hunt/Screens/Check%20in.png" alt="Ghost Hunt screen 2" />
+          </div>
+          <div class="cs-screens-slide">
+            <img src="assets/ghost-hunt/Screens/Task.png" alt="Ghost Hunt screen 3" />
+          </div>
+          <div class="cs-screens-slide">
+            <img src="assets/ghost-hunt/Screens/Change%20profile.png" alt="Ghost Hunt screen 4" />
+          </div>
+          <div class="cs-screens-slide">
+            <img src="assets/ghost-hunt/Screens/Dark%20mode.png" alt="Ghost Hunt screen 5" />
           </div>
         </div>
-      </div>
 
-      <!-- Ideation & Strategy — image left, text right -->
-      <div class="cs-dev-row img-left reveal">
-        <div class="cs-dev-image">
-          <img
-            src="assets/ghost-hunt/Task.png"
-            alt="Task planning board showing the campaign strategy and feature breakdown"
-            class="cs-img"
-            onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\'></div>')"
-          />
-        </div>
-        <div class="cs-dev-text">
-          <h3 class="cs-subsection-title">Ideation &amp; Strategy</h3>
-          <p class="cs-body">During a stakeholder meeting, a concern was raised regarding the underutilization of features like "Event Check-in" and "Task Management." Since adherence relied heavily on manager encouragement rather than system requirements, the design team suggested using the seasonal theme as an awareness vehicle. As the lead illustrator and designer for the ghosts, I was responsible for the visual identity of the campaign, while collaborating with the team to architect the campaign flow, define the UX copy for the ghost backstories, and create the technical documentation for precise asset placement. The team also pitched to stakeholders together, securing full creative autonomy for the campaign.</p>
-        </div>
-      </div>
+        <div class="cs-screens-dots" data-screens-dots></div>
 
-      <!-- Scaling — text left, image right -->
-      <div class="cs-dev-row img-right reveal">
-        <div class="cs-dev-text">
-          <h3 class="cs-subsection-title">Scaling</h3>
-          <p class="cs-body">Initially, we planned for a cross-platform campaign, since the theme would be launched for both app and desktop. However, after consulting with the engineering team, we opted to focus only on mobile, given the strict two-week production window. This allowed us to maximize impact within a smaller, more controlled user pool while ensuring high-quality execution.</p>
-        </div>
-        <div class="cs-dev-image">
-          <img
-            src="assets/ghost-hunt/One%20pager.png"
-            alt="One-pager document used to align stakeholders on campaign scope and timeline"
-            class="cs-img"
-            onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\'></div>')"
-          />
-        </div>
-      </div>
+        <p class="cs-screens-status" aria-live="polite" data-screens-status></p>
 
-      <!-- Implementation — image left (2x2 grid), text right -->
-      <div class="cs-dev-row img-left reveal">
-        <div class="cs-dev-image">
-          <div class="cs-feature-grid">
-            <img
-              src="assets/ghost-hunt/Add%20photo.png"
-              alt="Add Photo feature — ghost clue hidden in the profile photo upload flow"
-              onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\'></div>')"
-            />
-            <img
-              src="assets/ghost-hunt/Check%20in.png"
-              alt="Check In feature — ghost clue surfaced through the check-in interaction"
-              onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\'></div>')"
-            />
-            <img
-              src="assets/ghost-hunt/Change%20profile.png"
-              alt="Change Profile feature — ghost clue tied to the profile customization flow"
-              onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\'></div>')"
-            />
-            <img
-              src="assets/ghost-hunt/Dark%20mode.png"
-              alt="Dark Mode feature — ghost clue rewarding users who discovered dark mode"
-              onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\'></div>')"
-            />
-          </div>
-        </div>
-        <div class="cs-dev-text">
-          <h3 class="cs-subsection-title">Implementation</h3>
-          <p class="cs-body">By analyzing our product analytics, we identified four high-impact features with the lowest engagement. To maintain the "hunt" integrity, we established a specific feedback loop: when a user discovered a ghost, a modal appeared revealing its unique backstory. Once closed, the ghost would disappear, ensuring a one-time interaction that felt like a genuine "find." We also decided to leverage this high-traffic moment to launch Dark Mode, making the Dark Mode Toggle the final destination of the campaign.</p>
-          <ul class="cs-feature-list">
-            <li class="cs-feature-item">
-              <span class="cs-feature-bullet" aria-hidden="true"></span>
-              <div>
-                <span class="cs-feature-name">Add Photo</span>
-                <span class="cs-feature-desc">Direct media uploads from the field — a key operational touchpoint that had seen minimal voluntary use.</span>
-              </div>
-            </li>
-            <li class="cs-feature-item">
-              <span class="cs-feature-bullet" aria-hidden="true"></span>
-              <div>
-                <span class="cs-feature-name">Check In</span>
-                <span class="cs-feature-desc">Real-time tracking of arrival at events — critical for operational efficiency but consistently skipped by staff.</span>
-              </div>
-            </li>
-            <li class="cs-feature-item">
-              <span class="cs-feature-bullet" aria-hidden="true"></span>
-              <div>
-                <span class="cs-feature-name">Change Profile</span>
-                <span class="cs-feature-desc">Account personalization via profile photo — a low-friction action that drives platform identity and belonging.</span>
-              </div>
-            </li>
-            <li class="cs-feature-item">
-              <span class="cs-feature-bullet" aria-hidden="true"></span>
-              <div>
-                <span class="cs-feature-name">Dark Mode</span>
-                <span class="cs-feature-desc">The final destination of the campaign — pulled forward from the release schedule to coincide with the ghost hunt and reward the most engaged users.</span>
-              </div>
-            </li>
-          </ul>
-        </div>
       </div>
 
     </div>
   </section>
 
-  <!-- ░░ MEET THE GHOSTS ░░ -->
-  <section class="cs-ghosts">
-    <div class="cs-ghosts-inner">
+  <!-- ░░ KPI TRIO ░░ -->
+  <section class="cs-kpi" id="results">
+    <div class="cs-kpi-inner reveal">
 
-      <div class="cs-ghosts-header reveal">
-        <h2 class="cs-section-title">Meet the Ghosts</h2>
-      </div>
-      <p class="cs-ghosts-intro reveal">Each ghost had its own unique personality, matched to where they would be hiding. Their names are a spookification of drink-related words.</p>
+      <figure class="cs-kpi-figure">
+        <img
+          src="assets/ghost-hunt/Email%20card.png"
+          alt="Campaign email introducing the five ghosts to users"
+          class="cs-kpi-image"
+          loading="lazy"
+        />
+        <figcaption class="cs-kpi-caption">Email send to users presenting the ghosts</figcaption>
+      </figure>
 
-      <div class="cs-ghost-row reveal">
+      <div class="cs-kpi-list">
 
-        <div class="cs-ghost-item">
-          <img
-            src="assets/ghost-hunt/Apparition%20spiritz.png"
-            alt="Apparition Spiritz ghost character illustration"
-            class="cs-ghost-img"
-            onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\' style=\'aspect-ratio:1/1;max-width:180px;\'></div>')"
-          />
-          <p class="cs-ghost-name">Apparition Spiritz</p>
-          <p class="cs-ghost-backstory">A nurturing ghost who encourages the newest team members, leaving them encouraging little messages.</p>
+        <div class="cs-kpi-block">
+          <h2 class="cs-kpi-title">Adoption Spike</h2>
+          <p class="cs-kpi-body">All five targeted features saw increased engagement, with "Edit Profile" seeing a 550% boost.</p>
         </div>
 
-        <div class="cs-ghost-item">
-          <img
-            src="assets/ghost-hunt/Boourbon.png"
-            alt="Boourbon ghost character illustration"
-            class="cs-ghost-img"
-            onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\' style=\'aspect-ratio:1/1;max-width:180px;\'></div>')"
-          />
-          <p class="cs-ghost-name">Boourbon</p>
-          <p class="cs-ghost-backstory">A sweet-natured ghost who makes sure all the bottles are filled and neatly arranged before the party starts.</p>
+        <div class="cs-kpi-block">
+          <h2 class="cs-kpi-title">Behavioral Attribution</h2>
+          <p class="cs-kpi-body">66% of the initial Dark Mode adoption was directly attributed to users who engaged with the ghost hunt.</p>
         </div>
 
-        <div class="cs-ghost-item">
-          <img
-            src="assets/ghost-hunt/Ghoulfashioned.png"
-            alt="Ghoul-fashioned ghost character illustration"
-            class="cs-ghost-img"
-            onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\' style=\'aspect-ratio:1/1;max-width:180px;\'></div>')"
-          />
-          <p class="cs-ghost-name">Ghoul-fashioned</p>
-          <p class="cs-ghost-backstory">An energetic ghost who floats between guests, ensuring their glass is always full.</p>
+        <div class="cs-kpi-block">
+          <h2 class="cs-kpi-title">Email-to-App Conversion</h2>
+          <p class="cs-kpi-body">Higher email open rates saw proportionally stronger component performance.</p>
         </div>
 
-        <div class="cs-ghost-item">
-          <img
-            src="assets/ghost-hunt/Phantom%20fizz.png"
-            alt="Phantom Fizz ghost character illustration"
-            class="cs-ghost-img"
-            onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\' style=\'aspect-ratio:1/1;max-width:180px;\'></div>')"
-          />
-          <p class="cs-ghost-name">Phantom Fizz</p>
-          <p class="cs-ghost-backstory">An elegant ghostly mixologist who leaves behind recipes for forgotten classic cocktails.</p>
-        </div>
-
-        <div class="cs-ghost-item">
-          <img
-            src="assets/ghost-hunt/Pina%20ghoulada.png"
-            alt="Piña Ghoulada ghost character illustration"
-            class="cs-ghost-img"
-            onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\'cs-img-placeholder\' style=\'aspect-ratio:1/1;max-width:180px;\'></div>')"
-          />
-          <p class="cs-ghost-name">Piña Ghoulada</p>
-          <p class="cs-ghost-backstory">A friendly and whimsical ghost who oversees gift bags and takeaways, making sure every guest leaves with a little something special.</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  </div><!-- /#development -->
-
-  <div id="results">
-
-  <!-- ░░ METRIC TRACKING ░░ -->
-  <section class="cs-tracking">
-    <div class="cs-tracking-inner">
-
-      <div class="cs-tracking-intro reveal">
-        <h2 class="cs-section-title">Metric Tracking</h2>
-        <p class="cs-body" style="margin-top:16px;">Having tracked the app for six months prior, we had a robust baseline for user behavior. We used Pendo to track the new flows, and after the campaign was over, we presented a comprehensive performance report to the company's stakeholders.</p>
-      </div>
-
-      <div class="cs-tracking-cols">
-        <div class="reveal">
-          <p class="cs-tracking-col-title">Adoption Spike</p>
-          <p class="cs-tracking-col-body">All five targeted features saw increased engagement, with "Edit Profile" seeing a 550% boost.</p>
-        </div>
-        <div class="reveal">
-          <p class="cs-tracking-col-title">Behavioral Attribution</p>
-          <p class="cs-tracking-col-body">66% of the initial Dark Mode adoption was directly attributed to users who engaged with the ghost hunt.</p>
-        </div>
-        <div class="reveal">
-          <p class="cs-tracking-col-title">Email-to-App Conversion</p>
-          <p class="cs-tracking-col-body">Data confirmed that ghosts with higher email open rates saw proportionally stronger component performance, validating our omni-channel strategy.</p>
-        </div>
       </div>
 
     </div>
   </section>
-
-  </div><!-- /#results -->
-
-  <div id="conclusion">
-
-  <!-- ░░ CONCLUSION ░░ -->
-  <section class="cs-text-section">
-    <div class="cs-text-inner reveal">
-      <h2 class="cs-section-title">Conclusion</h2>
-      <p class="cs-body">I recognize that the meticulous care put into a product is not always visible to the end-user, who is there to do their job and get on with their lives. However, this didn't stop me from pouring my best into every seasonal theme. For the Halloween campaign, with our five friendly ghosts that I so enjoyed doing, the effort was even higher. While my mind was focused on meeting hard engagement KPIs, my goal was to provide a moment of genuine delight — turning a routine work tool into something that could make a user's day a little brighter.</p>
-    </div>
-  </section>
-
-  </div><!-- /#conclusion -->
 
   <!-- ░░ NEXT-CASE BANNER ░░ -->
   <div class="cs-next-banner">
@@ -1461,6 +1693,151 @@
       if (e.key === 'Escape') closeDropdown();
     });
 
+  </script>
+
+  <!-- ░░ JS — SCREENS CAROUSEL ░░ -->
+  <script>
+  (function screensCarousel() {
+
+    const root = document.getElementById('screens-carousel');
+    if (!root) return;
+
+    const stage  = root.querySelector('[data-screens-stage]');
+    const slides = Array.from(root.querySelectorAll('.cs-screens-slide'));
+    const dotsEl = root.querySelector('[data-screens-dots]');
+    const status = root.querySelector('[data-screens-status]');
+    if (!slides.length) return;
+
+    const STEP = 4000;   /* autoplay interval */
+    const IDLE = 9000;   /* quiet time before autoplay takes back over */
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let index  = 0;
+    let timer  = null;
+    let idle   = null;
+    let inView = false;   /* carousel is on screen */
+    let held   = false;   /* pointer or focus is inside it */
+    let driving = false;  /* someone just used it, so autoplay stands down */
+
+    /* One dot per slide, built from the markup so the two can never drift. */
+    const dots = slides.map((_, i) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'cs-screens-dot';
+      dot.setAttribute('aria-label', 'Go to screen ' + (i + 1));
+      dot.addEventListener('click', () => { go(i, true); nudge(); });
+      dotsEl.appendChild(dot);
+      return dot;
+    });
+
+    /* A flanking screen is its own control: click it to bring it forward. */
+    slides.forEach((slide, i) => {
+      slide.addEventListener('click', () => {
+        if (i === index) return;
+        go(i, true);
+        nudge();
+      });
+    });
+
+    /* Signed distance from the active slide, taking the short way round,
+       clamped to the -2..2 the stylesheet positions. */
+    function offsetOf(i) {
+      const n = slides.length;
+      const half = Math.floor(n / 2);
+      let d = i - index;
+      if (d >  half) d -= n;
+      if (d < -half) d += n;
+      return Math.max(-2, Math.min(2, d));
+    }
+
+    /* announce=false for autoplay ticks: a polite live region firing every
+       4s unprompted is noise, so only user-driven moves are spoken. */
+    function go(next, announce) {
+      index = (next + slides.length) % slides.length;
+
+      slides.forEach((slide, i) => {
+        const offset = offsetOf(i);
+        slide.dataset.offset = offset;
+        slide.setAttribute('aria-hidden', offset === 0 ? 'false' : 'true');
+      });
+
+      dots.forEach((dot, i) => {
+        dot.setAttribute('aria-current', i === index ? 'true' : 'false');
+      });
+
+      if (announce) status.textContent = 'Screen ' + (index + 1) + ' of ' + slides.length;
+    }
+
+    /* Single source of truth for the timer: it runs only when the carousel
+       is on screen, untouched, idle, and motion is welcome. */
+    function sync() {
+      const shouldRun = inView && !held && !driving && !reduceMotion;
+      if (shouldRun && !timer) {
+        timer = setInterval(() => go(index + 1, false), STEP);
+      } else if (!shouldRun && timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    /* Any deliberate move hands control to the reader and holds autoplay
+       off until they have been still for IDLE. */
+    function nudge() {
+      driving = true;
+      clearTimeout(idle);
+      idle = setTimeout(() => { driving = false; sync(); }, IDLE);
+      sync();
+    }
+
+    root.addEventListener('mouseenter', () => { held = true;  sync(); });
+    root.addEventListener('mouseleave', () => { held = false; sync(); });
+
+    root.addEventListener('focusin',  () => { held = true; sync(); });
+    root.addEventListener('focusout', e => {
+      if (!root.contains(e.relatedTarget)) { held = false; sync(); }
+    });
+
+    /* Arrow keys replace the arrow buttons. */
+    root.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft')       go(index - 1, true);
+      else if (e.key === 'ArrowRight') go(index + 1, true);
+      else return;
+      e.preventDefault();
+      nudge();
+    });
+
+    /* Off-screen it should not run at all: no reason to cycle where
+       nobody is looking. */
+    new IntersectionObserver(entries => {
+      inView = entries[0].isIntersecting;
+      sync();
+    }, { threshold: 0.25 }).observe(root);
+
+    /* Swipe — only claim the gesture when it is clearly horizontal,
+       so vertical page scrolling over the stage still works. */
+    const SWIPE = 40;
+    let startX = 0, startY = 0;
+
+    stage.addEventListener('touchstart', e => {
+      startX = e.changedTouches[0].clientX;
+      startY = e.changedTouches[0].clientY;
+      held = true;
+      sync();
+    }, { passive: true });
+
+    stage.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - startX;
+      const dy = e.changedTouches[0].clientY - startY;
+      if (Math.abs(dx) > SWIPE && Math.abs(dx) > Math.abs(dy)) {
+        go(dx < 0 ? index + 1 : index - 1, true);
+      }
+      held = false;
+      nudge();
+    }, { passive: true });
+
+    go(0, false);
+
+  })();
   </script>
 </body>
 </html>
