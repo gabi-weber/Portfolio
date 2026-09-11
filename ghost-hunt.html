@@ -741,6 +741,128 @@
     }
 
     /* ═══════════════════════════════════════════
+       KPI TRIO — Frame 1000002520
+       1098px row: 729px email column + 32px gap + 337px copy column,
+       both stretched to the 514px the email column stands up.
+    ═══════════════════════════════════════════ */
+    .cs-kpi {
+      padding: 0 60px 120px;
+    }
+
+    .cs-kpi-inner {
+      max-width: 1098px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 32px;
+    }
+
+    /* Frame 1000002521 — email over its caption */
+    .cs-kpi-figure {
+      /* Figma pins this at 729px; allowing shrink keeps the 729/337
+         proportion below the 1218px viewport the frame assumes. */
+      flex: 0 1 729px;
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin: 0;
+    }
+
+    /* 729x478 at the design width, which is the file's own 2520x1652
+       ratio, so no crop and no fixed height. */
+    .cs-kpi-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 20px;
+    }
+
+    /* body/2/regular, centred */
+    .cs-kpi-caption {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      letter-spacing: 0.04em;
+      color: var(--gray-700);
+      text-align: center;
+      margin: 0;
+    }
+
+    /* Frame 1000002519 — the three results, spread over the full height */
+    .cs-kpi-list {
+      flex: 1 1 337px;
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 0 0 36px;
+      gap: 28px;   /* the floor; space-between opens it up to ~77px */
+    }
+
+    /* Frames 1000002516 / 17 / 18 — title + body pair */
+    .cs-kpi-block {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    /* body/1/bold */
+    .cs-kpi-title {
+      align-self: stretch;
+      font-family: var(--font);
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 30px;
+      color: var(--gray-700);
+    }
+
+    /* body/2/regular */
+    .cs-kpi-body {
+      align-self: stretch;
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      letter-spacing: 0.04em;
+      color: var(--gray-700);
+    }
+
+    /* The frame wants 1098px + the 60px page margins. Below that the copy
+       column shrinks with the row, and past ~1100px it is too narrow to
+       read, so stack rather than squeeze. */
+    @media (max-width: 1100px) {
+      .cs-kpi-inner {
+        flex-direction: column;
+        gap: 56px;
+      }
+      .cs-kpi-figure {
+        flex: none;
+        width: 100%;
+        max-width: 729px;
+        align-self: center;
+      }
+      .cs-kpi-list {
+        flex: none;
+        width: 100%;
+        align-self: stretch;
+        justify-content: flex-start;
+        padding-bottom: 0;
+        gap: 44px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .cs-kpi { padding: 0 24px 80px; }
+    }
+
+    /* ═══════════════════════════════════════════
        DEVELOPMENT & IMPLEMENTATION
     ═══════════════════════════════════════════ */
     .cs-dev-section {
@@ -1426,6 +1548,42 @@
         <div class="cs-screens-dots" data-screens-dots></div>
 
         <p class="cs-screens-status" aria-live="polite" data-screens-status></p>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ░░ KPI TRIO ░░ -->
+  <section class="cs-kpi" id="results">
+    <div class="cs-kpi-inner reveal">
+
+      <figure class="cs-kpi-figure">
+        <img
+          src="assets/ghost-hunt/Email%20card.png"
+          alt="Campaign email introducing the five ghosts to users"
+          class="cs-kpi-image"
+          loading="lazy"
+        />
+        <figcaption class="cs-kpi-caption">Email send to users presenting the ghosts</figcaption>
+      </figure>
+
+      <div class="cs-kpi-list">
+
+        <div class="cs-kpi-block">
+          <h2 class="cs-kpi-title">Adoption Spike</h2>
+          <p class="cs-kpi-body">All five targeted features saw increased engagement, with "Edit Profile" seeing a 550% boost.</p>
+        </div>
+
+        <div class="cs-kpi-block">
+          <h2 class="cs-kpi-title">Behavioral Attribution</h2>
+          <p class="cs-kpi-body">66% of the initial Dark Mode adoption was directly attributed to users who engaged with the ghost hunt.</p>
+        </div>
+
+        <div class="cs-kpi-block">
+          <h2 class="cs-kpi-title">Email-to-App Conversion</h2>
+          <p class="cs-kpi-body">Higher email open rates saw proportionally stronger component performance.</p>
+        </div>
 
       </div>
 
