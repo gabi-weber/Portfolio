@@ -792,16 +792,18 @@
       margin: 0;
     }
 
-    /* Frame 1000002519 — the three results, spread over the full height */
+    /* Frame 1000002519 — the three results, grouped against the email image.
+       The 36px bottom padding is the figure's 12px gap + 24px caption, so this
+       column's content box lines up with the image box, not with the caption. */
     .cs-kpi-list {
       flex: 1 1 337px;
       align-self: stretch;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: center;   /* space-between stretched the gap to ~74px */
       align-items: flex-start;
       padding: 0 0 36px;
-      gap: 28px;   /* the floor; space-between opens it up to ~77px */
+      gap: 48px;                 /* a hard gap, not a floor */
     }
 
     /* Frames 1000002516 / 17 / 18 — title + body pair */
