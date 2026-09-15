@@ -42,6 +42,11 @@
       --font: 'Poppins', sans-serif;
       --font-display: 'ABeeZee', sans-serif;   /* Header/1 */
       --nav-h: 64px;
+
+      /* One measure for every body copy column on the page, so Problem,
+         Solution, Process, the KPI results and the Conclusion all read at
+         the same line length. Change it here, not per section. */
+      --copy-w: 432px;
     }
 
     /* ═══════════════════════════════════════════
@@ -370,7 +375,7 @@
        METRIC CARDS
     ═══════════════════════════════════════════ */
     .cs-metrics {
-      padding: 0 48px 120px;
+      padding: 0 48px 140px;
     }
 
     .cs-metrics-inner {
@@ -396,7 +401,7 @@
     ═══════════════════════════════════════════ */
     /* 60px page margin on a 1440 frame → 1320px content row. */
     .cs-overview {
-      padding: 0 60px 120px;
+      padding: 0 60px 140px;
     }
 
     .cs-overview-inner {
@@ -500,14 +505,15 @@
 
     /* ═══════════════════════════════════════════
        PROBLEM & SOLUTION — Frame 1000002511
-       874px row: 318px phone mock + 127px gap + 429px copy column.
+       846px row: 287px phone mock + 127px gap + 432px copy column.
+       432px is the page's one body measure — see --copy-w.
     ═══════════════════════════════════════════ */
     .cs-ps {
-      padding: 0 60px 120px;
+      padding: 0 60px 140px;
     }
 
     .cs-ps-inner {
-      max-width: 874px;
+      max-width: 846px;
       margin: 0 auto;
       display: flex;
       flex-direction: row;
@@ -524,7 +530,7 @@
 
     /* Frame 1000002510 — the copy column */
     .cs-ps-text {
-      flex: 1 1 429px;
+      flex: 0 0 var(--copy-w);
       display: flex;
       flex-direction: column;
       align-items: flex-start;
@@ -561,17 +567,17 @@
       color: var(--gray-700);
     }
 
-    /* 874px frame + 2x60px page margin = 994px. Below that the 127px gap and the
-       318px mock leave the copy column too narrow, so stack instead of squeeze. */
-    @media (max-width: 994px) {
+    /* 846px frame + 2x60px page margin = 966px. Below that the 127px gap and the
+       287px mock leave the copy column too narrow, so stack instead of squeeze. */
+    @media (max-width: 966px) {
       .cs-ps-inner {
         flex-direction: column;
         align-items: flex-start;
         gap: 52px;
       }
       .cs-ps-media { flex: none; width: 100%; max-width: 287px; }
-      /* stacked, the column would otherwise run to 840px — keep the measure readable */
-      .cs-ps-text  { flex: none; width: 100%; max-width: 65ch; }
+      /* stacked, the column would otherwise run the full frame — hold the measure */
+      .cs-ps-text  { flex: none; width: 100%; max-width: var(--copy-w); }
     }
 
     /* ═══════════════════════════════════════════
@@ -581,7 +587,7 @@
        No heading — the screens carry the section on their own.
     ═══════════════════════════════════════════ */
     .cs-screens {
-      padding: 0 60px 120px;
+      padding: 0 60px 140px;
 
       /* 287px is the phone-mock width the Problem/Solution and Process
          sections already use, so all three read at one scale. */
@@ -746,7 +752,7 @@
        both stretched to the 514px the email column stands up.
     ═══════════════════════════════════════════ */
     .cs-kpi {
-      padding: 0 60px 120px;
+      padding: 0 60px 140px;
     }
 
     .cs-kpi-inner {
@@ -792,16 +798,20 @@
       margin: 0;
     }
 
-    /* Frame 1000002519 — the three results, spread over the full height */
+    /* Frame 1000002519 — the three results, grouped against the email image.
+       The 36px bottom padding is the figure's 12px gap + 24px caption, so this
+       column's content box lines up with the image box, not with the caption. */
     .cs-kpi-list {
-      flex: 1 1 337px;
+      /* Held at the page body measure; the email figure shrinks to take up
+         the rest of the 1098px row (729 -> 634 at full width). */
+      flex: 0 0 var(--copy-w);
       align-self: stretch;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: center;   /* space-between stretched the gap to ~74px */
       align-items: flex-start;
       padding: 0 0 36px;
-      gap: 28px;   /* the floor; space-between opens it up to ~77px */
+      gap: 48px;                 /* a hard gap, not a floor */
     }
 
     /* Frames 1000002516 / 17 / 18 — title + body pair */
@@ -834,8 +844,8 @@
       color: var(--gray-700);
     }
 
-    /* The frame wants 1098px + the 60px page margins. Below that the copy
-       column shrinks with the row, and past ~1100px it is too narrow to
+    /* The frame wants 1098px + the 60px page margins. Below that the email
+       figure keeps giving up width, and past ~1100px it is too small to
        read, so stack rather than squeeze. */
     @media (max-width: 1100px) {
       .cs-kpi-inner {
@@ -851,6 +861,7 @@
       .cs-kpi-list {
         flex: none;
         width: 100%;
+        max-width: var(--copy-w);
         align-self: stretch;
         justify-content: flex-start;
         padding-bottom: 0;
@@ -860,6 +871,96 @@
 
     @media (max-width: 768px) {
       .cs-kpi { padding: 0 24px 80px; }
+    }
+
+    /* ═══════════════════════════════════════════
+       CONCLUSION — ghosts left, copy right, on the page's 432px body
+       measure (692px row). The gap is 60px rather than the 127px the
+       other two-column sections use: the ghost stage is a fixed 200px
+       but the art inside it is narrower still, so the standard gap
+       read as a hole. 60px puts the optical gap back in range.
+       Title/body pair reuses .cs-ps-block, so the 4px title-to-body
+       step is the section standard, not a second set of numbers.
+    ═══════════════════════════════════════════ */
+    .cs-conclusion {
+      padding: 0 60px 140px;
+
+      --ghost-stage: 200px;   /* the fixed box nothing is allowed to resize */
+      --ghost-art:   186px;   /* the longest side any ghost may render at */
+    }
+
+    .cs-conclusion-inner {
+      max-width: 692px;   /* 200 ghost + 60 gap + 432 copy */
+      margin: 0 auto;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 60px;
+    }
+
+    .cs-conclusion-text {
+      flex: 0 0 var(--copy-w);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 52px;
+    }
+
+    /* Fixed stage: the five ghosts differ in size and ratio, so the box
+       never resizes and nothing below it shifts as they swap. */
+    .cs-conclusion-ghosts {
+      position: relative;
+      flex: 0 0 var(--ghost-stage);
+      width: var(--ghost-stage);
+      height: var(--ghost-stage);
+    }
+
+    /* Inset so the art box is 186x186 inside the 200px stage; `contain`
+       then puts the longest side of every ghost at exactly 186px. */
+    .cs-conclusion-ghost {
+      position: absolute;
+      inset: calc((var(--ghost-stage) - var(--ghost-art)) / 2);
+      width: var(--ghost-art);
+      height: var(--ghost-art);
+      object-fit: contain;
+      opacity: 0;
+      animation: cs-ghost-cycle 13.5s ease-in-out infinite;
+    }
+
+    /* 13.5s / 5 = a 2.7s slot each: 0.6s dissolve in, 1.5s hold, 0.6s
+       dissolve out, and the slot ends empty — the next ghost only starts
+       its fade-in once the previous one has fully gone. */
+    @keyframes cs-ghost-cycle {
+      0%        { opacity: 0; }
+      4.4444%   { opacity: 1; }   /* 0.6s in   */
+      15.5556%  { opacity: 1; }   /* 1.5s hold */
+      20%       { opacity: 0; }   /* 0.6s out  */
+      100%      { opacity: 0; }
+    }
+
+    .cs-conclusion-ghost:nth-child(2) { animation-delay:  2.7s; }
+    .cs-conclusion-ghost:nth-child(3) { animation-delay:  5.4s; }
+    .cs-conclusion-ghost:nth-child(4) { animation-delay:  8.1s; }
+    .cs-conclusion-ghost:nth-child(5) { animation-delay: 10.8s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cs-conclusion-ghost { animation: none; }
+      .cs-conclusion-ghost:first-child { opacity: 1; }
+    }
+
+    /* Same 966px threshold as .cs-ps, so both two-column sections stack
+       at the same point rather than at their own frame widths. */
+    @media (max-width: 966px) {
+      .cs-conclusion-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 52px;
+      }
+      .cs-conclusion-text { flex: none; width: 100%; max-width: var(--copy-w); }
+    }
+
+    @media (max-width: 768px) {
+      .cs-conclusion { padding: 0 24px 80px; }
     }
 
     /* ═══════════════════════════════════════════
@@ -1585,6 +1686,32 @@
           <p class="cs-kpi-body">Higher email open rates saw proportionally stronger component performance.</p>
         </div>
 
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ░░ CONCLUSION ░░ -->
+  <section class="cs-conclusion" id="conclusion">
+    <div class="cs-conclusion-inner reveal">
+
+      <div
+        class="cs-conclusion-ghosts"
+        role="img"
+        aria-label="The five campaign ghosts, each dissolving into the next"
+      >
+        <img src="assets/ghost-hunt/Ghosts/Apparition.png" alt="" class="cs-conclusion-ghost" loading="lazy" />
+        <img src="assets/ghost-hunt/Ghosts/Boorbon.png"    alt="" class="cs-conclusion-ghost" loading="lazy" />
+        <img src="assets/ghost-hunt/Ghosts/Ghoul.png"      alt="" class="cs-conclusion-ghost" loading="lazy" />
+        <img src="assets/ghost-hunt/Ghosts/Phantom.png"    alt="" class="cs-conclusion-ghost" loading="lazy" />
+        <img src="assets/ghost-hunt/Ghosts/Pina.png"       alt="" class="cs-conclusion-ghost" loading="lazy" />
+      </div>
+
+      <div class="cs-conclusion-text">
+        <div class="cs-ps-block">
+          <h2 class="cs-ps-title">Conclusion</h2>
+          <p class="cs-ps-body">This type of work isn't always visible to the end user just trying to get through their day. However, this didn't stop me from pouring my best into this Halloween campaign, both as an illustrator and product designer. Five ghosts, two weeks, one goal: turning a routine work tool into something that could make a user's day a little brighter.</p>
+        </div>
       </div>
 
     </div>
