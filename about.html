@@ -470,6 +470,9 @@
       font-size: clamp(20px, 2vw, 26px);
       color: var(--color-text);
       line-height: 1.4;
+      padding: 8px 20px;
+      border-radius: 999px;
+      background-color: transparent;
     }
 
     .footer-greeting a {
@@ -480,41 +483,14 @@
 
     .footer-greeting a:hover { text-decoration: underline; }
 
-    /* Arrival animation */
-    @keyframes footerArrive {
-      0%   { opacity: 0; }
-      100% { opacity: 1; }
+    /* Attention flash — a darker pulse behind the Say hi / Get in touch
+       buttons. Blinks twice. Triggered by JS on .contact-trigger click. */
+    @keyframes contact-flash {
+      0%, 100% { background-color: transparent; }
+      50%      { background-color: rgba(9, 99, 108, 0.14); }
     }
 
-    footer.contact-arrived .footer-cta-block {
-      animation: footerArrive 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
-
-    /* Sparkle dots */
-    .sparkle-dot {
-      position: absolute;
-      border-radius: 50%;
-      background: #E9BAAE;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    footer.contact-arrived .sparkle-dot {
-      animation: sparkle-rise 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
-
-    @keyframes sparkle-rise {
-      0%   { opacity: 0; transform: scale(0) translateY(0); }
-      22%  { opacity: 0.85; transform: scale(1) translateY(-4px); }
-      100% { opacity: 0; transform: scale(0.4) translateY(-20px); }
-    }
-
-    .sparkle-dot:nth-child(1) { width: 5px; height: 5px; top: -18px; left: 10%;  animation-delay: 0.07s; }
-    .sparkle-dot:nth-child(2) { width: 7px; height: 7px; top: -30px; left: 32%;  animation-delay: 0.14s; background: rgba(9,99,108,0.3); }
-    .sparkle-dot:nth-child(3) { width: 4px; height: 4px; top: -22px; left: 53%;  animation-delay: 0.04s; }
-    .sparkle-dot:nth-child(4) { width: 6px; height: 6px; top: -26px; right: 26%; animation-delay: 0.19s; background: rgba(9,99,108,0.22); }
-    .sparkle-dot:nth-child(5) { width: 5px; height: 5px; top:   8px; left: 2%;   animation-delay: 0.11s; }
-    .sparkle-dot:nth-child(6) { width: 4px; height: 4px; top:   8px; right: 2%;  animation-delay: 0.16s; }
+    .footer-greeting.contact-flash { animation: contact-flash 0.5s ease-in-out 2; }
 
     .footer-copy {
       font-weight: 400;
@@ -893,12 +869,6 @@
   <!-- ░░ FOOTER ░░ -->
   <footer id="contact">
     <div class="footer-cta-block">
-      <span class="sparkle-dot" aria-hidden="true"></span>
-      <span class="sparkle-dot" aria-hidden="true"></span>
-      <span class="sparkle-dot" aria-hidden="true"></span>
-      <span class="sparkle-dot" aria-hidden="true"></span>
-      <span class="sparkle-dot" aria-hidden="true"></span>
-      <span class="sparkle-dot" aria-hidden="true"></span>
       <p class="footer-greeting">
         <a href="https://www.linkedin.com/in/gabriela-lissarassa-weber/" target="_blank" rel="noopener noreferrer" aria-label="Say hi on LinkedIn (opens in new tab)">Say hi <span aria-hidden="true">👋</span></a>
         &nbsp;·&nbsp;
@@ -906,10 +876,10 @@
           <button class="footer-email-btn" id="email-trigger" aria-haspopup="menu" aria-expanded="false">
             Get in touch ✉️
           </button>
-          <div class="email-dropdown" id="email-dropdown" role="menu">
+          <span class="email-dropdown" id="email-dropdown" role="menu">
             <button id="copy-email" role="menuitem">Copy email</button>
             <button id="send-email" role="menuitem">Send email</button>
-          </div>
+          </span>
         </span>
       </p>
     </div>
@@ -977,19 +947,23 @@
 
     document.querySelectorAll('.reveal, .reveal-stagger, .reveal-scale').forEach(el => io.observe(el));
 
-    /* ── Footer arrival animation on hash navigation ── */
-    const contactFooter = document.getElementById('contact');
+    /* ── Footer attention flash on contact navigation ── */
+    const contactGreeting = document.querySelector('#contact .footer-greeting');
 
-    function triggerFooterArrive() {
-      contactFooter.classList.remove('contact-arrived');
+    function triggerContactFlash() {
+      contactGreeting.classList.remove('contact-flash');
       requestAnimationFrame(() => {
-        requestAnimationFrame(() => contactFooter.classList.add('contact-arrived'));
+        requestAnimationFrame(() => contactGreeting.classList.add('contact-flash'));
       });
     }
 
     document.querySelectorAll('.contact-trigger').forEach(el => {
-      el.addEventListener('click', () => setTimeout(triggerFooterArrive, 50));
+      el.addEventListener('click', () => setTimeout(triggerContactFlash, 450));
     });
+
+    if (window.location.hash === '#contact') {
+      window.addEventListener('load', () => setTimeout(triggerContactFlash, 450));
+    }
 
     /* ── Email dropdown ── */
     const EMAIL      = 'gabrielaweber008@gmail.com';

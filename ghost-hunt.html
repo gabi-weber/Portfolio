@@ -1243,19 +1243,22 @@
        FOOTER — identical to index.html
     ═══════════════════════════════════════════ */
     footer {
-      padding: 56px 48px;
+      padding: 80px 48px 56px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
       text-align: center;
     }
 
     .footer-greeting {
       font-family: var(--font);
       font-weight: 400;
-      font-size: 20px;
+      font-size: clamp(20px, 2vw, 26px);
       color: var(--color-text);
+      line-height: 1.4;
+      padding: 8px 20px;
+      border-radius: 999px;
+      background-color: transparent;
     }
 
     .footer-greeting a {
@@ -1271,7 +1274,18 @@
       font-weight: 400;
       font-size: 12px;
       color: var(--color-muted);
+      margin-top: 40px;
     }
+
+    /* Attention flash — draws the eye to the Say hi / Get in touch buttons
+       when a Contact button scrolls the page down here. Blinks twice.
+       Triggered by JS on .contact-trigger click. */
+    @keyframes contact-flash {
+      0%, 100% { background-color: transparent; }
+      50%      { background-color: rgba(9, 99, 108, 0.14); }
+    }
+
+    .footer-greeting.contact-flash { animation: contact-flash 0.5s ease-in-out 2; }
 
     .footer-email-wrap {
       position: relative;
@@ -1284,7 +1298,7 @@
       padding: 0;
       font-family: var(--font);
       font-weight: 500;
-      font-size: 20px;
+      font-size: clamp(20px, 2vw, 26px);
       color: var(--color-primary);
       cursor: pointer;
       text-decoration: none;
@@ -1464,7 +1478,7 @@
       <li><a href="about.html">About me</a></li>
       <li><a href="resume.html">Resumé</a></li>
       <li>
-        <a href="index.html#contact" class="btn btn-primary btn-medium">Contact</a>
+        <a href="#contact" class="btn btn-primary btn-medium contact-trigger">Contact</a>
       </li>
     </ul>
   </nav>
@@ -1732,10 +1746,10 @@
         <button class="footer-email-btn" id="email-trigger" aria-haspopup="true" aria-expanded="false">
           Get in touch ✉️
         </button>
-        <div class="email-dropdown" id="email-dropdown" role="menu">
+        <span class="email-dropdown" id="email-dropdown" role="menu">
           <button id="copy-email" role="menuitem">Copy email</button>
           <button id="send-email" role="menuitem">Send email</button>
-        </div>
+        </span>
       </span>
     </p>
     <p class="footer-copy">Created by Gabi and powered by iced coffee ☕</p>
@@ -1757,6 +1771,24 @@
     }, { threshold: 0.12 });
 
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    /* ── Footer attention flash on contact navigation ────────── */
+    const contactGreeting = document.querySelector('#contact .footer-greeting');
+
+    function triggerContactFlash() {
+      contactGreeting.classList.remove('contact-flash');
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => contactGreeting.classList.add('contact-flash'));
+      });
+    }
+
+    document.querySelectorAll('.contact-trigger').forEach(el => {
+      el.addEventListener('click', () => setTimeout(triggerContactFlash, 450));
+    });
+
+    if (window.location.hash === '#contact') {
+      window.addEventListener('load', () => setTimeout(triggerContactFlash, 450));
+    }
 
     /* ── Email dropdown ── */
     const EMAIL      = 'gabrielaweber008@gmail.com';
