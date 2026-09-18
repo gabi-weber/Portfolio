@@ -43,16 +43,29 @@ This is the single reference file for the project. PRODUCT.md and DESIGN.md do n
 ```
 gabi-portfolio/
 ├── CLAUDE.md              ← this file (single source of truth)
+├── Mode 1.tokens.json     ← exported color ramps (gray/brown, with hex)
 ├── index.html             ← homepage (landing page — in progress)
 ├── about.html             ← About Me page (done)
-├── ghost-hunt.html        ← Case 01 (pending)
-├── reports.html           ← Case 02 (pending)
-├── tokens.html            ← Case 03 (pending)
-├── themes.html            ← Case 04 (pending)
-├── portfolio.html         ← Case 05 (pending)
+├── resume.html            ← résumé page (built)
+├── ghost-hunt.html        ← Case 01 (built)
+├── reports.html           ← Case 02 (not created yet)
+├── tokens.html            ← Case 03 (not created yet)
+├── themes.html            ← Case 04 (not created yet)
+├── portfolio.html         ← Case 05 (not created yet)
+├── CV.pdf
+├── assets/
+│   └── ghost-hunt/        ← case imagery
+│       ├── Animation/     ← modal .mp4 + .svg
+│       ├── Ghosts/        ← the five conclusion ghosts (3x exports)
+│       └── Screens/       ← the five carousel screens
+├── files/
+│   └── Halloween Campaign case.pdf
 └── fonts/
-    └── Bropella.woff      ← nav logo font
+    ├── Bropella.woff      ← nav logo font
+    └── Bropella.woff2
 ```
+
+**Shared components are duplicated per page, not imported.** The nav, footer, email dropdown and toast exist in full in `index.html`, `about.html`, `resume.html` and every case page. A fix to one does not propagate — change all of them.
 
 ---
 
@@ -71,6 +84,19 @@ All tokens live in `:root` inside each page's `<style>`. Copy exactly — never 
 ```
 
 **Color strategy:** Restrained. Warm tinted neutrals dominate; teal accent at ≤10% surface area.
+
+### Case-page additions
+
+Case pages add these to the same `:root`. They are scoped to case pages — do not introduce them on `index.html`, `about.html` or `resume.html`.
+
+```css
+--case-dark: #250035   /* case hero banner surface */
+--gray-200:  #DFE2E2   /* hero secondary copy on the dark banner */
+--gray-500:  #717272   /* meta labels, subsection titles */
+--gray-700:  #2D2D2D   /* case body copy and meta values */
+```
+
+The gray ramp comes from `Mode 1.tokens.json`, which is the source of truth for any ramp value this file does not list. Grep it before inventing a gray.
 
 ---
 
@@ -94,9 +120,19 @@ letter-spacing: -0.2px; line-height: 1;
 
 Neulis Cursive was the original intent — replace Bropella when the file is available.
 
+### Case hero title — ABeeZee only
+
+```css
+--font-display: 'ABeeZee', sans-serif;   /* Header/1 */
+/* Applied ONLY to .cs-title, the <h1> on a case hero. Never elsewhere. */
+font-size: 40px; font-weight: 400; color: var(--color-white); line-height: 1.2;
+```
+
+This is the one sanctioned exception to Poppins, and it exists only on case pages. Loaded from Google Fonts in the same request as Poppins.
+
 ### Body — Poppins everywhere else
 
-Loaded from Google Fonts, weights 300 400 500 600 700. **No exceptions on any page.**
+Loaded from Google Fonts, weights 300 400 500 600 700. **No exceptions besides the nav logo and the case hero title above.**
 
 | Role | Weight | Size | Color | Notes |
 |---|---|---|---|---|
@@ -116,6 +152,24 @@ Loaded from Google Fonts, weights 300 400 500 600 700. **No exceptions on any pa
 | Nav link | 400 | 14px | `--color-muted` | Active/hover: `--color-primary` |
 | Footer greeting | 400 | 20px | `--color-text` | Links: `--color-primary`, weight 500 |
 | Footer copy | 400 | 12px | `--color-muted` | — |
+
+### Case page roles
+
+| Role | Class | Weight | Size / line-height | Color |
+|---|---|---|---|---|
+| Case hero eyebrow | `.cs-eyebrow` | 400 | 16px | `--gray-200` |
+| Case hero title | `.cs-title` | 400 | 40px / 1.2 | `--color-white` (ABeeZee) |
+| Case hero tags | `.cs-hero-tags` | 400 | 20px / 1.6 | `--gray-200` |
+| Metric number | `.cs-metric-number` | 600 | 48px / 1 | `--color-primary`, `letter-spacing: -1px` |
+| Metric label | `.cs-metric-label` | 400 | 14px / 1.5 | `--color-muted` |
+| Overview lead | `.cs-overview-text` | 400 | 20px / 30px | `--gray-700` |
+| Meta label | `.cs-meta-label` | 600 | 14px / 21px | `--gray-500`, uppercase |
+| Meta value | `.cs-meta-value` | 400 | 16px / 24px | `--gray-700` |
+| Subsection title | `.cs-ps-title` | 600 | 20px / 30px | `--gray-500` |
+| Result title | `.cs-kpi-title` | 600 | 20px / 30px | `--gray-700` |
+| Case body copy | `.cs-ps-body`, `.cs-kpi-body` | 400 | 16px / 24px | `--gray-700`, `letter-spacing: 0.04em` |
+| Figure caption | `.cs-kpi-caption` | 400 | 16px / 24px | `--gray-700`, centered |
+| Next-case label | `.cs-next-label` | 400 | 24px / 1.3 | `--color-white` |
 
 ---
 
@@ -166,6 +220,11 @@ transition: background-color 200ms ease, box-shadow 200ms ease,
 | About page "See my work" | primary · medium |
 | About page "Get in touch" | secondary · medium |
 | Case image overlay | btn-overlay |
+| Case page next-case banner | `.btn-banner` |
+
+### btn-banner (next-case banner only)
+
+`background: --color-white`, `color: --color-primary`, `border-radius: 8px`, `padding: 12px 20px`, 16px/24px. Hover: `background: #EDE5E2` + `box-shadow: 2px 2px 12px rgba(0,0,0,.18)`. It sits on the teal strip, where neither primary nor secondary reads. Never used outside `.cs-next-banner`.
 
 ---
 
@@ -197,6 +256,36 @@ JS-driven, 12ms/character via `setInterval`. Cursor `<span class="hl-cursor">|</
 
 `opacity: 0 → 1` on `:hover`, `250ms ease`. Hidden on mobile (≤640px) via `display: none`.
 
+### Light/dark crossfade — `.cs-crossfade`
+
+Two stacked stills, no JS. The top one runs `cs-crossfade-loop 8s ease-in-out infinite`, holding each state then dissolving. The two images overlap during the fade, which is the point: it reads as one screen changing theme.
+
+### Sequential ghost dissolve — `.cs-conclusion-ghost`
+
+The opposite rule to the crossfade, and the reason it is its own system: **no two ghosts are ever on screen at once.** Each fully dissolves out before the next starts dissolving in.
+
+Five stacked images on one `cs-ghost-cycle 13.5s ease-in-out infinite` keyframe, offset by `animation-delay` in 2.7s steps. Each 2.7s slot is 0.6s in, 1.5s hold, 0.6s out, and then sits empty until its turn comes round again:
+
+```css
+@keyframes cs-ghost-cycle {
+  0%       { opacity: 0; }
+  4.4444%  { opacity: 1; }   /* 0.6s in   */
+  15.5556% { opacity: 1; }   /* 1.5s hold */
+  20%      { opacity: 0; }   /* 0.6s out  */
+  100%     { opacity: 0; }
+}
+```
+
+To retime it, pick the slot length, multiply by the number of images for the duration, and re-derive the four percentages. `prefers-reduced-motion: reduce` kills the animation and holds the first image.
+
+### Screens carousel
+
+Slides are positioned by `data-offset` from the active one (`0`, `±1`, `±2`), so every transition falls out of the same rules: `transform` and `opacity` over `520ms cubic-bezier(0.22, 1, 0.36, 1)`. Autoplay advances every **4000ms** and steps back after **9000ms** of user quiet. The whole carousel is one tab stop driven by arrow keys; the dots stay individually reachable. `prefers-reduced-motion: reduce` drops the slide transition.
+
+### Fixed-stage rule
+
+Any element that swaps images in place gets a **fixed box** the art is fitted into, never a box the art sizes. The Conclusion uses a 200×200 stage with the art inset to 186×186 and `object-fit: contain`, so the five ghosts (which range from 341×564 to 567×364) all land at exactly 186px on their long edge and nothing below them shifts as they cycle.
+
 ---
 
 ## Layout System
@@ -211,10 +300,12 @@ Fixed, `height: 64px` (`--nav-h`), `padding: 0 48px`, `background: rgba(247,234,
 |---|---|
 | index.html hero inner, case rows | 1400px |
 | about.html all sections | 1100px |
+| case pages | per frame — see the table under Section rhythm |
 
 ### Horizontal padding
 
-48px desktop → 24px at ≤600px breakpoint.
+`index.html` / `about.html`: 48px desktop → 24px at ≤600px.
+Case pages: 60px desktop → 24px at ≤768px (metric cards are 48px).
 
 ### Section rhythm — index.html
 
@@ -234,14 +325,50 @@ Fixed, `height: 64px` (`--nav-h`), `padding: 0 48px`, `background: rgba(247,234,
 | Skills section | `0 48px 120px` |
 | Footer | `56px 48px` |
 
+### Section rhythm — case pages
+
+**140px between every section**, as the bottom padding of each one. Horizontal page margin is **60px** (the metric-cards section is the lone exception at 48px). Both collapse to `0 24px 80px` at ≤768px.
+
+| Section | Padding |
+|---|---|
+| Case hero | `nav-h + 600px` tall, no padding (absolute composition) |
+| Metric cards | `0 48px 140px`, inner pulled up `margin-top: -64px` |
+| Overview | `0 60px 140px` |
+| Problem & Solution / Process | `0 60px 140px` |
+| Screens carousel | `0 60px 140px` |
+| KPI trio | `0 60px 140px` |
+| Conclusion | `0 60px 140px` |
+| Next-case banner | `56px 48px` |
+| Footer | `56px 48px` |
+
+### Body measure — `--copy-w: 432px`
+
+One token in `:root` governs the line length of every body column on a case page: Problem, Solution, Process, the KPI results and the Conclusion. Change it there, never per section. Each frame is then built around it:
+
+| Frame | Width | Composition |
+|---|---|---|
+| Overview row | 1320px | 668px lead + 71px gap + 544px meta stack |
+| Metric cards | 1200px | 3 equal cards, 24px gap |
+| Screens carousel | 1200px | — |
+| KPI trio | 1098px | email figure (shrinks to 634px) + 32px gap + 432px copy |
+| Problem & Solution / Process | 846px | 287px phone mock + 127px gap + 432px copy |
+| Conclusion | 692px | 200px ghost stage + 60px gap + 432px copy |
+
+**127px is the standard asset-to-copy gap.** The Conclusion deliberately breaks it at 60px: its ghost stage is a fixed 200px box whose art is narrower still, so the standard gap read as a hole. Any section whose asset does not fill its own box should expect the same correction.
+
 ### Responsive breakpoints
 
 | Breakpoint | Changes |
 |---|---|
+| ≤1100px | Case: KPI trio stacks, copy column capped at `--copy-w` |
 | ≤1024px | `.btn-overlay` shrinks to 13px, padding 6px 10px |
+| ≤966px | Case: Problem & Solution, Process and Conclusion stack, 52px gap, copy capped at `--copy-w` |
 | ≤900px | Bio grid → 1-column; photo → 4:3 max 420px; skills → 2-column |
+| ≤768px | Case: all section padding → `0 24px 80px`; nav padding 24px; hero de-absolutes and stacks; decorative hero ghosts hidden |
 | ≤640px | Case overlay hidden (touch devices tap the image directly) |
-| ≤600px | Nav padding 24px; all section horizontal padding 24px; skills → 1-column |
+| ≤600px | Nav padding 24px; index/about section horizontal padding 24px; skills → 1-column |
+
+Case pages run their own breakpoint ladder (1100 / 966 / 768). `index.html` and `about.html` run the 1024 / 900 / 640 / 600 ladder. Do not mix them.
 
 ---
 
@@ -287,6 +414,9 @@ Never write these — rewrite the element if you're tempted:
 - Glassmorphism decoratively (nav blur is functional — it sits over scrolling content)
 - Gradient text, hero-metric templates (big number + stat grid), identical card grids
 - Em dashes in copy — use commas, colons, semicolons, or parentheses instead
+- `justify-content: space-between` to spread a fixed set of blocks down a column. It turns whatever slack the neighbouring asset happens to leave into the gap, so the spacing is an accident of image height and the group stops reading as a group. Set the gap you want and center it.
+- A swapping image sized by its own art. The box is fixed, the art is fitted into it — otherwise the page reflows every few seconds.
+- A second body measure. Case page body copy is `--copy-w`, full stop.
 
 ---
 
@@ -393,17 +523,81 @@ Each item: `.skill-name` (600, 16px, `--color-text`) + `.skill-sub` (400, 12px, 
 
 ---
 
+## ghost-hunt.html — Component Map
+
+Case 01, and the reference implementation for every case page that follows. Section order top to bottom:
+
+### Nav
+
+Same as index.html, over the dark hero. The hero paints a `--color-bg` band exactly `--nav-h` tall behind the translucent nav, so at scroll-top the blush strip shows through and the dark banner starts right below it.
+
+### Case hero
+
+Dark `--case-dark` banner, `nav-h + 600px` tall, `overflow: hidden`. The content is one absolutely positioned `.cs-hero-group` (`left: 60px`, `top: nav-h + 52px`, 1405×419px) so the whole composition rescales from one place.
+
+- Copy block 662px wide, vertically centred: eyebrow "Case study · 01" → `<h1>` → tags
+- Laptop still starts at x=762 and runs 703px wide, bleeding past the 1440 frame on purpose
+- Two decorative ghosts rotated per the Figma frame, hidden at ≤768px
+
+### Metric cards
+
+Three cards in a 1200px grid, 24px gap, pulled up over the hero with `margin-top: -64px` and `z-index: 2`. Each is `--color-white`, 1px border, 12px radius, 32px padding, `box-shadow: 0 12px 32px rgba(37,0,53,.18)`.
+
+| Number | Label |
+|---|---|
+| 164% | average increase in feature adoption |
+| 550% | peak boost in specific profile interactions |
+| 64% | average email interaction rate |
+
+### Overview
+
+1320px row: 668px lead paragraph + 71px gap + 544px meta stack (Role and Timeline side by side, then Deliverables full width).
+
+### Problem & Solution / Process
+
+Both use the 846px `.cs-ps` frame, alternating sides: Problem & Solution puts the phone mock left (a looping muted `.mp4`), Process puts it right (a `.cs-crossfade` pair, light over dark). Copy column is `--copy-w`, 52px between title/body blocks, 4px between a title and its body.
+
+### Screens carousel
+
+1200px frame, no heading. Five screens from `assets/ghost-hunt/Screens/`, the active one at full scale and the flankers dimmed to 0.42 and scaled 0.82. Dots below, live-region status for screen readers. Autoplay 4s, resumes 9s after the last interaction.
+
+### KPI trio
+
+1098px row: the campaign email figure + caption on the left, three results on the right in a `--copy-w` column. The email figure shrinks to take up whatever the copy column does not need (634px at full width). Results are `justify-content: center` with a hard **48px** gap — not `space-between`, which stretched it to 74px and broke the three into unrelated items. The list's 36px bottom padding is the figure's 12px gap + 24px caption, so the copy box lines up with the image box rather than the caption.
+
+| Result | |
+|---|---|
+| Adoption Spike | all five features up, "Edit Profile" +550% |
+| Behavioral Attribution | 66% of early Dark Mode adoption traced to the hunt |
+| Email-to-App Conversion | higher open rates → stronger component performance |
+
+### Conclusion
+
+692px row, ghosts left and copy right. Title/body reuse `.cs-ps-block` so the 4px step is the section standard. The ghost stage is a fixed 200×200 with a 186×186 art box inside it; the five ghosts cycle on the sequential dissolve described in the Motion System. Copy is one paragraph at `--copy-w`.
+
+### Next-case banner
+
+Full-bleed `--color-primary` strip, `56px 48px`, "Wanna see more of my work?" left and a `.btn-banner` ("See all cases" → `index.html#works`) right. `.btn-banner` is a case-page-only variant: `--color-white` background, `--color-primary` text, 8px radius, `12px 20px`.
+
+### Footer
+
+Identical to index.html, duplicated in full.
+
+---
+
 ## Build Order for Case Pages
 
-Each case page is a self-contained `.html` file using the same tokens, fonts, nav, and footer as `index.html`.
+Each case page is a self-contained `.html` file using the same tokens, fonts, nav, and footer as `index.html`. **`ghost-hunt.html` is the built reference — copy its structure rather than working from the sketch below.**
 
 Suggested structure:
-1. **Nav** — copy exactly from index.html
-2. **Case hero** — title, tags, 1-line summary, full-width placeholder image
-3. **Overview** — role, timeline, tools, outcome metrics
-4. **Process sections** — Research → Define → Design → Test → Ship (as needed)
-5. **Mockup placeholders** — `--color-accent` blocks at correct aspect ratios
-6. **Next case** — link to next page + back to Works
-7. **Footer** — copy exactly from index.html
+1. **Nav** — copy exactly from index.html, plus the hero's `--nav-h` blush band
+2. **Case hero** — eyebrow, title, tags, hero asset
+3. **Metric cards** — the outcome numbers, pulled up over the hero
+4. **Overview** — lead paragraph + role / timeline / deliverables
+5. **Process sections** — alternating copy and asset on the 846px frame
+6. **Results** — the numbers in context
+7. **Conclusion** — closing copy plus a signature asset
+8. **Next case** — link to next page + back to Works
+9. **Footer** — copy exactly from index.html
 
-Priority: `ghost-hunt.html` → `reports.html` → `tokens.html` → `themes.html` → `portfolio.html`
+Priority: ~~`ghost-hunt.html`~~ (built) → `reports.html` → `tokens.html` → `themes.html` → `portfolio.html`
