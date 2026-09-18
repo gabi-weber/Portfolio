@@ -366,80 +366,62 @@
       padding-bottom: 40px;
     }
 
-    .skills-inner {
+    .skills-groups {
       max-width: 1100px;
       margin: 0 auto;
+    }
+
+    /* ── Index rows: label parked left, ruled rows on the right ── */
+    .skills-group {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 56px;
+      grid-template-columns: 200px minmax(0, 1fr);
+      gap: 0 48px;
+      margin-bottom: 56px;
     }
 
-    .skills-col {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+    .skills-group:last-child {
+      margin-bottom: 0;
     }
 
-    /* ── Tools: full-width pill row below the Competencies/Interests grid ── */
-    .skills-tools {
-      max-width: 1100px;
-      margin: 56px auto 0;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .tools-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .tool-pill {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      background: var(--color-white);
-      border: 1px solid var(--color-border);
-      border-radius: 999px;
-      padding: 8px 16px;
-    }
-
-    .skills-col-label {
+    .skills-group-label {
       font-family: var(--font);
-      font-weight: 500;
+      font-weight: 600;
       font-size: 11px;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--color-muted);
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--color-border);
+      color: var(--color-text);
+      padding-top: 22px;
     }
 
-    /* ── All lists — unified title+context rows ── */
     .skill-list {
       display: flex;
       flex-direction: column;
-      gap: 16px;
     }
 
     .skill-item {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+      gap: 8px 32px;
+      align-items: baseline;
+      padding: 18px 0;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .skill-item:last-child {
+      border-bottom: 1px solid var(--color-border);
     }
 
     .skill-name {
       font-family: var(--font);
       font-weight: 600;
-      font-size: 16px;
+      font-size: 22px;
       color: var(--color-text);
     }
 
     .skill-sub {
       font-family: var(--font);
       font-weight: 400;
-      font-size: 12px;
+      font-size: 14px;
       color: var(--color-muted);
       line-height: 1.5;
     }
@@ -670,12 +652,13 @@
         margin-top: 20px;
         padding-top: 0;
       }
-      .skills-inner {
+      .skills-group {
         grid-template-columns: 1fr;
-        gap: 32px;
+        gap: 12px 0;
+        margin-bottom: 40px;
       }
-      .skills-tools {
-        margin-top: 32px;
+      .skills-group-label {
+        padding-top: 0;
       }
     }
 
@@ -697,6 +680,11 @@
       .bio-inner { gap: 32px; }
       .bio-cta { flex-direction: column; }
       .bio-cta .btn { width: 100%; justify-content: center; }
+      .skill-item {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+      .skill-name { font-size: 19px; }
       footer { padding: 56px 24px 40px; }
       .footer-copy { margin-top: 32px; }
     }
@@ -779,11 +767,11 @@
     <div class="skills-header reveal">
       <h2 class="section-eyebrow">Skills &amp; interests</h2>
     </div>
-    <div class="skills-inner reveal-stagger">
+    <div class="skills-groups reveal-stagger">
 
-      <!-- Column 1 — Competencies -->
-      <div class="skills-col">
-        <p class="skills-col-label">Competencies</p>
+      <!-- Competencies -->
+      <div class="skills-group">
+        <p class="skills-group-label">Competencies</p>
         <div class="skill-list">
           <div class="skill-item">
             <span class="skill-name">UX Design</span>
@@ -808,9 +796,9 @@
         </div>
       </div>
 
-      <!-- Column 2 — Interests -->
-      <div class="skills-col">
-        <p class="skills-col-label">Interests</p>
+      <!-- Interests -->
+      <div class="skills-group">
+        <p class="skills-group-label">Interests</p>
         <div class="skill-list">
           <div class="skill-item">
             <span class="skill-name">Gaming</span>
@@ -839,29 +827,29 @@
         </div>
       </div>
 
-    </div>
-
-    <!-- Tools — full-width pill row -->
-    <div class="skills-tools">
-      <p class="skills-col-label">Tools</p>
-      <div class="tools-pills">
-        <div class="tool-pill">
-          <span class="skill-name">Figma</span>
-          <span class="skill-sub">🖼️ Design · FigJam · Make · Variables</span>
-        </div>
-        <div class="tool-pill">
-          <span class="skill-name">Adobe Creative Cloud</span>
-          <span class="skill-sub">🎨 Illustrator · Photoshop · After Effects</span>
-        </div>
-        <div class="tool-pill">
-          <span class="skill-name">Claude</span>
-          <span class="skill-sub">🤖 Prompting · Claude Code · Workflow design</span>
-        </div>
-        <div class="tool-pill">
-          <span class="skill-name">Gemini</span>
-          <span class="skill-sub">✨ Research · Ideation support</span>
+      <!-- Tools -->
+      <div class="skills-group">
+        <p class="skills-group-label">Tools</p>
+        <div class="skill-list">
+          <div class="skill-item">
+            <span class="skill-name">Figma</span>
+            <span class="skill-sub">🖼️ Design · FigJam · Make · Variables</span>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Adobe Creative Cloud</span>
+            <span class="skill-sub">🎨 Illustrator · Photoshop · After Effects</span>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Claude</span>
+            <span class="skill-sub">🤖 Prompting · Claude Code · Workflow design</span>
+          </div>
+          <div class="skill-item">
+            <span class="skill-name">Gemini</span>
+            <span class="skill-sub">✨ Research · Ideation support</span>
+          </div>
         </div>
       </div>
+
     </div>
   </section>
   </main>
