@@ -33,6 +33,7 @@
       --color-accent:  #E9BAAE;
       --color-border:  #C4CBCB;
       --color-white:   #FEFAF9;
+      --color-brown-600: #7C4836; /* Mode 1.tokens.json → brown/600 */
 
       --font: 'Poppins', sans-serif;
       --nav-h: 64px;
@@ -224,6 +225,8 @@
        HERO
     ═══════════════════════════════════════════ */
     .hero {
+      position: relative;
+      overflow: hidden;
       min-height: 100vh;
       padding-top: var(--nav-h);
       display: flex;
@@ -231,6 +234,8 @@
     }
 
     .hero-inner {
+      position: relative;
+      z-index: 1;
       display: grid;
       grid-template-columns: 26fr 74fr;
       width: 100%;
@@ -449,11 +454,18 @@
       text-decoration: none;
     }
 
+    .case-image-img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     /* Hover overlay */
     .case-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(9, 99, 108, 0.80);
+      background: rgba(9, 99, 108, 0.90);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -467,14 +479,14 @@
 
     .case-image:hover .case-overlay { opacity: 1; }
 
-    /* 2. Overlay desc — Poppins 400 */
+    /* 2. Overlay desc — Poppins 500 */
     .case-overlay-desc {
       font-family: var(--font);
-      font-weight: 400;
-      font-size: 15px;
+      font-weight: 500;
+      font-size: 18px;
       color: var(--color-white);
       line-height: 1.6;
-      max-width: 380px;
+      max-width: 460px;
     }
 
     /* Text column */
@@ -521,14 +533,24 @@
       padding: 4px 12px;
     }
 
-    /* 2. Case desc — Poppins 400 */
-    .case-desc {
-      font-family: var(--font);
-      font-weight: 400;
-      font-size: 14px;
-      color: var(--color-muted);
-      line-height: 1.65;
-      max-width: 400px;
+    /* ═══════════════════════════════════════════
+       MORE CASES NOTICE — one line, no bg, subtle
+    ═══════════════════════════════════════════ */
+    .more-cases-notice {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 0 48px 64px;
+    }
+    .notice-line {
+      flex: 0 1 clamp(24px, 6vw, 96px);
+      height: 1px;
+      background: var(--color-brown-600);
+    }
+    .notice-text {
+      font-size: 13px;
+      color: var(--color-brown-600);
     }
 
     /* ═══════════════════════════════════════════
@@ -813,7 +835,7 @@
     <!-- 1. Bropella, 28px, fallback cursive -->
     <a href="index.html" class="nav-logo">Gabi Weber</a>
     <ul class="nav-links">
-      <li><a href="#works">Works</a></li>
+      <li><a href="#works">Work</a></li>
       <li><a href="about.html">About me</a></li>
       <li><a href="resume.html">Resumé</a></li>
       <li>
@@ -824,7 +846,7 @@
   </nav>
 
   <!-- ░░ HERO ░░ -->
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero-inner">
 
       <!-- Left: audience switcher -->
@@ -860,7 +882,7 @@
             <span class="tag">👩‍💻 Product designer</span>
             <span class="tag">✨ AI-Augmented Workflow</span>
             <span class="tag">🖼️ Illustrator</span>
-            <span class="tag">🇧🇷 Brazil</span>
+            <span class="tag">🕒 Brazil, UTC-3</span>
           </div>
           <div class="tag-set" data-tags="1">
             <span class="tag">💼 Open to work</span>
@@ -914,8 +936,8 @@
 
         <!-- 3. CTAs (below headline only) -->
         <div class="hero-ctas">
-          <a href="#contact" class="btn btn-primary btn-large contact-trigger">Get in Touch</a>
-          <a href="#works"   class="btn btn-secondary btn-large">See My Cases</a>
+          <a href="#contact" class="btn btn-primary btn-large contact-trigger">Get in touch</a>
+          <a href="#works"   class="btn btn-secondary btn-large">See my work</a>
         </div>
 
       </div><!-- /hero-content -->
@@ -929,6 +951,7 @@
     <div class="case-row">
       <div class="case-row-inner">
         <a href="ghost-hunt.html" class="case-image" aria-label="View case study: Boosting feature engagement through whimsical interventions">
+          <img src="assets/LP/Ghost%20hunt.png" alt="" class="case-image-img" />
           <div class="case-overlay">
             <p class="case-overlay-desc">A ghost hunt that drove 164% feature adoption and a 550% boost in profile interactions.</p>
             <span class="btn-overlay">View Case Study</span>
@@ -938,17 +961,23 @@
           <p class="case-number">01</p>
           <h3 class="case-title">Boosting feature engagement through whimsical interventions</h3>
           <div class="case-tags">
-            <span class="case-tag">💡 Engagement</span>
+            <span class="case-tag">📲 Omnichannel</span>
             <span class="case-tag">📣 Campaign</span>
             <span class="case-tag">✏️ Illustration</span>
             <span class="case-tag">🎨 Creative</span>
           </div>
-          <p class="case-desc">164% feature adoption. 550% boost in profile interactions.</p>
         </div>
       </div>
     </div>
 
   </section>
+
+  <!-- ░░ MORE CASES NOTICE ░░ -->
+  <div class="more-cases-notice reveal">
+    <span class="notice-line" aria-hidden="true"></span>
+    <p class="notice-text">More case studies in progress, check back soon.</p>
+    <span class="notice-line" aria-hidden="true"></span>
+  </div>
 
   <!-- ░░ ABOUT ░░ -->
   <section class="about-section" id="about">
@@ -1236,6 +1265,34 @@
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') closeDropdown();
     });
+
+    /* ════════════════════════════════════════════════════════
+       "WORK" NAV — land centered in the viewport, not pinned
+       to the top, so a single case section doesn't read like
+       the top of a long list.
+    ════════════════════════════════════════════════════════ */
+    function centerWorksSection() {
+      const worksEl = document.getElementById('works');
+      if (!worksEl) return;
+      const rect      = worksEl.getBoundingClientRect();
+      const elMiddle  = rect.top + window.scrollY + rect.height / 2;
+      const target    = Math.max(0, elMiddle - window.innerHeight / 2);
+      window.scrollTo({ top: target, behavior: 'smooth' });
+    }
+
+    document.addEventListener('click', e => {
+      const link = e.target.closest('a[href="#works"], a[href$="#works"]');
+      if (!link) return;
+      e.preventDefault();
+      centerWorksSection();
+      history.pushState(null, '', '#works');
+    });
+
+    if (window.location.hash === '#works') {
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+      window.scrollTo(0, 0);
+      window.addEventListener('load', centerWorksSection);
+    }
 
   </script>
 </body>
