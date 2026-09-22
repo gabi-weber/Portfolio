@@ -465,6 +465,11 @@
 
     .footer-greeting a:hover { text-decoration: underline; }
 
+    .ext-arrow {
+      font-size: 0.75em;
+      color: inherit;
+    }
+
     /* Attention flash — a darker pulse behind the Say hi / Get in touch
        buttons. Blinks twice. Triggered by JS on .contact-trigger click. */
     @keyframes contact-flash {
@@ -544,6 +549,17 @@
     }
 
     .email-dropdown button:hover { background: var(--color-bg); }
+
+    .email-dropdown-address {
+      display: block;
+      padding: 10px 16px;
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 13px;
+      color: var(--color-muted);
+      border-bottom: 1px solid var(--color-border);
+      user-select: all;
+    }
 
     .toast {
       position: fixed;
@@ -856,15 +872,16 @@
   <footer id="contact">
     <div class="footer-cta-block">
       <p class="footer-greeting">
-        <a href="https://www.linkedin.com/in/gabriela-lissarassa-weber/" target="_blank" rel="noopener noreferrer" aria-label="Say hi on LinkedIn (opens in new tab)">Say hi <span aria-hidden="true">👋</span></a>
+        <a href="https://www.linkedin.com/in/gabriela-lissarassa-weber/" target="_blank" rel="noopener noreferrer" aria-label="Say hi on LinkedIn (opens in new tab)">Say hi <span aria-hidden="true">👋</span> <span aria-hidden="true" class="ext-arrow">↗</span></a>
         &nbsp;·&nbsp;
         <span class="footer-email-wrap">
-          <button class="footer-email-btn" id="email-trigger" aria-haspopup="menu" aria-expanded="false">
+          <button class="footer-email-btn" id="email-trigger" aria-haspopup="true" aria-expanded="false">
             Get in touch ✉️
           </button>
-          <span class="email-dropdown" id="email-dropdown" role="menu">
-            <button id="copy-email" role="menuitem">Copy email</button>
-            <button id="send-email" role="menuitem">Send email</button>
+          <span class="email-dropdown" id="email-dropdown">
+            <span class="email-dropdown-address">gabrielaweber008@gmail.com</span>
+            <button id="copy-email">Copy email</button>
+            <button id="send-email">Send email</button>
           </span>
         </span>
       </p>
