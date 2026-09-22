@@ -347,11 +347,28 @@
       align-items: center;
     }
 
+    @media (min-width: 901px) {
+      .hero {
+        min-height: 88vh;
+      }
+      .hero-inner {
+        min-height: calc(88vh - var(--nav-h));
+      }
+    }
+
     /* ── 5. Left: audience switcher — 15px labels ── */
     .switcher {
       display: flex;
       flex-direction: column;
       padding-right: 48px;
+    }
+
+    .switcher-greeting {
+      font-family: var(--font);
+      font-weight: 500;
+      font-size: 15px;
+      color: var(--color-text);
+      margin-bottom: 8px;
     }
 
     .switcher-item {
@@ -361,6 +378,17 @@
       padding: 10px 0;
       cursor: pointer;
       user-select: none;
+      background: none;
+      border: none;
+      font: inherit;
+      color: inherit;
+      text-align: left;
+    }
+
+    .switcher-item:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 4px;
+      border-radius: 4px;
     }
 
     .switcher-dot {
@@ -822,6 +850,10 @@
         padding-right: 0;
         gap: 8px 20px;
       }
+      .switcher-greeting {
+        flex-basis: 100%;
+        margin-bottom: 0;
+      }
       .switcher-item {
         padding: 0;
       }
@@ -1026,31 +1058,34 @@
     <div class="hero-inner">
 
       <!-- Left: audience switcher -->
-      <aside class="switcher" aria-label="View portfolio for…">
-        <div class="switcher-item active" data-idx="0" role="button" tabindex="0" aria-pressed="true">
+      <div class="switcher" role="group" aria-label="Hey there, choose who you are">
+        <p class="switcher-greeting">Hey there...</p>
+        <button type="button" class="switcher-item active" data-idx="0" aria-pressed="true">
           <span class="switcher-dot"></span>
-          <span class="switcher-label">For everyone</span>
-        </div>
-        <div class="switcher-item" data-idx="1" role="button" tabindex="0" aria-pressed="false">
+          <span class="switcher-label">everyone</span>
+        </button>
+        <button type="button" class="switcher-item" data-idx="1" aria-pressed="false">
           <span class="switcher-dot"></span>
-          <span class="switcher-label">Recruiters</span>
-        </div>
-        <div class="switcher-item" data-idx="2" role="button" tabindex="0" aria-pressed="false">
+          <span class="switcher-label">recruiters</span>
+        </button>
+        <button type="button" class="switcher-item" data-idx="2" aria-pressed="false">
           <span class="switcher-dot"></span>
-          <span class="switcher-label">Product designers</span>
-        </div>
-        <div class="switcher-item" data-idx="3" role="button" tabindex="0" aria-pressed="false">
+          <span class="switcher-label">product designers</span>
+        </button>
+        <button type="button" class="switcher-item" data-idx="3" aria-pressed="false">
           <span class="switcher-dot"></span>
-          <span class="switcher-label">Product managers</span>
-        </div>
-        <div class="switcher-item" data-idx="4" role="button" tabindex="0" aria-pressed="false">
+          <span class="switcher-label">product managers</span>
+        </button>
+        <button type="button" class="switcher-item" data-idx="4" aria-pressed="false">
           <span class="switcher-dot"></span>
-          <span class="switcher-label">Developers</span>
-        </div>
-      </aside>
+          <span class="switcher-label">developers</span>
+        </button>
+      </div>
 
       <!-- Right: dynamic content — ORDER: tags → headline → CTAs -->
       <div class="hero-content">
+
+        <h1 class="sr-only" id="hero-h1">I design with intention, so that real people's lives are a little better. That's the whole point.</h1>
 
         <!-- 1. Swappable tags (above headline) -->
         <div class="hero-tags" id="tag-wrap">
@@ -1087,27 +1122,27 @@
         </div>
 
         <!-- 2. Headlines — height locked by JS; letter-spacing normalized so all take same lines -->
-        <div class="hero-headline-wrap" id="hl-wrap">
-          <h1 class="hero-headline active" data-hl="0"
+        <div class="hero-headline-wrap" id="hl-wrap" aria-hidden="true">
+          <p class="hero-headline active" data-hl="0"
               data-full="I design with intention, so that real people's lives are a little better. That's the whole point.">
             I design with intention, so that real people's lives are a little better. That's the whole point.
-          </h1>
-          <h1 class="hero-headline" data-hl="1" aria-hidden="true"
+          </p>
+          <p class="hero-headline" data-hl="1"
               data-full="3+ years in B2B. I bridge design and dev, communicate clearly, and make collaboration feel easy.">
             3+ years in B2B. I bridge design and dev, communicate clearly, and make collaboration feel easy.
-          </h1>
-          <h1 class="hero-headline" data-hl="2" aria-hidden="true"
+          </p>
+          <p class="hero-headline" data-hl="2"
               data-full="Every designer has a love-hate relationship with Figma. I just made sure the love always wins.">
             Every designer has a love-hate relationship with Figma. I just made sure the love always wins.
-          </h1>
-          <h1 class="hero-headline" data-hl="3" aria-hidden="true"
+          </p>
+          <p class="hero-headline" data-hl="3"
               data-full="I design to get it right the first time: clean handoff, clear rationale, no surprises in QA.">
             I design to get it right the first time: clean handoff, clear rationale, no surprises in QA.
-          </h1>
-          <h1 class="hero-headline" data-hl="4" aria-hidden="true"
+          </p>
+          <p class="hero-headline" data-hl="4"
               data-full="I give you tokens, documentation, and a handoff that makes your life easier: not harder.">
             I give you tokens, documentation, and a handoff that makes your life easier: not harder.
-          </h1>
+          </p>
         </div>
 
         <!-- 3. CTAs (below headline only) -->
@@ -1279,8 +1314,6 @@
       tagWrap.style.height = measureMaxHeight(tagWrap, allTagSets) + 'px';
     }
 
-    normalizeAndLock();
-
     /* ── Pills: reveal one by one instead of fading in as a block ── */
     function hidePills(setEl) {
       setEl.querySelectorAll('.tag').forEach(t => t.classList.remove('tag-visible'));
@@ -1296,9 +1329,6 @@
         setTimeout(() => t.classList.add('tag-visible'), i * 80);
       });
     }
-
-    /* Give the first-loaded tag-set its stagger reveal too */
-    revealPills(tagWrap.querySelector('.tag-set.active'));
 
     let resizeTimer;
     window.addEventListener('resize', () => {
@@ -1324,9 +1354,16 @@
       }, 12);
     }
 
-    /* Type out the first headline on load, same as a switch-in */
     const initialHl = hlWrap.querySelector('.hero-headline.active');
-    typeHeadline(initialHl, initialHl.dataset.full);
+
+    /* Wait for the Poppins web font so normalizeAndLock() measures final
+       glyph metrics, not the fallback font's — only then start the
+       typewriter (which empties the headline text) and the pill reveal. */
+    document.fonts.ready.then(() => {
+      normalizeAndLock();
+      typeHeadline(initialHl, initialHl.dataset.full);
+      revealPills(tagWrap.querySelector('.tag-set.active'));
+    });
 
     /* ── Audience switcher ────────────────────────────────── */
     const switcherItems = document.querySelectorAll('.switcher-item');
@@ -1345,7 +1382,6 @@
       const out = hlWrap.querySelector('.hero-headline.active');
       out.style.opacity = '0';
       out.classList.remove('active');
-      out.setAttribute('aria-hidden', 'true');
       out.textContent = out.dataset.full;
 
       /* Tags swap — outgoing fades as a block, incoming pills stagger in one by one */
@@ -1360,20 +1396,16 @@
       const inc = hlWrap.querySelector(`.hero-headline[data-hl="${idx}"]`);
       inc.style.opacity = '1';
       inc.classList.add('active');
-      inc.removeAttribute('aria-hidden');
       typeHeadline(inc, inc.dataset.full);
+
+      /* Update the real (visually hidden) h1 so screen readers get the full text */
+      document.getElementById('hero-h1').textContent = inc.dataset.full;
 
       current = idx;
     }
 
     switcherItems.forEach(item => {
       item.addEventListener('click', () => switchTo(+item.dataset.idx));
-      item.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          switchTo(+item.dataset.idx);
-        }
-      });
     });
 
     /* ── Scroll reveal ────────────────────────────────────── */
@@ -1390,7 +1422,7 @@
         }
         io.unobserve(entry.target);
       });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.05 });
 
     document.querySelectorAll('.reveal, .case-row').forEach(el => io.observe(el));
 
