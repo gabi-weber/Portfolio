@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gabi Weber — Product Designer</title>
-  <meta name="description" content="Gabi Weber — Product Designer and illustrator based in Brazil. UX/UI case studies, an AI-augmented workflow, and a portfolio built for remote-first roles." />
-  <meta property="og:title" content="Gabi Weber — Product Designer & Illustrator" />
-  <meta property="og:description" content="Product designer and illustrator based in Brazil, open to remote-first roles. Explore case studies spanning design systems, campaigns, and AI-augmented workflows." />
+  <meta name="description" content="Product designer working on B2B design systems, dashboards and seasonal campaigns. Clear rationale, documented handoff, numbers attached. Based in Brazil, remote-first." />
+  <meta property="og:title" content="Gabi Weber — Product Designer" />
+  <meta property="og:description" content="Product designer working on B2B design systems, dashboards and seasonal campaigns. Clear rationale, documented handoff, numbers attached. Based in Brazil, remote-first." />
   <meta property="og:type" content="website" />
   <!-- og:image to be added once the site is deployed and a public image URL exists -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -581,6 +581,21 @@
       flex-direction: column;
       gap: 14px;
       justify-content: center;
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .case-text:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 8px;
+      border-radius: 8px;
+    }
+
+    /* Whole text block is the link, so hovering it lights the button */
+    .case-text:hover .case-cta {
+      background-color: rgba(9, 99, 108, 0.25);
+      box-shadow: 2px 2px 10px rgba(26, 27, 27, 0.25);
     }
 
     /* 2. Case number — Poppins 500 (was 400) */
@@ -600,23 +615,6 @@
       color: var(--color-text);
       letter-spacing: -0.3px;
       line-height: 1.25;
-    }
-
-    .case-tags {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    /* 2. Case tags — Poppins 400 */
-    .case-tag {
-      font-family: var(--font);
-      font-weight: 400;
-      font-size: 12px;
-      color: var(--color-muted);
-      border: 1px solid var(--color-border);
-      border-radius: 999px;
-      padding: 4px 12px;
     }
 
     .case-metric {
@@ -773,11 +771,6 @@
     }
 
     .footer-greeting a:hover { text-decoration: underline; }
-
-    .ext-arrow {
-      font-size: 0.75em;
-      color: inherit;
-    }
 
     /* 2. Footer copy — Poppins 400 */
     .footer-copy {
@@ -1053,59 +1046,59 @@
       <!-- Right: dynamic content — ORDER: tags → headline → CTAs -->
       <div class="hero-content">
 
-        <h1 class="sr-only" id="hero-h1">I design with intention, so that real people's lives are a little better. That's the whole point.</h1>
+        <h1 class="sr-only" id="hero-h1">I'm a product designer who makes complex products feel obvious, and I bring the whole team along with me.</h1>
 
         <!-- 1. Swappable tags (above headline) -->
         <div class="hero-tags" id="tag-wrap">
           <div class="tag-set active" data-tags="0">
-            <span class="tag">👩‍💻 Product designer</span>
-            <span class="tag">✨ AI-Augmented Workflow</span>
-            <span class="tag">🖼️ Illustrator</span>
-            <span class="tag">🕒 Brazil, UTC-3</span>
+            <span class="tag">🧩 Design systems</span>
+            <span class="tag">👻 Illustrated campaigns</span>
+            <span class="tag">🎟️ B2B events platform</span>
+            <span class="tag">🌎 EN · PT · ES</span>
           </div>
           <div class="tag-set" data-tags="1">
-            <span class="tag">💼 Open to work</span>
-            <span class="tag">🖥️ Remote-first</span>
-            <span class="tag">🏢 Big company experience</span>
-            <span class="tag">🏆 Team player</span>
+            <span class="tag">🌐 Remote-first, open now</span>
+            <span class="tag">🕒 UTC-3, overlaps US East</span>
+            <span class="tag">🗣️ EN fluent · PT native · ES C1</span>
+            <span class="tag">🍹 Dentsu, global beverage client</span>
           </div>
           <div class="tag-set" data-tags="2">
-            <span class="tag">🧮 Design systems</span>
-            <span class="tag">📄 UX driven</span>
-            <span class="tag">🎀 Detailed UI</span>
-            <span class="tag">😎 Vibe coding</span>
+            <span class="tag">🧩 100% token migration</span>
+            <span class="tag">🌓 Dark mode shipped</span>
+            <span class="tag">👻 Illustration that shipped in-product</span>
+            <span class="tag">⌨️ Vibe-coded portfolio</span>
           </div>
           <div class="tag-set" data-tags="3">
-            <span class="tag">📊 Metrics-driven</span>
-            <span class="tag">🚢 Shipped products</span>
-            <span class="tag">🕵️ Edge-case hunter</span>
-            <span class="tag">💬 Multitrack teams</span>
+            <span class="tag">📈 164% feature adoption</span>
+            <span class="tag">📄 One-pager that sold it</span>
+            <span class="tag">🎟️ 100k+ events a year</span>
+            <span class="tag">🗓️ Six themes, all on time</span>
           </div>
           <div class="tag-set" data-tags="4">
-            <span class="tag">🧬 Token architecture</span>
-            <span class="tag">🫴 Clean handoff</span>
-            <span class="tag">📣 Open communication</span>
-            <span class="tag">🛠️ AI tooling</span>
+            <span class="tag">🎛️ Figma variables → CSS</span>
+            <span class="tag">📝 Documented handoff</span>
+            <span class="tag">🌓 Light + dark parity</span>
+            <span class="tag">⌨️ Browser-ready prototypes</span>
           </div>
         </div>
 
         <!-- 2. Headlines — height locked by JS; letter-spacing normalized so all take same lines -->
         <div class="hero-headline-wrap" id="hl-wrap" aria-hidden="true">
           <p class="hero-headline active" data-hl="0"
-              data-full="I design with intention, so that real people's lives are a little better. That's the whole point.">
-            I design with intention, so that real people's lives are a little better. That's the whole point.
+              data-full="I'm a product designer who makes complex products feel obvious, and I bring the whole team along with me.">
+            I'm a product designer who makes complex products feel obvious, and I bring the whole team along with me.
           </p>
           <p class="hero-headline" data-hl="1"
-              data-full="3+ years in B2B. I bridge design and dev, communicate clearly, and make collaboration feel easy.">
-            3+ years in B2B. I bridge design and dev, communicate clearly, and make collaboration feel easy.
+              data-full="Four years in B2B product design, fluent in English, and used to working the same hours as US teams.">
+            Four years in B2B product design, fluent in English, and used to working the same hours as US teams.
           </p>
           <p class="hero-headline" data-hl="2"
-              data-full="Every designer has a love-hate relationship with Figma. I just made sure the love always wins.">
-            Every designer has a love-hate relationship with Figma. I just made sure the love always wins.
+              data-full="Every designer has a love-hate with Figma. I made sure the love wins, then documented why.">
+            Every designer has a love-hate with Figma. I made sure the love wins, then documented why.
           </p>
           <p class="hero-headline" data-hl="3"
-              data-full="I design to get it right the first time: clean handoff, clear rationale, no surprises in QA.">
-            I design to get it right the first time: clean handoff, clear rationale, no surprises in QA.
+              data-full="I design to get it right the first time: clear rationale, clean handoff, no surprises in QA.">
+            I design to get it right the first time: clear rationale, clean handoff, no surprises in QA.
           </p>
           <p class="hero-headline" data-hl="4"
               data-full="I give you tokens, documentation, and a handoff that makes your life easier, not harder.">
@@ -1133,18 +1126,12 @@
         <a href="ghost-hunt.html" class="case-image" aria-label="View case study: Boosting feature engagement through whimsical interventions">
           <img src="assets/LP/Ghost%20hunt.png" alt="" class="case-image-img" />
         </a>
-        <div class="case-text">
+        <a href="ghost-hunt.html" class="case-text">
           <p class="case-number">01</p>
-          <div class="case-tags">
-            <span class="case-tag">📲 Omnichannel</span>
-            <span class="case-tag">📣 Campaign</span>
-            <span class="case-tag">✏️ Illustration</span>
-            <span class="case-tag">🎨 Creative</span>
-          </div>
           <h3 class="case-title">Boosting feature engagement through whimsical interventions</h3>
           <p class="case-metric">A ghost hunt that drove <strong>164% feature adoption</strong> and a <strong>550% boost</strong> in profile interactions.</p>
-          <a href="ghost-hunt.html" class="btn btn-secondary btn-medium case-cta">Read case study</a>
-        </div>
+          <span class="btn btn-secondary btn-medium case-cta">Read case study</span>
+        </a>
       </div>
     </div>
 
@@ -1153,7 +1140,7 @@
   <!-- ░░ MORE CASES NOTICE ░░ -->
   <div class="more-cases-notice reveal">
     <span class="notice-line" aria-hidden="true"></span>
-    <p class="notice-text">More case studies in progress, check back soon.</p>
+    <p class="notice-text">More case studies on the way — design tokens, flow migration and seasonal themes. Happy to walk you through any of them on a call.</p>
     <span class="notice-line" aria-hidden="true"></span>
   </div>
 
@@ -1166,11 +1153,12 @@
         <div class="about-photo"></div>
         <div class="about-bio">
           <h3 class="about-greeting">Hi, I'm Gabi!</h3>
-          <p>I'm a product designer based in Brazil who makes things, digital and otherwise. I care about craft, communication, and the people on the other side of the screen.</p>
+          <p>I'm a product designer based in Brazil who makes things, digital and otherwise. Most of my work is B2B: design systems, dashboards, and the detail work that only gets noticed when it's missing.</p>
+          <p>What I'm best at is the part between the screens: writing the rationale, running the pitch, and handing work over so nobody needs a meeting to decode it. I work in English every day, and I illustrate when a product needs personality a component library can't give it.</p>
           <!-- primary · medium · default  /  secondary · medium · default -->
           <div class="about-actions">
-            <a href="about.html" class="btn btn-primary btn-medium">Wanna know more?</a>
-            <a href="#works" class="btn btn-secondary btn-medium">See my work</a>
+            <a href="about.html" class="btn btn-primary btn-medium">More about me</a>
+            <a href="resume.html" class="btn btn-secondary btn-medium">Resumé</a>
           </div>
         </div>
       </div>
@@ -1182,7 +1170,7 @@
   <footer id="contact">
     <p class="footer-greeting">
       <!-- Say hi 👋 → LinkedIn, new tab -->
-      <a href="https://www.linkedin.com/in/gabriela-lissarassa-weber/" target="_blank" rel="noopener noreferrer" aria-label="Say hi on LinkedIn (opens in new tab)">Say hi 👋 <span aria-hidden="true" class="ext-arrow">↗</span></a>
+      <a href="https://www.linkedin.com/in/gabriela-lissarassa-weber/" target="_blank" rel="noopener noreferrer" aria-label="Say hi on LinkedIn (opens in new tab)">Say hi 👋</a>
       &nbsp;·&nbsp;
       <!-- Get in touch ✉️ → email dropdown -->
       <span class="footer-email-wrap">
