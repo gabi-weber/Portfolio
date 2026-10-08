@@ -96,12 +96,12 @@
     .btn-primary                   { background: #09636C; color: var(--color-white); }
     .btn-primary:hover             { background: #085057; box-shadow: 2px 2px 10px rgba(26,27,27,.25); }
     .btn-primary:active            { background: #085057; box-shadow: none; }
-    .btn-primary:focus-visible     { background: #09636C; border: 2px solid #043F45; outline: none; }
+    .btn-primary:focus-visible     { background: #09636C; outline: 2px solid #043F45; outline-offset: 2px; }
 
     .btn-secondary                 { background: rgba(9,99,108,.10); border: 2px solid #09636C; color: #1A1B1B; }
     .btn-secondary:hover           { background: rgba(9,99,108,.25); box-shadow: 2px 2px 10px rgba(26,27,27,.25); }
     .btn-secondary:active          { background: rgba(9,99,108,.25); box-shadow: none; }
-    .btn-secondary:focus-visible   { background: rgba(9,99,108,.20); border: 2px solid rgba(9,99,108,.5); outline: none; }
+    .btn-secondary:focus-visible   { background: rgba(9,99,108,.20); border: 2px solid rgba(9,99,108,.5); outline: 2px solid #043F45; outline-offset: 2px; }
 
     /* ═══════════════════════════════════════════
        NAV
@@ -122,7 +122,8 @@
 
     .nav-logo {
       font-family: 'Bropella', cursive;
-      font-weight: 700;
+      font-weight: 400;
+      font-synthesis: none;
       font-size: 28px;
       line-height: 1;
       color: var(--color-primary);
@@ -276,11 +277,11 @@
 
     .page-hero-title {
       font-family: var(--font);
-      font-weight: 300;
+      font-weight: 400;
       font-size: clamp(32px, 3.2vw, 46px);
       letter-spacing: -0.5px;
       line-height: 1.18;
-      color: var(--color-muted);
+      color: var(--color-text);
     }
 
     /* ═══════════════════════════════════════════
@@ -296,18 +297,28 @@
       display: grid;
       grid-template-columns: 320px 1fr;
       gap: 72px;
-      align-items: stretch;
+      align-items: start;
     }
 
     /* Photo placeholder — portrait ratio */
     .bio-photo {
       width: 100%;
-      height: 100%;
+      aspect-ratio: 4 / 5;
+      height: auto;
       background: var(--color-accent);
       border-radius: 16px;
       border: 1px solid var(--color-border);
       position: relative;
       overflow: hidden;
+    }
+
+    .bio-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      position: relative;
+      z-index: 1;
     }
 
     /* Subtle inner pattern to make the placeholder feel intentional */
@@ -346,6 +357,40 @@
       line-height: 1.7;
     }
 
+    .bio-facts {
+      max-width: 65ch;
+    }
+
+    .bio-facts-row {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      column-gap: 24px;
+      align-items: baseline;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .bio-facts-row:first-child {
+      border-top: 1px solid var(--color-border);
+    }
+
+    .bio-facts dt {
+      font-family: var(--font);
+      font-weight: 500;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-muted);
+    }
+
+    .bio-facts dd {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--color-text);
+    }
+
     .bio-cta {
       display: flex;
       gap: 12px;
@@ -361,15 +406,10 @@
       padding: 0 48px 120px;
     }
 
-    .skills-header {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding-bottom: 40px;
-    }
-
     .skills-groups {
       max-width: 1100px;
       margin: 0 auto;
+      padding-top: 40px;
     }
 
     /* ── Index rows: label parked left, ruled rows on the right ── */
@@ -392,11 +432,15 @@
       text-transform: uppercase;
       color: var(--color-text);
       padding-top: 22px;
+      margin: 0;
     }
 
     .skill-list {
       display: flex;
       flex-direction: column;
+      list-style: none;
+      margin: 0;
+      padding: 0;
     }
 
     .skill-item {
@@ -602,16 +646,16 @@
       transform: translateY(20px);
       transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     }
-    .reveal-stagger.revealed > *:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0ms; }
-    .reveal-stagger.revealed > *:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 80ms; }
-    .reveal-stagger.revealed > *:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 160ms; }
-    .reveal-stagger.revealed > *:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 240ms; }
+    /* --i is set per child by JS; --stagger is the step between children */
+    .reveal-stagger { --stagger: 80ms; }
+    .reveal-stagger.revealed > * {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: calc(var(--i, 0) * var(--stagger));
+    }
 
     /* Bio text gets wider gaps so each paragraph has room to land */
-    .bio-text.reveal-stagger.revealed > *:nth-child(1) { transition-delay: 0ms; }
-    .bio-text.reveal-stagger.revealed > *:nth-child(2) { transition-delay: 110ms; }
-    .bio-text.reveal-stagger.revealed > *:nth-child(3) { transition-delay: 220ms; }
-    .bio-text.reveal-stagger.revealed > *:nth-child(4) { transition-delay: 330ms; }
+    .bio-text.reveal-stagger { --stagger: 110ms; }
 
     /* ── Hero title: word-by-word ── */
     .page-hero .section-eyebrow {
@@ -689,6 +733,7 @@
       .bio-text p { font-size: 15px; max-width: 100%; }
       .bio-photo { aspect-ratio: 3 / 4; }
       .bio-inner { gap: 32px; }
+      .bio-facts-row { grid-template-columns: 1fr; row-gap: 4px; }
       .bio-cta { flex-direction: column; }
       .bio-cta .btn { width: 100%; justify-content: center; }
       .skill-item {
@@ -746,7 +791,7 @@
   <main>
   <!-- ░░ PAGE HERO ░░ -->
   <div class="page-hero">
-    <h1 class="page-hero-title">I fell in love with design when I realized it could actually help people.</h1>
+    <h1 class="page-hero-title">Product designer who makes complex B2B tools feel clear.</h1>
   </div>
 
   <!-- ░░ BIO SECTION ░░ -->
@@ -756,14 +801,22 @@
 
       <!-- Photo placeholder -->
       <div class="reveal-scale" data-reveal-delay="200">
-        <div class="bio-photo"></div>
+        <div class="bio-photo">
+          <!-- <img src="assets/about/gabi.jpg" alt="Gabi Weber smiling, portrait" width="640" height="800" loading="eager"> -->
+        </div>
       </div>
 
       <!-- Bio text -->
       <div class="bio-text reveal-stagger" data-reveal-delay="0">
         <p>I love telling stories, talking to people, and making things: from ceramics and drawings to apps and platforms. I'm a product designer based in Brazil, and I fell in love with UX/UI during college, when my final project (a website about blood donation) showed me what design could actually do for people. I've been working in digital products ever since.</p>
-        <p>I work best alongside other people. Communication is one of my strongest traits, and I genuinely prefer bouncing ideas off others rather than designing in a vacuum. I like both UX and UI almost equally, with a slight pull toward UI, because as much as I love the discovery phase, my eyes light up when I finally get to use my imagination on the actual solution.</p>
-        <p>What drives me is getting better at the craft. I want to keep pushing my work in Figma, deepen how I integrate AI into my process, and become the kind of designer that teams genuinely rely on.</p>
+        <p>I am confident in my work when I the only designer as long as i have the support of the PMs and developers along the way. Communication is one of my strongest traits, and I genuinely prefer bouncing ideas off others rather than designing in a vacuum. I enjoy discovery, and I'm happiest when research turns into a concrete, carefully crafted solution.</p>
+        <p>What drives me is getting better at the craft. I want to keep pushing my work in Figma, deepen how I integrate AI into my process, and become the kind of designer that teams rely on.</p>
+        <dl class="bio-facts">
+          <div class="bio-facts-row"><dt>Based in</dt><dd>Brasília, Brazil (UTC-3)</dd></div>
+          <div class="bio-facts-row"><dt>Experience</dt><dd>3+ years in B2B product design</dd></div>
+          <div class="bio-facts-row"><dt>Languages</dt><dd>Portuguese (native), English (fluent), Spanish (C1)</dd></div>
+          <div class="bio-facts-row"><dt>Working</dt><dd>Remote, overlapping with US East and European hours</dd></div>
+        </dl>
         <div class="bio-cta">
           <a href="index.html#works" class="btn btn-primary btn-medium">See my work</a>
           <a href="#contact" class="btn btn-secondary btn-medium contact-trigger">Get in touch</a>
@@ -775,88 +828,87 @@
 
   <!-- ░░ SKILLS + INTERESTS ░░ -->
   <section class="skills-section">
-    <div class="skills-header reveal"></div>
     <div class="skills-groups reveal-stagger">
 
       <!-- Competencies -->
       <div class="skills-group">
-        <p class="skills-group-label">Competencies</p>
-        <div class="skill-list">
-          <div class="skill-item">
+        <h2 class="skills-group-label">Competencies</h2>
+        <ul class="skill-list">
+          <li class="skill-item">
             <span class="skill-name">UX Design</span>
-            <span class="skill-sub">📄 Research · Flows · Usability testing</span>
-          </div>
-          <div class="skill-item">
+            <span class="skill-sub">Research · Flows · Usability testing</span>
+          </li>
+          <li class="skill-item">
             <span class="skill-name">Communication</span>
-            <span class="skill-sub">💬 Stakeholder alignment · Handoff · Documentation</span>
-          </div>
-          <div class="skill-item">
+            <span class="skill-sub">Stakeholder alignment · Handoff · Documentation</span>
+          </li>
+          <li class="skill-item">
             <span class="skill-name">UI Design</span>
-            <span class="skill-sub">🎀 Components · Visual systems · Responsive layouts</span>
-          </div>
-          <div class="skill-item">
+            <span class="skill-sub">Components · Visual systems · Responsive layouts</span>
+          </li>
+          <li class="skill-item">
             <span class="skill-name">Illustration</span>
-            <span class="skill-sub">✏️ Digital · Brand · Campaign assets</span>
-          </div>
-          <div class="skill-item">
+            <span class="skill-sub">Digital · Brand · Campaign assets</span>
+          </li>
+          <li class="skill-item">
             <span class="skill-name">AI-Augmented Workflow</span>
-            <span class="skill-sub">✨ Prompt engineering · Vibe-coding · Shipping</span>
-          </div>
-        </div>
+            <span class="skill-sub">Prompt engineering · Vibe-coding · Shipping</span>
+          </li>
+        </ul>
       </div>
 
       <!-- Tools -->
       <div class="skills-group">
-        <p class="skills-group-label">Tools</p>
-        <div class="skill-list">
-          <div class="skill-item">
+        <h2 class="skills-group-label">Tools</h2>
+        <ul class="skill-list">
+          <li class="skill-item">
             <span class="skill-name">Figma</span>
-            <span class="skill-sub">🖼️ Design · FigJam · Make · Variables</span>
-          </div>
-          <div class="skill-item">
+            <span class="skill-sub">Design · FigJam · Make · Variables</span>
+          </li>
+          <li class="skill-item">
             <span class="skill-name">Adobe Creative Cloud</span>
-            <span class="skill-sub">🎨 Illustrator · Photoshop · After Effects</span>
-          </div>
-          <div class="skill-item">
+            <span class="skill-sub">Illustrator · Photoshop · After Effects</span>
+          </li>
+          <li class="skill-item">
             <span class="skill-name">Claude</span>
-            <span class="skill-sub">🤖 Prompting · Claude Code · Workflow design</span>
-          </div>
-          <div class="skill-item">
+            <span class="skill-sub">Prompting · Claude Code · Workflow design</span>
+          </li>
+          <li class="skill-item">
             <span class="skill-name">Gemini</span>
-            <span class="skill-sub">✨ Research · Ideation support</span>
-          </div>
-        </div>
+            <span class="skill-sub">Research · Ideation support</span>
+          </li>
+        </ul>
       </div>
 
       <!-- Interests -->
       <div class="skills-group">
-        <p class="skills-group-label">Interests</p>
-        <div class="skill-list">
-          <div class="skill-item">
+        <h2 class="skills-group-label">Interests</h2>
+        <ul class="skill-list">
+          <li class="skill-item">
             <span class="skill-name">Gaming</span>
             <span class="skill-sub">🎮 RPGs · Board games · Switch</span>
-          </div>
-          <div class="skill-item">
+          </li>
+          <li class="skill-item">
             <span class="skill-name">Reading</span>
             <span class="skill-sub">📚 Fiction · Fantasy · Non-fiction</span>
-          </div>
-          <div class="skill-item">
+          </li>
+          <li class="skill-item">
             <span class="skill-name">Ceramics</span>
             <span class="skill-sub">🏺 Hand-building · Air dry · Gift giving</span>
-          </div>
-          <div class="skill-item">
+          </li>
+          <li class="skill-item">
             <span class="skill-name">Hiking</span>
             <span class="skill-sub">🥾 Trails · Nature · Weekend escapes</span>
-          </div>
-          <div class="skill-item">
+          </li>
+          <li class="skill-item">
             <span class="skill-name">Pets</span>
             <span class="skill-sub">🐾 My dog Amelie · My cat Luffy · Any other pet</span>
-          </div>
-          <div class="skill-item">
+          </li>
+          <li class="skill-item">
             <span class="skill-name">Series</span>
             <span class="skill-sub">📺 Mystery · Comedy · True crime</span>
-          </div>
-        </div>
+          </li>
+        </ul>
       </div>
 
     </div>
@@ -942,6 +994,10 @@
         }
       });
     }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal-stagger').forEach(parent => {
+      Array.from(parent.children).forEach((child, i) => child.style.setProperty('--i', i));
+    });
 
     document.querySelectorAll('.reveal, .reveal-stagger, .reveal-scale').forEach(el => io.observe(el));
 
