@@ -12,6 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>document.documentElement.classList.add('js');</script>
   <style>
 
     @font-face {
@@ -120,6 +121,8 @@
       -webkit-backdrop-filter: blur(14px);
     }
 
+    /* 1. Bropella on nav logo, 28px — line-height:1 removes font whitespace so
+          it sits on the same optical baseline as the nav links */
     .nav-logo {
       font-family: 'Bropella', cursive;
       font-weight: 400;
@@ -140,6 +143,7 @@
       list-style: none;
     }
 
+    /* 2. Poppins explicit on nav links */
     .nav-links li a:not(.btn) {
       font-family: var(--font);
       font-weight: 400;
@@ -162,6 +166,8 @@
 
     .nav-links li a:not(.btn):hover { color: var(--color-primary); }
     .nav-links li a:not(.btn):hover::after { width: 100%; }
+
+    /* Nav Contact — primary · medium from DS; no overrides needed */
 
     /* Active nav state for current page */
     .nav-links li a.nav-active:not(.btn) {
@@ -263,16 +269,6 @@
       padding-right: 48px;
       max-width: 1100px;
       margin: 0 auto;
-    }
-
-    .section-eyebrow {
-      font-family: var(--font);
-      font-weight: 500;
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--color-muted);
-      margin-bottom: 12px;
     }
 
     .page-hero-title {
@@ -471,6 +467,69 @@
       line-height: 1.5;
     }
 
+    /* ── Interests: wrapping pills instead of ruled rows ── */
+    .skills-group--interests .skill-list {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-top: 14px;
+    }
+
+    .skills-group--interests .skill-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border: 1px solid var(--color-border);
+      border-radius: 999px;
+      background: transparent;
+      transition: background-color 200ms ease;
+    }
+
+    .skills-group--interests .skill-item:hover {
+      background: rgba(9, 99, 108, 0.08);
+    }
+
+    /* Detail line: shown on hover, keyboard focus or tap (focus), read out by screen readers via .sr-only */
+    .skills-group--interests .skill-item {
+      position: relative;
+    }
+
+    .skills-group--interests .skill-item:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    .skills-group--interests .skill-item::after {
+      content: attr(data-detail);
+      position: absolute;
+      left: 0;
+      bottom: calc(100% + 8px);
+      width: max-content;
+      max-width: 220px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: var(--color-text);
+      color: var(--color-white);
+      font-size: 13px;
+      line-height: 1.5;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 150ms ease;
+      z-index: 5;
+    }
+
+    .skills-group--interests .skill-item:hover::after,
+    .skills-group--interests .skill-item:focus::after {
+      opacity: 1;
+    }
+
+    .skills-group--interests .skill-name {
+      font-weight: 500;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
 
     /* ═══════════════════════════════════════════
        FOOTER
@@ -570,6 +629,10 @@
       opacity: 1;
       pointer-events: auto;
       transform: translateY(0);
+      /* visibility flips instantly on open so the menu can take focus at once */
+      transition: opacity 200ms cubic-bezier(0.22,1,0.36,1),
+                  transform 200ms cubic-bezier(0.22,1,0.36,1),
+                  visibility 0s;
     }
 
     .email-dropdown button {
@@ -588,6 +651,11 @@
     }
 
     .email-dropdown button:hover { background: var(--color-bg); }
+    .email-dropdown button:focus-visible {
+      background: var(--color-bg);
+      outline: 2px solid var(--color-primary);
+      outline-offset: -2px;
+    }
 
     .email-dropdown-address {
       display: block;
@@ -624,31 +692,32 @@
     /* ═══════════════════════════════════════════
        REVEAL UTILITY
     ═══════════════════════════════════════════ */
-    .reveal {
+    /* Hidden only when JS runs (.js is set in <head>), so no-JS visitors still see content */
+    .js .reveal {
       opacity: 0;
       transform: translateY(24px);
       transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     }
-    .reveal.revealed { opacity: 1; transform: translateY(0); }
+    .js .reveal.revealed { opacity: 1; transform: translateY(0); }
 
     /* Photo variant: adds a subtle scale so the image "arrives" */
-    .reveal-scale {
+    .js .reveal-scale {
       opacity: 0;
       transform: translateY(20px) scale(0.97);
       transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
                   transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     }
-    .reveal-scale.revealed { opacity: 1; transform: translateY(0) scale(1); }
+    .js .reveal-scale.revealed { opacity: 1; transform: translateY(0) scale(1); }
 
     /* Stagger children of a reveal parent */
-    .reveal-stagger > * {
+    .js .reveal-stagger > * {
       opacity: 0;
       transform: translateY(20px);
       transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     }
     /* --i is set per child by JS; --stagger is the step between children */
     .reveal-stagger { --stagger: 80ms; }
-    .reveal-stagger.revealed > * {
+    .js .reveal-stagger.revealed > * {
       opacity: 1;
       transform: translateY(0);
       transition-delay: calc(var(--i, 0) * var(--stagger));
@@ -658,32 +727,23 @@
     .bio-text.reveal-stagger { --stagger: 110ms; }
 
     /* ── Hero title: word-by-word ── */
-    .page-hero .section-eyebrow {
-      opacity: 0;
-      animation: heroEyebrowIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
-    }
-    @keyframes heroEyebrowIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .hero-word {
+    .js .hero-word {
       display: inline-block;
       opacity: 0;
       transform: translateY(14px);
       transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
                   transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
     }
-    .hero-word.visible { opacity: 1; transform: translateY(0); }
+    .js .hero-word.visible { opacity: 1; transform: translateY(0); }
     @media (prefers-reduced-motion: reduce) {
-      .hero-word { opacity: 1; transform: none; transition: none; }
-      .reveal,
-      .reveal-stagger > *,
-      .reveal-scale {
+      .js .hero-word { opacity: 1; transform: none; transition: none; }
+      .js .reveal,
+      .js .reveal-stagger > *,
+      .js .reveal-scale {
         opacity: 1;
         transform: none;
         transition: none;
       }
-      .sparkle-dot { animation: none; }
     }
 
     /* ═══════════════════════════════════════════
@@ -731,7 +791,7 @@
       .page-hero-title { font-size: clamp(24px, 6.5vw, 36px); }
       .bio-text p:first-child { font-size: 16px; }
       .bio-text p { font-size: 15px; max-width: 100%; }
-      .bio-photo { aspect-ratio: 3 / 4; }
+      .bio-photo { width: 160px; aspect-ratio: 1 / 1; border-radius: 16px; }
       .bio-inner { gap: 32px; }
       .bio-facts-row { grid-template-columns: 1fr; row-gap: 4px; }
       .bio-cta { flex-direction: column; }
@@ -809,7 +869,7 @@
       <!-- Bio text -->
       <div class="bio-text reveal-stagger" data-reveal-delay="0">
         <p>I love telling stories, talking to people, and making things: from ceramics and drawings to apps and platforms. I'm a product designer based in Brazil, and I fell in love with UX/UI during college, when my final project (a website about blood donation) showed me what design could actually do for people. I've been working in digital products ever since.</p>
-        <p>I am confident in my work when I the only designer as long as i have the support of the PMs and developers along the way. Communication is one of my strongest traits, and I genuinely prefer bouncing ideas off others rather than designing in a vacuum. I enjoy discovery, and I'm happiest when research turns into a concrete, carefully crafted solution.</p>
+        <p>I am confident in my work when I'm the only designer, as long as I have the support of the PMs and developers along the way. Communication is one of my strongest traits, and I genuinely prefer bouncing ideas off others rather than designing in a vacuum. I enjoy discovery, and I'm happiest when research turns into a concrete, carefully crafted solution.</p>
         <p>What drives me is getting better at the craft. I want to keep pushing my work in Figma, deepen how I integrate AI into my process, and become the kind of designer that teams rely on.</p>
         <dl class="bio-facts">
           <div class="bio-facts-row"><dt>Based in</dt><dd>Brasília, Brazil (UTC-3)</dd></div>
@@ -819,7 +879,7 @@
         </dl>
         <div class="bio-cta">
           <a href="index.html#works" class="btn btn-primary btn-medium">See my work</a>
-          <a href="#contact" class="btn btn-secondary btn-medium contact-trigger">Get in touch</a>
+          <a href="resume.html" class="btn btn-secondary btn-medium">View resumé</a>
         </div>
       </div>
 
@@ -828,10 +888,10 @@
 
   <!-- ░░ SKILLS + INTERESTS ░░ -->
   <section class="skills-section">
-    <div class="skills-groups reveal-stagger">
+    <div class="skills-groups">
 
       <!-- Competencies -->
-      <div class="skills-group">
+      <div class="skills-group reveal">
         <h2 class="skills-group-label">Competencies</h2>
         <ul class="skill-list">
           <li class="skill-item">
@@ -858,7 +918,7 @@
       </div>
 
       <!-- Tools -->
-      <div class="skills-group">
+      <div class="skills-group reveal">
         <h2 class="skills-group-label">Tools</h2>
         <ul class="skill-list">
           <li class="skill-item">
@@ -881,32 +941,38 @@
       </div>
 
       <!-- Interests -->
-      <div class="skills-group">
+      <div class="skills-group skills-group--interests reveal">
         <h2 class="skills-group-label">Interests</h2>
         <ul class="skill-list">
-          <li class="skill-item">
+          <li class="skill-item" tabindex="0" data-detail="RPGs · Board games · Switch">
+            <span aria-hidden="true">🎮</span>
             <span class="skill-name">Gaming</span>
-            <span class="skill-sub">🎮 RPGs · Board games · Switch</span>
+            <span class="sr-only">: RPGs · Board games · Switch</span>
           </li>
-          <li class="skill-item">
+          <li class="skill-item" tabindex="0" data-detail="Fiction · Fantasy · Non-fiction">
+            <span aria-hidden="true">📚</span>
             <span class="skill-name">Reading</span>
-            <span class="skill-sub">📚 Fiction · Fantasy · Non-fiction</span>
+            <span class="sr-only">: Fiction · Fantasy · Non-fiction</span>
           </li>
-          <li class="skill-item">
+          <li class="skill-item" tabindex="0" data-detail="Hand-building · Air dry · Gift giving">
+            <span aria-hidden="true">🏺</span>
             <span class="skill-name">Ceramics</span>
-            <span class="skill-sub">🏺 Hand-building · Air dry · Gift giving</span>
+            <span class="sr-only">: Hand-building · Air dry · Gift giving</span>
           </li>
-          <li class="skill-item">
+          <li class="skill-item" tabindex="0" data-detail="Trails · Nature · Weekend escapes">
+            <span aria-hidden="true">🥾</span>
             <span class="skill-name">Hiking</span>
-            <span class="skill-sub">🥾 Trails · Nature · Weekend escapes</span>
+            <span class="sr-only">: Trails · Nature · Weekend escapes</span>
           </li>
-          <li class="skill-item">
+          <li class="skill-item" tabindex="0" data-detail="My dog Amelie · My cat Luffy · Any other pet">
+            <span aria-hidden="true">🐾</span>
             <span class="skill-name">Pets</span>
-            <span class="skill-sub">🐾 My dog Amelie · My cat Luffy · Any other pet</span>
+            <span class="sr-only">: My dog Amelie · My cat Luffy · Any other pet</span>
           </li>
-          <li class="skill-item">
+          <li class="skill-item" tabindex="0" data-detail="Mystery · Comedy · True crime">
+            <span aria-hidden="true">📺</span>
             <span class="skill-name">Series</span>
-            <span class="skill-sub">📺 Mystery · Comedy · True crime</span>
+            <span class="sr-only">: Mystery · Comedy · True crime</span>
           </li>
         </ul>
       </div>
@@ -937,7 +1003,7 @@
   </footer>
 
   <!-- Toast -->
-  <div class="toast" id="toast" aria-live="polite">Email copied ✓</div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <!-- ░░ JS ░░ -->
   <script>
@@ -1028,7 +1094,11 @@
     const toast      = document.getElementById('toast');
     let   toastTimer = null;
 
-    function openDropdown()  { dropdown.classList.add('open');    trigger.setAttribute('aria-expanded', 'true'); }
+    function openDropdown()  {
+      dropdown.classList.add('open');
+      trigger.setAttribute('aria-expanded', 'true');
+      copyBtn.focus();
+    }
     function closeDropdown() { dropdown.classList.remove('open'); trigger.setAttribute('aria-expanded', 'false'); }
 
     function showToast(msg) {
@@ -1085,7 +1155,10 @@
       if (!trigger.contains(e.target) && !dropdown.contains(e.target)) closeDropdown();
     });
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeDropdown();
+      if (e.key === 'Escape' && dropdown.classList.contains('open')) {
+        closeDropdown();
+        trigger.focus();
+      }
     });
 
   </script>

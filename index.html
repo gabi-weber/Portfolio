@@ -901,6 +901,10 @@
       opacity: 1;
       pointer-events: auto;
       transform: translateY(0);
+      /* visibility flips instantly on open so the menu can take focus at once */
+      transition: opacity 200ms cubic-bezier(0.22,1,0.36,1),
+                  transform 200ms cubic-bezier(0.22,1,0.36,1),
+                  visibility 0s;
     }
 
     .email-dropdown button {
@@ -1414,6 +1418,7 @@
     function openDropdown()  {
       dropdown.classList.add('open');
       trigger.setAttribute('aria-expanded', 'true');
+      copyBtn.focus();
     }
     function closeDropdown() {
       dropdown.classList.remove('open');
@@ -1430,6 +1435,13 @@
     trigger.addEventListener('click', e => {
       e.stopPropagation();
       dropdown.classList.contains('open') ? closeDropdown() : openDropdown();
+    });
+
+    dropdown.addEventListener('keydown', e => {
+      const items = [copyBtn, sendBtn];
+      const idx = items.indexOf(document.activeElement);
+      if (e.key === 'ArrowDown') { e.preventDefault(); items[(idx + 1) % items.length].focus(); }
+      if (e.key === 'ArrowUp')   { e.preventDefault(); items[(idx - 1 + items.length) % items.length].focus(); }
     });
 
     copyBtn.addEventListener('click', () => {
@@ -1469,7 +1481,10 @@
       if (!trigger.contains(e.target) && !dropdown.contains(e.target)) closeDropdown();
     });
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeDropdown();
+      if (e.key === 'Escape' && dropdown.classList.contains('open')) {
+        closeDropdown();
+        trigger.focus();
+      }
     });
 
     /* ════════════════════════════════════════════════════════
