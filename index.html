@@ -9,10 +9,27 @@
   <meta property="og:description" content="Product designer working on B2B design systems, dashboards and seasonal campaigns. Clear rationale, documented handoff, numbers attached. Based in Brazil, remote-first." />
   <meta property="og:type" content="website" />
   <!-- og:image to be added once the site is deployed and a public image URL exists -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="preload" href="fonts/Poppins-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="fonts/Poppins-Medium.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="fonts/Bropella.woff2" as="font" type="font/woff2" crossorigin />
   <style>
+
+    /* ═══════════════════════════════════════════
+       POPPINS — self-hosted, weights 300 400 500 600 (700 is unused)
+       Fallback face is Arial resized to Poppins metrics, so the swap does not shift layout.
+    ═══════════════════════════════════════════ */
+    @font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-Light.woff2') format('woff2');    font-weight: 300; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-Regular.woff2') format('woff2');  font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-Medium.woff2') format('woff2');   font-weight: 500; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-SemiBold.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; }
+    @font-face {
+      font-family: 'Poppins Fallback';
+      src: local('Arial');
+      size-adjust: 112.7%;
+      ascent-override: 93.2%;
+      descent-override: 31.1%;
+      line-gap-override: 8.9%;
+    }
 
     /* ═══════════════════════════════════════════
        1. BROPELLA — nav logo only
@@ -50,7 +67,7 @@
       --color-brown-500: #7C4836; /* Mode 1.tokens.json → brown/500 */
       --color-gray-100: #EEF1F1;
 
-      --font: 'Poppins', sans-serif;
+      --font: 'Poppins', 'Poppins Fallback', sans-serif;
       --nav-h: 64px;
     }
 
@@ -410,9 +427,11 @@
 
     /* Headline wrap — fixed height injected by JS; never changes during transitions */
     .hero-headline-wrap {
-      position: relative;
+      display: grid;
+      align-items: start;
       margin-bottom: 32px;
-      /* height: set by JS */
+      /* All five headlines share one grid cell, so the wrap is always as
+         tall as the longest one from first paint; no JS height lock. */
     }
 
     /* Every headline is ALWAYS absolute — no layout-shift possible */
@@ -424,12 +443,16 @@
       letter-spacing: -0.5px;
       color: var(--color-text);
 
-      position: absolute;
-      top: 0; left: 0; right: 0;
+      grid-area: 1 / 1;
+      display: grid;
       opacity: 0;
       /* No CSS transition — typewriter JS controls visibility directly */
       pointer-events: none;
     }
+
+    /* Invisible full-text copy reserves this headline's height while the typed copy fills in */
+    .hl-ghost, .hl-typed { grid-area: 1 / 1; }
+    .hl-ghost { visibility: hidden; }
 
     /* Typewriter cursor blink */
     @keyframes blink { 0%,100% { opacity: 1 } 50% { opacity: 0 } }
@@ -1100,23 +1123,23 @@
         <div class="hero-headline-wrap" id="hl-wrap" aria-hidden="true">
           <p class="hero-headline active" data-hl="0"
               data-full="I'm a product designer who makes complex products feel obvious, and I bring the whole team along with me.">
-            I'm a product designer who makes complex products feel obvious, and I bring the whole team along with me.
+            <span class="hl-ghost" aria-hidden="true">I'm a product designer who makes complex products feel obvious, and I bring the whole team along with me.<span class="hl-cursor">|</span></span><span class="hl-typed">I'm a product designer who makes complex products feel obvious, and I bring the whole team along with me.</span>
           </p>
           <p class="hero-headline" data-hl="1"
               data-full="Four years in B2B product design, fluent in English, and used to working the same hours as US teams.">
-            Four years in B2B product design, fluent in English, and used to working the same hours as US teams.
+            <span class="hl-ghost" aria-hidden="true">Four years in B2B product design, fluent in English, and used to working the same hours as US teams.<span class="hl-cursor">|</span></span><span class="hl-typed">Four years in B2B product design, fluent in English, and used to working the same hours as US teams.</span>
           </p>
           <p class="hero-headline" data-hl="2"
               data-full="Every designer has a love-hate with Figma. I made sure the love wins, then documented why.">
-            Every designer has a love-hate with Figma. I made sure the love wins, then documented why.
+            <span class="hl-ghost" aria-hidden="true">Every designer has a love-hate with Figma. I made sure the love wins, then documented why.<span class="hl-cursor">|</span></span><span class="hl-typed">Every designer has a love-hate with Figma. I made sure the love wins, then documented why.</span>
           </p>
           <p class="hero-headline" data-hl="3"
               data-full="I design to get it right the first time: clear rationale, clean handoff, no surprises in QA.">
-            I design to get it right the first time: clear rationale, clean handoff, no surprises in QA.
+            <span class="hl-ghost" aria-hidden="true">I design to get it right the first time: clear rationale, clean handoff, no surprises in QA.<span class="hl-cursor">|</span></span><span class="hl-typed">I design to get it right the first time: clear rationale, clean handoff, no surprises in QA.</span>
           </p>
           <p class="hero-headline" data-hl="4"
               data-full="I give you tokens, documentation, and a handoff that makes your life easier, not harder.">
-            I give you tokens, documentation, and a handoff that makes your life easier, not harder.
+            <span class="hl-ghost" aria-hidden="true">I give you tokens, documentation, and a handoff that makes your life easier, not harder.<span class="hl-cursor">|</span></span><span class="hl-typed">I give you tokens, documentation, and a handoff that makes your life easier, not harder.</span>
           </p>
         </div>
 
@@ -1164,7 +1187,7 @@
     <div class="about-inner">
 
       <div class="about-grid reveal">
-        <div class="about-photo"><img src="assets/About%20me%20photo.jpeg" alt="Portrait of Gabi Weber" width="1200" height="1600" loading="lazy"></div>
+        <div class="about-photo"><img src="assets/about-photo.webp" alt="Portrait of Gabi Weber" width="1200" height="1600" loading="lazy"></div>
         <div class="about-bio">
           <h3 class="about-greeting">Hi, I'm Gabi!</h3>
           <p>I'm a product designer based in Brazil who makes things, digital and otherwise. Most of my work is B2B: design systems, dashboards, and the detail work that only gets noticed when it's missing.</p>
@@ -1274,10 +1297,7 @@
         if (el.offsetHeight < maxH) el.style.letterSpacing = hi + 'em';
       });
 
-      /* 3. Lock headline wrapper to the normalized height */
-      let finalH = 0;
-      allHls.forEach(el => { finalH = Math.max(finalH, el.offsetHeight); });
-      hlWrap.style.height = finalH + 'px';
+      /* 3. Headline wrapper height comes from the stacked ghost copies (CSS grid) */
 
       /* 4. Lock tag-wrap height (pills) */
       tagWrap.style.height = measureMaxHeight(tagWrap, allTagSets) + 'px';
@@ -1306,7 +1326,8 @@
     });
 
     /* ── Typewriter helper ───────────────────────────────── */
-    function typeHeadline(el, text) {
+    function typeHeadline(headline, text) {
+      const el = headline.querySelector('.hl-typed');
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         el.textContent = text;
         return;
@@ -1351,7 +1372,7 @@
       const out = hlWrap.querySelector('.hero-headline.active');
       out.style.opacity = '0';
       out.classList.remove('active');
-      out.textContent = out.dataset.full;
+      out.querySelector('.hl-typed').textContent = out.dataset.full;
 
       /* Tags swap — outgoing fades as a block, incoming pills stagger in one by one */
       const outTags = tagWrap.querySelector('.tag-set.active');
