@@ -136,7 +136,7 @@ Loaded from Google Fonts, weights 300 400 500 600 700. **No exceptions besides t
 
 | Role | Weight | Size | Color | Notes |
 |---|---|---|---|---|
-| About page hero title | 300 | `clamp(28px, 3.2vw, 46px)` | `--color-muted` | `letter-spacing: -0.5px`, `line-height: 1.18` |
+| About page hero title | 400 | `clamp(32px, 3.2vw, 46px)` (≤600px: `clamp(24px, 6.5vw, 36px)`) | `--color-text` | `letter-spacing: -0.5px`, `line-height: 1.18`; revealed word by word |
 | Homepage hero headline | 400 | `clamp(28px, 3.2vw, 46px)` | `--color-text` | `letter-spacing` adjusted by JS to equalize line count |
 | Section title | 600 | `clamp(32px, 4vw, 52px)` | `--color-text` | `letter-spacing: -0.5px` |
 | Section eyebrow | 500 | 11px | `--color-muted` | Uppercase, `letter-spacing: 0.15em` |
@@ -218,7 +218,7 @@ transition: background-color 200ms ease, box-shadow 200ms ease,
 | About section (homepage) "Wanna know more?" | primary · medium |
 | About section (homepage) "See my work" | secondary · medium |
 | About page "See my work" | primary · medium |
-| About page "Get in touch" | secondary · medium |
+| About page "View resumé" | secondary · medium |
 | Case image overlay | btn-overlay |
 | Case page next-case banner | `.btn-banner` |
 
@@ -363,10 +363,10 @@ One token in `:root` governs the line length of every body column on a case page
 | ≤1100px | Case: KPI trio stacks, copy column capped at `--copy-w` |
 | ≤1024px | `.btn-overlay` shrinks to 13px, padding 6px 10px |
 | ≤966px | Case: Problem & Solution, Process and Conclusion stack, 52px gap, copy capped at `--copy-w` |
-| ≤900px | Bio grid → 1-column; photo → 4:3 max 420px; skills → 2-column |
+| ≤900px | Bio grid → 1-column; photo → 4:3; skills groups stack (label above its rows) |
 | ≤768px | Case: all section padding → `0 24px 80px`; nav padding 24px; hero de-absolutes and stacks; decorative hero ghosts hidden |
 | ≤640px | Case overlay hidden (touch devices tap the image directly) |
-| ≤600px | Nav padding 24px; index/about section horizontal padding 24px; skills → 1-column |
+| ≤600px | Nav padding 24px; index/about section horizontal padding 24px; About photo → 160px square, left-aligned above the text; skill rows → 1-column |
 
 Case pages run their own breakpoint ladder (1100 / 966 / 768). `index.html` and `about.html` run the 1024 / 900 / 640 / 600 ladder. Do not mix them.
 
@@ -484,42 +484,43 @@ Two-column grid: `26fr 74fr`. Left: audience switcher (dot indicator, 5 options,
 
 ### Nav
 
-Same as index.html. "About me" link gets `.nav-active` class (teal + underline always on, no hover needed).
+Same as index.html. "About me" link gets `.nav-active` + `aria-current="page"` (teal + underline always on, no hover needed). A "Skip to main content" link sits before the nav and targets `<main id="main">`.
 
 ### Page Hero
 
-- `padding-top: calc(var(--nav-h) + 80px)`, `padding-bottom: 64px`
-- Eyebrow: "Get to know me"
-- `<h1>`: "I fell in love with design when I realized it could actually help people."
-  - Poppins 300, `clamp(28px, 3.2vw, 46px)`, `--color-muted`, `letter-spacing: -0.5px`
+- `padding-top: calc(var(--nav-h) + 80px)`, `padding-bottom: 64px`. No eyebrow.
+- `<h1>`: "Product designer who makes complex B2B tools feel clear."
+  - Poppins 400, `clamp(32px, 3.2vw, 46px)`, `--color-text`, `letter-spacing: -0.5px`. JS splits it into `.hero-word` spans that rise in one by one.
 
 ### Bio Section
 
 - Grid: `320px | 1fr`, `gap: 72px`, `align-items: start`
-- Photo: `aspect-ratio: 3/4`, `--color-accent` bg, `border-radius: 16px`, diagonal stripe overlay, no label text
-- Bio text: 3 paragraphs (lead 18px `--color-text`, body 16px `--color-muted`, both `max-width: 65ch`)
-- CTA row after third paragraph: primary · medium "See my work" → `index.html#works` + secondary · medium "Get in touch" → `index.html#contact`
+- Photo: placeholder (the `<img>` is commented out), `aspect-ratio: 4/5`, `--color-accent` bg, `border-radius: 16px`, diagonal stripe overlay, no label text. When a real photo goes in, restore an `img` rule (`width/height: 100%`, `object-fit: cover`) in `.bio-photo`.
+- Bio text: 3 paragraphs (lead 18px `--color-text`, body 16px `--color-muted`, both `max-width: 65ch`), then a `<dl class="bio-facts">` (Based in, Experience, Languages, Working) of ruled rows
+- CTA row at the end: primary · medium "See my work" → `index.html#works` + secondary · medium "View resumé" → `resume.html`. Contact lives in the nav and footer.
 
 ### Skills & Interests section
 
-Eyebrow "Skills & interests" above the grid (`.skills-header`, `padding-bottom: 40px`).
+No heading above the groups. Each `.skills-group` is a two-column index row (`200px | 1fr`, `gap: 0 48px`, 56px between groups): an 11px Poppins 600 uppercase `--color-text` label on the left, the list on the right. At ≤900px the label stacks above its list.
 
-Three-column grid `1fr 1fr 1fr`, `gap: 56px`. All columns use the same `.skill-list / .skill-item / .skill-name / .skill-sub` pattern.
-
-Column label style: 11px Poppins 500 uppercase `--color-muted`, `border-bottom: 1px solid --color-border`, `padding-bottom: 16px`.
-
-| Column | Items |
+| Group | Items |
 |---|---|
 | Competencies | UX Design / Communication / UI Design / Illustration / AI-Augmented Workflow |
-| Tools | Figma / Adobe Creative Cloud / Claude |
+| Tools | Figma / Adobe Creative Cloud / Claude / Gemini |
 | Interests | Gaming / Reading / Ceramics / Hiking / Pets / Series |
 
-Each item: `.skill-name` (600, 16px, `--color-text`) + `.skill-sub` (400, 12px, `--color-muted`). Interests have emoji at start of `.skill-sub`, not in the name.
+Competencies and Tools are ruled rows (`1px --color-border` top, last row also bottom): `.skill-name` (600, 22px, `--color-text`) + `.skill-sub` (400, 14px, `--color-muted`) in a `1fr | 1.3fr` grid.
+
+Interests (`.skills-group--interests`) is a wrapping row of pills (12px gap): 1px `--color-border`, 999px radius, `10px 18px`, emoji (`aria-hidden`) + `.skill-name` (500, 15px). No hover fill, since they are not links. The detail line is a tooltip (`data-detail`) shown on hover, keyboard focus or tap (items are `tabindex="0"`), and also present as `.sr-only` text for screen readers.
 
 ### Reveal animations
 
-- `.reveal` on page hero div, photo wrapper, bio text div, `.skills-header`
-- `.reveal-stagger` on `.skills-inner` (3 children stagger at 80ms each)
+All hiding rules are gated behind `.js` on `<html>` (set by an inline script in `<head>`), so content stays visible without JavaScript.
+
+- Hero title: word by word (`.hero-word`)
+- `.reveal-scale` on the photo wrapper (`data-reveal-delay="200"`)
+- `.reveal-stagger` on `.bio-text` (children stagger at 110ms)
+- `.reveal` on each `.skills-group`, so every group animates only when it enters the viewport
 
 ---
 

@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About Me — Gabi Weber</title>
+  <title>About Me · Gabi Weber</title>
   <meta name="description" content="Gabi Weber is a Brazilian product designer specializing in B2B platform design, design systems, illustration and AI-augmented workflows.">
-  <meta property="og:title" content="About Me — Gabi Weber">
+  <meta property="og:title" content="About Me · Gabi Weber">
   <meta property="og:description" content="Product designer based in Brazil, working across UX, UI, and design systems for B2B platforms.">
   <meta property="og:type" content="website">
   <!-- og:image to be added once the site is deployed and a public image URL exists -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
   <script>document.documentElement.classList.add('js');</script>
   <style>
 
@@ -41,6 +41,9 @@
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
 
     body {
       font-family: var(--font);
@@ -51,14 +54,30 @@
       overflow-x: hidden;
     }
 
-    h1, h2, h3, h4, h5, h6 { font-family: var(--font); }
-
     /* ═══════════════════════════════════════════
        ACCESSIBILITY
     ═══════════════════════════════════════════ */
     .sr-only {
       position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
       overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 8px; left: 8px;
+      z-index: 300;
+      padding: 10px 16px;
+      border-radius: 8px;
+      background: var(--color-primary);
+      color: var(--color-white);
+      font-size: 14px;
+      text-decoration: none;
+      transform: translateY(-200%);
+    }
+    .skip-link:focus-visible {
+      transform: translateY(0);
+      outline: 2px solid var(--color-text);
+      outline-offset: 2px;
     }
 
     /* ═══════════════════════════════════════════
@@ -72,6 +91,8 @@
       pointer-events: none;
       z-index: 9999;
       opacity: 0.04;
+      /* own compositor layer: the noise is rasterized once, not repainted on scroll */
+      will-change: transform;
     }
 
     /* ═══════════════════════════════════════════
@@ -91,7 +112,6 @@
       white-space: nowrap;
       user-select: none;
     }
-    .btn-large  { font-size: 16px; line-height: 24px; border-radius: 8px;  padding: 12px 16px; }
     .btn-medium { font-size: 14px; line-height: 21px; border-radius: 8px;  padding: 8px  12px; }
 
     .btn-primary                   { background: #09636C; color: var(--color-white); }
@@ -308,15 +328,6 @@
       overflow: hidden;
     }
 
-    .bio-photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      position: relative;
-      z-index: 1;
-    }
-
     /* Subtle inner pattern to make the placeholder feel intentional */
     .bio-photo::after {
       content: '';
@@ -483,11 +494,6 @@
       border: 1px solid var(--color-border);
       border-radius: 999px;
       background: transparent;
-      transition: background-color 200ms ease;
-    }
-
-    .skills-group--interests .skill-item:hover {
-      background: rgba(9, 99, 108, 0.08);
     }
 
     /* Detail line: shown on hover, keyboard focus or tap (focus), read out by screen readers via .sr-only */
@@ -818,12 +824,14 @@
     <rect width="100%" height="100%" filter="url(#grain-filter)" />
   </svg>
 
+  <a href="#main" class="skip-link">Skip to main content</a>
+
   <!-- ░░ NAV ░░ -->
   <nav>
     <a href="index.html" class="nav-logo">Gabi Weber</a>
     <ul class="nav-links">
       <li><a href="index.html#works">Work</a></li>
-      <li><a href="about.html" class="nav-active">About me</a></li>
+      <li><a href="about.html" class="nav-active" aria-current="page">About me</a></li>
       <li><a href="resume.html">Resumé</a></li>
       <li>
         <a href="#contact" class="btn btn-primary btn-medium contact-trigger">Contact</a>
@@ -840,7 +848,7 @@
   <div class="nav-mobile" id="nav-mobile" aria-hidden="true">
     <ul>
       <li><a href="index.html#works">Work</a></li>
-      <li><a href="about.html" class="nav-active">About me</a></li>
+      <li><a href="about.html" class="nav-active" aria-current="page">About me</a></li>
       <li><a href="resume.html">Resumé</a></li>
     </ul>
     <div class="nav-mobile-cta">
@@ -848,7 +856,7 @@
     </div>
   </div>
 
-  <main>
+  <main id="main">
   <!-- ░░ PAGE HERO ░░ -->
   <div class="page-hero">
     <h1 class="page-hero-title">Product designer who makes complex B2B tools feel clear.</h1>
@@ -988,7 +996,7 @@
         <a href="https://www.linkedin.com/in/gabriela-lissarassa-weber/" target="_blank" rel="noopener noreferrer" aria-label="Say hi on LinkedIn (opens in new tab)">Say hi <span aria-hidden="true">👋</span></a>
         &nbsp;·&nbsp;
         <span class="footer-email-wrap">
-          <button class="footer-email-btn" id="email-trigger" aria-haspopup="true" aria-expanded="false">
+          <button class="footer-email-btn" id="email-trigger" aria-controls="email-dropdown" aria-expanded="false">
             Get in touch ✉️
           </button>
           <span class="email-dropdown" id="email-dropdown">
@@ -1141,7 +1149,7 @@
         document.execCommand('copy');
         showToast('Email copied ✓');
       } catch {
-        showToast('Copy failed — email: ' + EMAIL);
+        showToast('Copy failed. Email: ' + EMAIL);
       }
       document.body.removeChild(ta);
     }
