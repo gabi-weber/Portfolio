@@ -687,6 +687,15 @@
       min-height: 280px;
       background: var(--color-accent);
       border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .about-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      display: block;
     }
 
     .about-bio {
@@ -1155,7 +1164,7 @@
     <div class="about-inner">
 
       <div class="about-grid reveal">
-        <div class="about-photo"></div>
+        <div class="about-photo"><img src="assets/About%20me%20photo.jpeg" alt="Portrait of Gabi Weber" width="1200" height="1600" loading="lazy"></div>
         <div class="about-bio">
           <h3 class="about-greeting">Hi, I'm Gabi!</h3>
           <p>I'm a product designer based in Brazil who makes things, digital and otherwise. Most of my work is B2B: design systems, dashboards, and the detail work that only gets noticed when it's missing.</p>
