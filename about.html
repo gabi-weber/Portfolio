@@ -9,15 +9,31 @@
   <meta property="og:description" content="Product designer based in Brazil, working across UX, UI, and design systems for B2B platforms.">
   <meta property="og:type" content="website">
   <!-- og:image to be added once the site is deployed and a public image URL exists -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="preload" href="fonts/Poppins-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="fonts/Poppins-Medium.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="fonts/Bropella.woff2" as="font" type="font/woff2" crossorigin />
   <script>document.documentElement.classList.add('js');</script>
   <style>
 
+    /* ═══════════════════════════════════════════
+       POPPINS — self-hosted, weights 400 500 600 (the only ones this page uses)
+       Fallback face is Arial resized to Poppins metrics, so the swap does not shift layout.
+    ═══════════════════════════════════════════ */
+    @font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-Regular.woff2') format('woff2');  font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-Medium.woff2') format('woff2');   font-weight: 500; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-SemiBold.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; }
+    @font-face {
+      font-family: 'Poppins Fallback';
+      src: local('Arial');
+      size-adjust: 112.7%;
+      ascent-override: 93.2%;
+      descent-override: 31.1%;
+      line-gap-override: 8.9%;
+    }
+
     @font-face {
       font-family: 'Bropella';
-      src: url('./fonts/Bropella.woff') format('woff');
+      src: url('./fonts/Bropella.woff2') format('woff2');
       font-weight: 400;
       font-style: normal;
       font-display: swap;
@@ -35,7 +51,7 @@
       --color-border:  #C4CBCB;
       --color-white:   #FEFAF9;
 
-      --font: 'Poppins', sans-serif;
+      --font: 'Poppins', 'Poppins Fallback', sans-serif;
       --nav-h: 64px;
     }
 
@@ -864,7 +880,7 @@
       <!-- Photo placeholder -->
       <div class="reveal-scale" data-reveal-delay="200">
         <div class="bio-photo">
-          <img src="assets/About%20me%20photo.jpeg" alt="Portrait of Gabi Weber" width="1200" height="1600" loading="eager">
+          <img src="assets/about-photo.webp" alt="Portrait of Gabi Weber" width="1200" height="1600" loading="eager">
         </div>
       </div>
 
